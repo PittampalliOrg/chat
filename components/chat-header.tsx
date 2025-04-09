@@ -1,88 +1,139 @@
-'use client';
+"use client"
 
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { useWindowSize } from 'usehooks-ts';
+import { memo, useState } from "react"
+import Link from "next/link"
+import { useRouter, usePathname } from "next/navigation"
+import { useWindowSize } from "usehooks-ts"
+import { ChevronRight, Settings, MessageSquare, Command, PlusIcon } from "lucide-react"
 
-import { ModelSelector } from '@/components/model-selector';
-import { SidebarToggle } from '@/components/sidebar-toggle';
-import { Button } from '@/components/ui/button';
-import { PlusIcon, VercelIcon } from './icons';
-import { useSidebar } from './ui/sidebar';
-import { memo } from 'react';
-import { Tooltip, TooltipContent, TooltipTrigger } from './ui/tooltip';
-import { type VisibilityType, VisibilitySelector } from './visibility-selector';
+import { ModelSelector } from "@/components/model-selector"
+import { SidebarToggle } from "@/components/sidebar-toggle"
+import { Button } from "@/components/ui/button"
+import { useSidebar } from "./ui/sidebar"
+import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from "./ui/tooltip"
+import { type VisibilityType, VisibilitySelector } from "./visibility-selector"
+import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
 
 function PureChatHeader({
   chatId,
+  chatTitle,
   selectedModelId,
   selectedVisibilityType,
   isReadonly,
 }: {
-  chatId: string;
-  selectedModelId: string;
-  selectedVisibilityType: VisibilityType;
-  isReadonly: boolean;
+  chatId: string
+  chatTitle?: string
+  selectedModelId: string
+  selectedVisibilityType: VisibilityType
+  isReadonly: boolean
 }) {
-  const router = useRouter();
-  const { open } = useSidebar();
+  const router = useRouter()
+  const pathname = usePathname()
+  const { open } = useSidebar()
+  const { width: windowWidth } = useWindowSize()
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false)
 
-  const { width: windowWidth } = useWindowSize();
+  // Extract project name from pathname or use a default
+  const projectName = pathname?.split("/")[1] === "chat" ? "Chat Interface" : "Project"
+
+  // Use provided chat title or a default
+  const title = chatTitle || "Untitled Chat"
 
   return (
-    <header className="flex sticky top-0 bg-background py-1.5 items-center px-2 md:px-2 gap-2">
-      <SidebarToggle />
+    <header className="flex sticky top-0 z-10 bg-background/80 backdrop-blur-md border-b border-border h-12 items-center px-3 gap-2 shadow-sm">
+      <div className="flex items-center gap-2">
+        <SidebarToggle className="text-foreground" />
 
-      {(!open || windowWidth < 768) && (
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Button
-              variant="outline"
-              className="order-2 md:order-1 md:px-2 px-2 md:h-fit ml-auto md:ml-0"
-              onClick={() => {
-                router.push('/');
-                router.refresh();
-              }}
-            >
-              <PlusIcon />
-              <span className="md:sr-only">New Chat</span>
+        {/* Breadcrumb Navigation */}
+        <div className="flex items-center text-sm font-medium ml-2">
+          <Link href="/" className="text-muted-foreground hover:text-foreground">
+            {projectName}
+          </Link>
+          <ChevronRight className="h-4 w-4 mx-1 text-muted-foreground" />
+          <span className="truncate max-w-[200px]">{title}</span>
+        </div>
+      </div>
+
+      <div className="ml-auto flex items-center gap-2">
+        {(!open || windowWidth < 768) && (
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="h-8 w-8"
+                  onClick={() => {
+                    router.push("/")
+                    router.refresh()
+                  }}
+                >
+                  <PlusIcon className="h-4 w-4" />
+                  <span className="sr-only">New Chat</span>
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>New Chat</TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        )}
+
+        {!isReadonly && (
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button variant="ghost" size="icon" className="h-8 w-8">
+                  <MessageSquare className="h-4 w-4" />
+                  <span className="sr-only">Model</span>
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>Select Model</TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        )}
+
+        {/* Placeholder Icon */}
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button variant="ghost" size="icon" className="h-8 w-8">
+                <Command className="h-4 w-4" />
+                <span className="sr-only">Commands</span>
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>Commands</TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+
+        {/* Settings Sheet */}
+        <Sheet open={isSettingsOpen} onOpenChange={setIsSettingsOpen}>
+          <SheetTrigger asChild>
+            <Button variant="ghost" size="icon" className="h-8 w-8">
+              <Settings className="h-4 w-4" />
+              <span className="sr-only">Settings</span>
             </Button>
-          </TooltipTrigger>
-          <TooltipContent>New Chat</TooltipContent>
-        </Tooltip>
-      )}
+          </SheetTrigger>
+          <SheetContent side="right" className="w-[300px] sm:w-[400px]">
+            <SheetHeader>
+              <SheetTitle>Settings</SheetTitle>
+              <SheetDescription>Configure your chat preferences and settings.</SheetDescription>
+            </SheetHeader>
+            <div className="py-4">
+              {/* Settings content would go here */}
+              <p className="text-sm text-muted-foreground">Settings panel content</p>
+            </div>
+          </SheetContent>
+        </Sheet>
 
-      {!isReadonly && (
-        <ModelSelector
-          selectedModelId={selectedModelId}
-          className="order-1 md:order-2"
-        />
-      )}
+        {!isReadonly && <ModelSelector selectedModelId={selectedModelId} className="h-8" />}
 
-      {!isReadonly && (
-        <VisibilitySelector
-          chatId={chatId}
-          selectedVisibilityType={selectedVisibilityType}
-          className="order-1 md:order-3"
-        />
-      )}
-
-      <Button
-        className="bg-zinc-900 dark:bg-zinc-100 hover:bg-zinc-800 dark:hover:bg-zinc-200 text-zinc-50 dark:text-zinc-900 hidden md:flex py-1.5 px-2 h-fit md:h-[34px] order-4 md:ml-auto"
-        asChild
-      >
-        <Link
-          href={`https://vercel.com/new/clone?repository-url=https://github.com/vercel/ai-chatbot&env=AUTH_SECRET&envDescription=Learn more about how to get the API Keys for the application&envLink=https://github.com/vercel/ai-chatbot/blob/main/.env.example&demo-title=AI Chatbot&demo-description=An Open-Source AI Chatbot Template Built With Next.js and the AI SDK by Vercel.&demo-url=https://chat.vercel.ai&products=[{"type":"integration","protocol":"ai","productSlug":"grok","integrationSlug":"xai"},{"type":"integration","protocol":"ai","productSlug":"api-key","integrationSlug":"groq"},{"type":"integration","protocol":"storage","productSlug":"neon","integrationSlug":"neon"},{"type":"blob"}]`}
-          target="_noblank"
-        >
-          <VercelIcon size={16} />
-          Deploy with Vercel
-        </Link>
-      </Button>
+        {!isReadonly && (
+          <VisibilitySelector chatId={chatId} selectedVisibilityType={selectedVisibilityType} className="h-8" />
+        )}
+      </div>
     </header>
-  );
+  )
 }
 
 export const ChatHeader = memo(PureChatHeader, (prevProps, nextProps) => {
-  return prevProps.selectedModelId === nextProps.selectedModelId;
-});
+  return prevProps.selectedModelId === nextProps.selectedModelId
+})
