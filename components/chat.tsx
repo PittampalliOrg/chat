@@ -1,12 +1,12 @@
 'use client';
 
-import type { Attachment, UIMessage } from 'ai';
+import type { Attachment, ChatRequestOptions, UIMessage } from 'ai';
 import { useChat } from '@ai-sdk/react';
-import { useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import useSWR, { useSWRConfig } from 'swr';
 import { ChatHeader } from '@/components/chat-header';
 import type { Vote } from '@/lib/db/schema';
-import { fetcher, generateUUID } from '@/lib/utils';
+import { fetcher, generateUUID, sanitizeResponseMessages } from '@/lib/utils';
 import { Artifact } from './artifact';
 import { MultimodalInput } from './multimodal-input';
 import { Messages } from './messages';
@@ -15,6 +15,10 @@ import { useArtifactSelector } from '@/hooks/use-artifact';
 import { toast } from 'sonner';
 import { unstable_serialize } from 'swr/infinite';
 import { getChatHistoryPaginationKey } from './sidebar-history';
+import { useMcpManager } from "@/lib/contexts/McpManagerContext";
+import { ActiveMCPServers } from "@/components/active-mcp-servers";
+import { McpConnectionState, ManagedServerState } from "@/lib/mcp/mcp.types";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 export function Chat({
   id,
@@ -30,6 +34,14 @@ export function Chat({
   isReadonly: boolean;
 }) {
   const { mutate } = useSWRConfig();
+  const {
+    wsStatus,
+    serverStates,
+    sendChatPrompt,
+    selectedTools,
+  } = useMcpManager()
+
+  const [primaryServerId, setPrimaryServerId] = useState<string | null>(null)
 
   const {
     messages,
@@ -38,21 +50,31 @@ export function Chat({
     input,
     setInput,
     append,
-    status,
     stop,
     reload,
+    data,
+    status,
   } = useChat({
     id,
-    body: { id, selectedChatModel: selectedChatModel },
+    body: {
+      id,
+      selectedChatModel,
+      primaryServerId, // Useful for context if bridge handles multiple servers
+      selectedTools, // Send the user-selected tool IDs
+    },
     initialMessages,
-    experimental_throttle: 100,
+    streamProtocol: "data",
     sendExtraMessageFields: true,
     generateId: generateUUID,
-    onFinish: () => {
-      mutate(unstable_serialize(getChatHistoryPaginationKey));
+    onFinish: (message) => {
+      mutate("/api/history");
+      console.info(`[Chat ${id}] Finished response for message: ${message.id}`);
+      // setMessages(msgs => sanitizeUIMessages(msgs));
     },
-    onError: () => {
-      toast.error('An error occured, please try again!');
+    onError: (error) => {
+      console.error(`[Chat ${id}] useChat hook error:`, error);
+      toast.error(error.message || "An error occurred during the chat request!");
+      // setMessages(msgs => sanitizeUIMessages(msgs));
     },
   });
 
@@ -61,8 +83,112 @@ export function Chat({
     fetcher,
   );
 
+  const runningServers = useMemo(
+    () => Object.values(serverStates).filter((s) => s.status === McpConnectionState.Running),
+    [serverStates],
+  )
+  
+  // Effect to handle custom stream data from the backend bridge via StreamData
+  useEffect(() => {
+    if (data && Array.isArray(data)) {
+        data.forEach((dataItem: any) => {
+            try {
+                if (dataItem.type === 'toolStart') {
+                    setMessages(currentMessages => {
+                         const lastMessage = currentMessages[currentMessages.length - 1];
+                         if (lastMessage && lastMessage.role === 'assistant') {
+                              return [
+                                   ...currentMessages.slice(0, -1),
+                                   {
+                                        ...lastMessage,
+                                        toolInvocations: [
+                                             ...(lastMessage.toolInvocations ?? []),
+                                             {
+                                                 toolCallId: dataItem.payload.toolCallId,
+                                                 toolName: dataItem.payload.toolName,
+                                                 args: dataItem.payload.toolInput,
+                                                 state: 'call',
+                                             }
+                                        ]
+                                   }
+                              ];
+                         } else {
+                               return [
+                                    ...currentMessages,
+                                    {
+                                        id: generateUUID(),
+                                        role: 'assistant',
+                                        content: '',
+                                        toolInvocations: [{
+                                             toolCallId: dataItem.payload.toolCallId,
+                                             toolName: dataItem.payload.toolName,
+                                             args: dataItem.payload.toolInput,
+                                             state: 'call',
+                                        }]
+                                    }
+                               ];
+                         }
+                    });
+                } else if (dataItem.type === 'toolEnd') {
+                    setMessages(currentMessages => currentMessages.map(msg => {
+                        if (msg.toolInvocations) {
+                            return {
+                                ...msg,
+                                toolInvocations: msg.toolInvocations.map(inv => {
+                                    if (inv.toolCallId === dataItem.payload.toolCallId) {
+                                        console.debug(`[Chat ${id}] Updating tool result for ${inv.toolName} (${inv.toolCallId})`);
+                                        return {
+                                            ...inv,
+                                            state: 'result',
+                                            result: dataItem.payload.output,
+                                        };
+                                    }
+                                    return inv;
+                                })
+                            };
+                        }
+                        return msg;
+                    }));
+                } else if (dataItem.type === 'chatError') {
+                     toast.error(dataItem.payload.message);
+                } else if (dataItem.type === 'chatEnd') {
+                    console.debug(`[Chat ${id}] Received chatEnd from stream data.`);
+                }
+            } catch (error) {
+                 console.error(`[Chat ${id}] Error processing stream data item:`, error, 'Data:', dataItem);
+            }
+        });
+    }
+  }, [data, setMessages]);
+  
   const [attachments, setAttachments] = useState<Array<Attachment>>([]);
   const isArtifactVisible = useArtifactSelector((state) => state.isVisible);
+  
+  // Create a type-compatible handleSubmit function for MultimodalInput and Artifact components
+  const handleFormSubmit = useCallback(
+    (event?: { preventDefault?: () => void } | undefined, chatRequestOptions?: ChatRequestOptions | undefined) => {
+      if (event?.preventDefault) {
+        event.preventDefault();
+      }
+      
+      const options: ChatRequestOptions = {
+        ...chatRequestOptions,
+        body: {
+          id,
+          selectedChatModel,
+          primaryServerId,
+          selectedTools,
+          ...(chatRequestOptions?.body || {})
+        },
+        experimental_attachments: attachments,
+        data: chatRequestOptions?.data
+      };
+      
+      handleSubmit(event, options);
+      setAttachments([]);
+    },
+    [handleSubmit, id, selectedChatModel, primaryServerId, selectedTools, attachments]
+  );
 
   return (
     <>
@@ -73,7 +199,45 @@ export function Chat({
           selectedVisibilityType={selectedVisibilityType}
           isReadonly={isReadonly}
         />
-
+        <div className="flex items-center justify-between gap-4 px-4 pt-2 border-b pb-2">
+           <div className="flex items-center gap-2 flex-shrink min-w-0">
+              <label htmlFor="primary-server-select" className="text-xs text-muted-foreground flex-shrink-0">
+                 Chat Target:
+              </label>
+                <Select
+                 value={primaryServerId ?? ""}
+                 onValueChange={setPrimaryServerId}
+                 disabled={status === "submitted" || status === "streaming" || runningServers.length === 0 || wsStatus !== 'open'}
+                >
+                 <SelectTrigger
+                  id="primary-server-select"
+                  className="h-8 text-xs w-full sm:w-[200px] truncate flex-shrink"
+                 >
+                  <SelectValue placeholder="Select target..." />
+                 </SelectTrigger>
+                 <SelectContent>
+                  {runningServers.length === 0 && wsStatus === 'open' && (
+                     <SelectItem value="no-servers" disabled>
+                      No running servers
+                     </SelectItem>
+                  )}
+                   {wsStatus !== 'open' && (
+                     <SelectItem value="ws-disconnected" disabled>
+                        {wsStatus === 'connecting' ? 'Connecting...' : 'Disconnected'}
+                     </SelectItem>
+                   )}
+                  {runningServers.map((server) => (
+                     <SelectItem key={server.id} value={server.id} className="text-xs">
+                      {server.label || server.id}
+                     </SelectItem>
+                  ))}
+                 </SelectContent>
+                </Select>
+           </div>
+           <div className="flex-grow overflow-x-auto">
+               <ActiveMCPServers />
+           </div>
+        </div>
         <Messages
           chatId={id}
           status={status}
