@@ -6,6 +6,7 @@ import { memo } from 'react';
 import type { Vote } from '@/lib/db/schema';
 import equal from 'fast-deep-equal';
 import type { UseChatHelpers } from '@ai-sdk/react';
+import { cn } from '@/lib/utils';
 
 interface MessagesProps {
   chatId: string;
@@ -16,6 +17,7 @@ interface MessagesProps {
   reload: UseChatHelpers['reload'];
   isReadonly: boolean;
   isArtifactVisible: boolean;
+  className?: string;
 }
 
 function PureMessages({
@@ -26,6 +28,7 @@ function PureMessages({
   setMessages,
   reload,
   isReadonly,
+  className
 }: MessagesProps) {
   const [messagesContainerRef, messagesEndRef] =
     useScrollToBottom<HTMLDivElement>();
@@ -33,7 +36,7 @@ function PureMessages({
   return (
     <div
       ref={messagesContainerRef}
-      className="flex flex-col min-w-0 gap-6 flex-1 overflow-y-scroll pt-4"
+      className={cn("flex flex-col min-w-0 gap-6 flex-1 overflow-y-scroll pt-4", className)}
     >
       {messages.length === 0 && <Greeting />}
 
