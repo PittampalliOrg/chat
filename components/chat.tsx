@@ -6,7 +6,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import useSWR, { useSWRConfig } from 'swr';
 import { ChatHeader } from '@/components/chat-header';
 import type { Vote } from '@/lib/db/schema';
-import { fetcher, generateUUID, sanitizeResponseMessages } from '@/lib/utils';
+import { fetcher, generateUUID } from '@/lib/utils';
 import { Artifact } from './artifact';
 import { MultimodalInput } from './multimodal-input';
 import { Messages } from './messages';
@@ -14,9 +14,7 @@ import type { VisibilityType } from './visibility-selector';
 import { useArtifactSelector } from '@/hooks/use-artifact';
 import { toast } from 'sonner';
 import { useMcpManager } from "@/lib/contexts/McpManagerContext";
-import { ActiveMCPServers } from "@/components/active-mcp-servers";
-import { McpConnectionState, ManagedServerState } from "@/lib/mcp/mcp.types";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { McpConnectionState } from "@/lib/mcp/mcp.types";
 
 export function Chat({
   id,
@@ -160,14 +158,14 @@ export function Chat({
 
   const [attachments, setAttachments] = useState<Array<Attachment>>([]);
   const isArtifactVisible = useArtifactSelector((state) => state.isVisible);
-
+  
   // Create a type-compatible handleSubmit function for MultimodalInput and Artifact components
   const handleFormSubmit = useCallback(
     (event?: { preventDefault?: () => void } | undefined, chatRequestOptions?: ChatRequestOptions | undefined) => {
       if (event?.preventDefault) {
         event.preventDefault();
       }
-
+      
       const options: ChatRequestOptions = {
         ...chatRequestOptions,
         body: {
@@ -180,7 +178,7 @@ export function Chat({
         experimental_attachments: attachments,
         data: chatRequestOptions?.data
       };
-
+      
       handleSubmit(event, options);
       setAttachments([]);
     },

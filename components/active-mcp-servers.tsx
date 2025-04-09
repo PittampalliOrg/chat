@@ -29,10 +29,6 @@ export function ActiveMCPServers() {
     <TooltipProvider>
       <div className="flex flex-wrap gap-2 mb-4 p-3 bg-green-50 dark:bg-green-950/20 rounded-lg border border-green-200 dark:border-green-800">
         <div className="w-full text-xs font-medium text-green-800 dark:text-green-300 mb-1 flex items-center">
-          {/* <div className="relative mr-2">
-            Static green dot indicating at least one server is active
-            <span className="relative inline-flex rounded-full size-2 bg-green-500"></span>
-          </div> */}
         </div>
         {activeServerEntries.map((serverState) => {
           if (!serverState) return null; // Should not happen with filter, but good practice
