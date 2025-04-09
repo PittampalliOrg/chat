@@ -1,15 +1,17 @@
-"use client"
+'use client';
 
-import { useRouter } from "next/navigation"
-import { useWindowSize } from "usehooks-ts"
-import { useMemo, memo, useState, useCallback, useRef } from "react"
-import { ModelSelector } from "@/components/model-selector"
-import { SidebarToggle } from "@/components/sidebar-toggle"
-import { Button } from "@/components/ui/button"
-import { PlusIcon, Settings2 } from "lucide-react"
-import { useSidebar } from "./ui/sidebar"
-import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from "./ui/tooltip"
-import { type VisibilityType, VisibilitySelector } from "./visibility-selector"
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useWindowSize } from 'usehooks-ts';
+import { useMemo, useState, useCallback, useRef } from "react"
+import { ModelSelector } from '@/components/model-selector';
+import { SidebarToggle } from '@/components/sidebar-toggle';
+import { Button } from '@/components/ui/button';
+import { PlusIcon, VercelIcon } from './icons';
+import { useSidebar } from './ui/sidebar';
+import { memo } from 'react';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './ui/tooltip';
+import { type VisibilityType, VisibilitySelector } from './visibility-selector';
 import { MCPServerButton } from "./mcp-server-button"
 import { useMcpManager } from "@/lib/contexts/McpManagerContext"
 import { McpConnectionState, type Tool } from "@/lib/mcp/mcp.types"
@@ -22,6 +24,7 @@ import {
   DropdownMenuCheckboxItem,
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu"
+import { Settings2 } from 'lucide-react';
 
 type DisplayTool = Tool & { serverId: string; serverLabel: string }
 
@@ -31,14 +34,15 @@ function PureChatHeader({
   selectedVisibilityType,
   isReadonly,
 }: {
-  chatId: string
-  selectedModelId: string
-  selectedVisibilityType: VisibilityType
-  isReadonly: boolean
+  chatId: string;
+  selectedModelId: string;
+  selectedVisibilityType: VisibilityType;
+  isReadonly: boolean;
 }) {
-  const router = useRouter()
-  const { open } = useSidebar()
-  const { width: windowWidth } = useWindowSize()
+  const router = useRouter();
+  const { open } = useSidebar();
+
+  const { width: windowWidth } = useWindowSize();
   const { serverStates, selectedTools, setSelectedTools } = useMcpManager()
   // Add state to control dropdown open state
   const [dropdownOpen, setDropdownOpen] = useState(false)
@@ -98,33 +102,34 @@ function PureChatHeader({
   })
 
   return (
-    <TooltipProvider>
-      <header className="flex sticky top-0 bg-background py-1.5 items-center px-2 md:px-2 gap-2 border-b z-10">
-        <SidebarToggle />
+    <header className="flex sticky top-0 bg-background py-1.5 items-center px-2 md:px-2 gap-2">
+      <SidebarToggle />
 
-        {(!open || windowWidth < 768) && (
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Button
-                variant="outline"
-                size="icon"
-                className="order-2 md:order-1 md:h-9 md:w-9 ml-auto md:ml-0"
-                onClick={() => {
-                  router.push("/frontend")
-                  router.refresh()
-                }}
-              >
-                <PlusIcon className="h-4 w-4" />
-                <span className="sr-only">New Chat</span>
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent>New Chat</TooltipContent>
-          </Tooltip>
-        )}
+      {(!open || windowWidth < 768) && (
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button
+              variant="outline"
+              className="order-2 md:order-1 md:px-2 px-2 md:h-fit ml-auto md:ml-0"
+              onClick={() => {
+                router.push('/');
+                router.refresh();
+              }}
+            >
+              <PlusIcon />
+              <span className="md:sr-only">New Chat</span>
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent>New Chat</TooltipContent>
+        </Tooltip>
+      )}
 
-        {!isReadonly && <ModelSelector selectedModelId={selectedModelId} className="order-1 md:order-2" />}
-
-        {/* --- Tool Selector Dropdown --- */}
+{!isReadonly && (
+        <ModelSelector
+          selectedModelId={selectedModelId}
+          className="order-1 md:order-2"
+        />
+      )}
         {!isReadonly && totalAvailableTools > 0 && (
           <DropdownMenu
             open={dropdownOpen}
@@ -178,22 +183,20 @@ function PureChatHeader({
             </DropdownMenuContent>
           </DropdownMenu>
         )}
-        {/* --- End Tool Selector --- */}
 
-        {!isReadonly && (
-          <VisibilitySelector
-            chatId={chatId}
-            selectedVisibilityType={selectedVisibilityType}
-            className="order-4 md:order-4"
-          />
-        )}
+{!isReadonly && (
+        <VisibilitySelector
+          chatId={chatId}
+          selectedVisibilityType={selectedVisibilityType}
+          className="order-1 md:order-3"
+        />
+      )}
 
         <div className="ml-auto order-last">
           <MCPServerButton />
         </div>
-      </header>
-    </TooltipProvider>
-  )
+        </header>
+  );
 }
 
 export const ChatHeader = memo(PureChatHeader, (prevProps, nextProps) => {
@@ -204,5 +207,5 @@ export const ChatHeader = memo(PureChatHeader, (prevProps, nextProps) => {
     prevProps.isReadonly === nextProps.isReadonly &&
     prevProps.chatId === nextProps.chatId
   )
-})
+});
 

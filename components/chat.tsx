@@ -1,20 +1,23 @@
-'use client';
+"use client"
 
-import type { Attachment, ChatRequestOptions, UIMessage } from 'ai';
-import { useChat } from '@ai-sdk/react';
-import { useCallback, useEffect, useMemo, useState } from 'react';
-import useSWR, { useSWRConfig } from 'swr';
-import { ChatHeader } from '@/components/chat-header';
-import type { Vote } from '@/lib/db/schema';
-import { fetcher, generateUUID } from '@/lib/utils';
-import { Artifact } from './artifact';
-import { MultimodalInput } from './multimodal-input';
-import { Messages } from './messages';
-import type { VisibilityType } from './visibility-selector';
-import { useArtifactSelector } from '@/hooks/use-artifact';
-import { toast } from 'sonner';
-import { useMcpManager } from "@/lib/contexts/McpManagerContext";
-import { McpConnectionState } from "@/lib/mcp/mcp.types";
+import type { Attachment, ChatRequestOptions, UIMessage } from "ai"
+import { useChat } from "@ai-sdk/react"
+import { useCallback, useEffect, useMemo, useState } from "react"
+import useSWR, { useSWRConfig } from "swr"
+import { ChatHeader } from "@/components/chat-header"
+import type { Vote } from "@/lib/db/schema"
+import { fetcher, generateUUID } from "@/lib/utils"
+import { Artifact } from "./artifact"
+import { MultimodalInput } from "./multimodal-input"
+import { Messages } from "./messages"
+import type { VisibilityType } from "./visibility-selector"
+import { useArtifactSelector } from "@/hooks/use-artifact"
+import { toast } from "sonner"
+import { unstable_serialize } from "swr/infinite"
+import { getChatHistoryPaginationKey } from "./sidebar-history"
+import { useMcpManager } from "@/lib/contexts/McpManagerContext"
+import { McpConnectionState } from "@/lib/mcp/mcp.types"
+import { useChatSettings } from "@/lib/contexts/ChatSettingsContext"
 
 export function Chat({
   id,
@@ -23,61 +26,53 @@ export function Chat({
   selectedVisibilityType,
   isReadonly,
 }: {
-  id: string;
-  initialMessages: Array<UIMessage>;
-  selectedChatModel: string;
-  selectedVisibilityType: VisibilityType;
-  isReadonly: boolean;
+  id: string
+  initialMessages: Array<UIMessage>
+  selectedChatModel: string
+  selectedVisibilityType: VisibilityType
+  isReadonly: boolean
 }) {
-  const { mutate } = useSWRConfig();
-  const {
-    wsStatus,
-    serverStates,
-    sendChatPrompt,
-    selectedTools,
-  } = useMcpManager()
+  const { mutate } = useSWRConfig()
+  const { wsStatus, serverStates, sendChatPrompt, selectedTools } = useMcpManager()
+
+  // Update the chat settings context so the NavBar can access these values
+  const { setChatId, setSelectedModelId, setSelectedVisibilityType, setIsReadonly } = useChatSettings()
+
+  // Update context when props change
+  useEffect(() => {
+    setChatId(id)
+    setSelectedModelId(selectedChatModel)
+    setSelectedVisibilityType(selectedVisibilityType)
+    setIsReadonly(isReadonly)
+  }, [
+    id,
+    selectedChatModel,
+    selectedVisibilityType,
+    isReadonly,
+    setChatId,
+    setSelectedModelId,
+    setSelectedVisibilityType,
+    setIsReadonly,
+  ])
 
   const [primaryServerId, setPrimaryServerId] = useState<string | null>(null)
 
-  const {
-    messages,
-    setMessages,
-    handleSubmit,
-    input,
-    setInput,
-    append,
-    stop,
-    reload,
-    data,
-    status,
-  } = useChat({
+  const { messages, setMessages, handleSubmit, input, setInput, append, status, stop, reload, data } = useChat({
     id,
-    body: {
-      id,
-      selectedChatModel,
-      primaryServerId, // Useful for context if bridge handles multiple servers
-      selectedTools, // Send the user-selected tool IDs
-    },
+    body: { id, selectedChatModel: selectedChatModel, primaryServerId },
     initialMessages,
-    streamProtocol: "data",
+    experimental_throttle: 100,
     sendExtraMessageFields: true,
     generateId: generateUUID,
-    onFinish: (message) => {
-      mutate("/api/history");
-      console.info(`[Chat ${id}] Finished response for message: ${message.id}`);
-      // setMessages(msgs => sanitizeUIMessages(msgs));
+    onFinish: () => {
+      mutate(unstable_serialize(getChatHistoryPaginationKey))
     },
-    onError: (error) => {
-      console.error(`[Chat ${id}] useChat hook error:`, error);
-      toast.error(error.message || "An error occurred during the chat request!");
-      // setMessages(msgs => sanitizeUIMessages(msgs));
+    onError: () => {
+      toast.error("An error occurred, please try again!")
     },
-  });
+  })
 
-  const { data: votes } = useSWR<Array<Vote>>(
-    messages.length >= 2 ? `/api/vote?chatId=${id}` : null,
-    fetcher,
-  );
+  const { data: votes } = useSWR<Array<Vote>>(messages.length >= 2 ? `/api/vote?chatId=${id}` : null, fetcher)
 
   const runningServers = useMemo(
     () => Object.values(serverStates).filter((s) => s.status === McpConnectionState.Running),
@@ -89,10 +84,10 @@ export function Chat({
     if (data && Array.isArray(data)) {
       data.forEach((dataItem: any) => {
         try {
-          if (dataItem.type === 'toolStart') {
-            setMessages(currentMessages => {
-              const lastMessage = currentMessages[currentMessages.length - 1];
-              if (lastMessage && lastMessage.role === 'assistant') {
+          if (dataItem.type === "toolStart") {
+            setMessages((currentMessages) => {
+              const lastMessage = currentMessages[currentMessages.length - 1]
+              if (lastMessage && lastMessage.role === "assistant") {
                 return [
                   ...currentMessages.slice(0, -1),
                   {
@@ -103,69 +98,73 @@ export function Chat({
                         toolCallId: dataItem.payload.toolCallId,
                         toolName: dataItem.payload.toolName,
                         args: dataItem.payload.toolInput,
-                        state: 'call',
-                      }
-                    ]
-                  }
-                ];
+                        state: "call",
+                      },
+                    ],
+                  },
+                ]
               }
               return [
                 ...currentMessages,
                 {
                   id: generateUUID(),
-                  role: 'assistant',
-                  content: '',
-                  toolInvocations: [{
-                    toolCallId: dataItem.payload.toolCallId,
-                    toolName: dataItem.payload.toolName,
-                    args: dataItem.payload.toolInput,
-                    state: 'call',
-                  }]
+                  role: "assistant",
+                  content: "",
+                  toolInvocations: [
+                    {
+                      toolCallId: dataItem.payload.toolCallId,
+                      toolName: dataItem.payload.toolName,
+                      args: dataItem.payload.toolInput,
+                      state: "call",
+                    },
+                  ],
+                },
+              ]
+            })
+          } else if (dataItem.type === "toolEnd") {
+            setMessages((currentMessages) =>
+              currentMessages.map((msg) => {
+                if (msg.toolInvocations) {
+                  return {
+                    ...msg,
+                    toolInvocations: msg.toolInvocations.map((inv) => {
+                      if (inv.toolCallId === dataItem.payload.toolCallId) {
+                        console.debug(`[Chat ${id}] Updating tool result for ${inv.toolName} (${inv.toolCallId})`)
+                        return {
+                          ...inv,
+                          state: "result",
+                          result: dataItem.payload.output,
+                        }
+                      }
+                      return inv
+                    }),
+                  }
                 }
-              ];
-            });
-          } else if (dataItem.type === 'toolEnd') {
-            setMessages(currentMessages => currentMessages.map(msg => {
-              if (msg.toolInvocations) {
-                return {
-                  ...msg,
-                  toolInvocations: msg.toolInvocations.map(inv => {
-                    if (inv.toolCallId === dataItem.payload.toolCallId) {
-                      console.debug(`[Chat ${id}] Updating tool result for ${inv.toolName} (${inv.toolCallId})`);
-                      return {
-                        ...inv,
-                        state: 'result',
-                        result: dataItem.payload.output,
-                      };
-                    }
-                    return inv;
-                  })
-                };
-              }
-              return msg;
-            }));
-          } else if (dataItem.type === 'chatError') {
-            toast.error(dataItem.payload.message);
-          } else if (dataItem.type === 'chatEnd') {
-            console.debug(`[Chat ${id}] Received chatEnd from stream data.`);
+                return msg
+              }),
+            )
+          } else if (dataItem.type === "chatError") {
+            toast.error(dataItem.payload.message)
+          } else if (dataItem.type === "chatEnd") {
+            console.debug(`[Chat ${id}] Received chatEnd from stream data.`)
           }
         } catch (error) {
-          console.error(`[Chat ${id}] Error processing stream data item:`, error, 'Data:', dataItem);
+          console.error(`[Chat ${id}] Error processing stream data item:`, error, "Data:", dataItem)
         }
-      });
+      })
     }
-  }, [data, setMessages]);
+  }, [data, setMessages, id])
 
-  const [attachments, setAttachments] = useState<Array<Attachment>>([]);
-  const isArtifactVisible = useArtifactSelector((state) => state.isVisible);
-  
+  const [attachments, setAttachments] = useState<Array<Attachment>>([])
+  const isArtifactVisible = useArtifactSelector((state) => state.isVisible)
+
   // Create a type-compatible handleSubmit function for MultimodalInput and Artifact components
   const handleFormSubmit = useCallback(
     (event?: { preventDefault?: () => void } | undefined, chatRequestOptions?: ChatRequestOptions | undefined) => {
       if (event?.preventDefault) {
-        event.preventDefault();
+        event.preventDefault()
       }
-      
+
       const options: ChatRequestOptions = {
         ...chatRequestOptions,
         body: {
@@ -173,27 +172,23 @@ export function Chat({
           selectedChatModel,
           primaryServerId,
           selectedTools,
-          ...(chatRequestOptions?.body || {})
+          ...(chatRequestOptions?.body || {}),
         },
         experimental_attachments: attachments,
-        data: chatRequestOptions?.data
-      };
-      
-      handleSubmit(event, options);
-      setAttachments([]);
+        data: chatRequestOptions?.data,
+      }
+
+      handleSubmit(event, options)
+      setAttachments([])
     },
-    [handleSubmit, id, selectedChatModel, primaryServerId, selectedTools, attachments]
-  );
+    [handleSubmit, id, selectedChatModel, primaryServerId, selectedTools, attachments],
+  )
 
   return (
     <>
       <div className="flex flex-col min-w-0 h-[calc(100dvh-var(--navbar-height))] bg-background relative">
-        <ChatHeader
-          chatId={id}
-          selectedModelId={selectedChatModel}
-          selectedVisibilityType={selectedVisibilityType}
-          isReadonly={isReadonly}
-        />
+        {/* We now only pass the chatId to ChatHeader since other settings are in the drawer */}
+        <ChatHeader chatId={id} />
         <div className="flex-1 overflow-hidden flex flex-col">
           <Messages
             chatId={id}
@@ -245,5 +240,5 @@ export function Chat({
         isReadonly={isReadonly}
       />
     </>
-  );
+  )
 }

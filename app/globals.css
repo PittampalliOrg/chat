@@ -6,6 +6,10 @@
     --foreground-rgb: 0, 0, 0;
     --background-start-rgb: 214, 219, 220;
     --background-end-rgb: 255, 255, 255;
+    --navbar-height: 60px;
+    --chat-header-height: 58px; /* Adjust based on actual height */
+    --content-height: calc(100vh - var(--navbar-height));
+    --chat-content-height: calc(var(--content-height) - var(--chat-header-height));
 }
 
 @media (prefers-color-scheme: dark) {
