@@ -1,10 +1,9 @@
-'use client';
+"use client"
 
-import { ChevronUp } from 'lucide-react';
-import Image from 'next/image';
-import type { User } from 'next-auth';
-import { signOut, useSession } from 'next-auth/react';
-import { useTheme } from 'next-themes';
+import { ChevronUp } from "lucide-react"
+import type { User } from "next-auth"
+import { signOut, useSession } from "next-auth/react"
+import { useTheme } from "next-themes"
 
 import {
   DropdownMenu,
@@ -12,66 +11,73 @@ import {
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import {
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
-} from '@/components/ui/sidebar';
-import { anonymousRegex } from '@/lib/constants';
-import { useRouter } from 'next/navigation';
-import { toast } from './toast';
-import { LoaderIcon } from './icons';
+} from "@/components/ui/dropdown-menu"
+import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from "@/components/ui/sidebar"
+import { anonymousRegex } from "@/lib/constants"
+import { useRouter } from "next/navigation"
+import { toast } from "./toast"
+import { LoaderIcon } from "./icons"
 
-export function SidebarUserNav({ user }: { user: User }) {
-  const router = useRouter();
-  const { data, status } = useSession();
-  const { setTheme, theme } = useTheme();
+export function SidebarUserNav({
+  user,
+  showSymbolOnly = false,
+}: {
+  user: User
+  showSymbolOnly?: boolean
+}) {
+  const router = useRouter()
+  const { data, status } = useSession()
+  const { setTheme, theme } = useTheme()
+  const { state } = useSidebar()
+  const isCollapsed = state === "collapsed"
 
-  const isGuest = anonymousRegex.test(data?.user?.email ?? '');
+  const isGuest = anonymousRegex.test(data?.user?.email ?? "")
+  const userEmail = user?.email || "user"
+  const userName = user?.name?.split(" ")[0] || userEmail.split("@")[0]
 
   return (
     <SidebarMenu>
       <SidebarMenuItem>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            {status === 'loading' ? (
-              <SidebarMenuButton className="data-[state=open]:bg-sidebar-accent bg-background data-[state=open]:text-sidebar-accent-foreground h-10 justify-between">
+            {status === "loading" ? (
+              <SidebarMenuButton className="data-[state=open]:bg-sidebar-accent bg-background data-[state=open]:text-sidebar-accent-foreground h-9 justify-between">
                 <div className="flex flex-row gap-2">
-                  <div className="size-6 bg-zinc-500/30 rounded-full animate-pulse" />
-                  <span className="bg-zinc-500/30 text-transparent rounded-md animate-pulse">
-                    Loading auth status
-                  </span>
+                  <div className={`${isCollapsed ? "size-6" : "size-7"} bg-zinc-500/30 rounded-md animate-pulse`} />
+                  {!showSymbolOnly && (
+                    <span className="bg-zinc-500/30 text-transparent rounded-md animate-pulse">
+                      Loading auth status
+                    </span>
+                  )}
                 </div>
-                <div className="animate-spin text-zinc-500">
-                  <LoaderIcon />
-                </div>
+                {!showSymbolOnly && (
+                  <div className="animate-spin text-zinc-500">
+                    <LoaderIcon size={16} />
+                  </div>
+                )}
               </SidebarMenuButton>
             ) : (
-              <SidebarMenuButton className="data-[state=open]:bg-sidebar-accent bg-background data-[state=open]:text-sidebar-accent-foreground h-10">
-                <Image
-                  src={`https://avatar.vercel.sh/${user.email}`}
-                  alt={user.email ?? 'User Avatar'}
-                  width={24}
-                  height={24}
-                  className="rounded-full"
-                />
-                <span className="truncate">
-                  {isGuest ? 'Guest' : user?.email}
-                </span>
-                <ChevronUp className="ml-auto" />
+              <SidebarMenuButton className="data-[state=open]:bg-sidebar-accent bg-background data-[state=open]:text-sidebar-accent-foreground h-9 py-1.5">
+                <div
+                  className={`flex items-center justify-center ${isCollapsed ? "w-6 h-6" : "w-7 h-7"} rounded-md bg-gradient-to-br from-purple-500 to-pink-500 text-white text-xs font-medium`}
+                >
+                  {userName.charAt(0).toUpperCase()}
+                </div>
+                {!showSymbolOnly && (
+                  <>
+                    <div className="flex flex-col items-start ml-3">
+                      <span className="text-sm font-normal">{userName}</span>
+                      <span className="text-xs text-muted-foreground">Premium</span>
+                    </div>
+                    <ChevronUp className="ml-auto h-4 w-4" />
+                  </>
+                )}
               </SidebarMenuButton>
             )}
           </DropdownMenuTrigger>
-          <DropdownMenuContent
-            side="top"
-            className="w-[--radix-popper-anchor-width]"
-          >
-            <DropdownMenuItem
-              className="cursor-pointer"
-              onSelect={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-            >
-              {`Toggle ${theme === 'light' ? 'dark' : 'light'} mode`}
+          <DropdownMenuContent side="top" className="w-[--radix-popper-anchor-width]">
+            <DropdownMenuItem className="cursor-pointer" onSelect={() => setTheme(theme === "dark" ? "light" : "dark")}>
+              {`Toggle ${theme === "light" ? "dark" : "light"} mode`}
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem asChild>
@@ -79,31 +85,30 @@ export function SidebarUserNav({ user }: { user: User }) {
                 type="button"
                 className="w-full cursor-pointer"
                 onClick={() => {
-                  if (status === 'loading') {
+                  if (status === "loading") {
                     toast({
-                      type: 'error',
-                      description:
-                        'Checking authentication status, please try again!',
-                    });
+                      type: "error",
+                      description: "Checking authentication status, please try again!",
+                    })
 
-                    return;
+                    return
                   }
 
                   if (isGuest) {
-                    router.push('/login');
+                    router.push("/login")
                   } else {
                     signOut({
-                      redirectTo: '/',
-                    });
+                      redirectTo: "/",
+                    })
                   }
                 }}
               >
-                {isGuest ? 'Login to your account' : 'Sign out'}
+                {isGuest ? "Login to your account" : "Sign out"}
               </button>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </SidebarMenuItem>
     </SidebarMenu>
-  );
+  )
 }
