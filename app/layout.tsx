@@ -4,7 +4,7 @@ import { Geist, Geist_Mono } from 'next/font/google';
 import { ThemeProvider } from '@/components/theme-provider';
 import { NavBar } from '@/components/navigation/nav-bar';
 import { McpManagerProvider } from '@/lib/contexts/McpManagerContext';
-import { TooltipProvider } from "@/components/ui/tooltip";
+import { ChatSettingsProvider } from "@/lib/contexts/ChatSettingsContext"
 
 import './globals.css';
 
@@ -72,16 +72,21 @@ export default async function RootLayout({
           }}
         />
       </head>
-      <body className="antialiased flex flex-col h-screen">
-      <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
-            <TooltipProvider>
-              <McpManagerProvider>
-                  <NavBar />
-                  <main className="flex-1 overflow-hidden">{children}</main>
-                  <Toaster position="top-center" />
-              </McpManagerProvider>
-            </TooltipProvider>
-          </ThemeProvider>
+      <body className="antialiased flex flex-col min-h-screen">
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <McpManagerProvider>
+            <NavBar className="h-[var(--navbar-height)] shrink-0" />
+            <main className="flex-1 flex overflow-hidden">
+            <ChatSettingsProvider>{children}</ChatSettingsProvider>
+            </main>
+            <Toaster position="top-center" />
+          </McpManagerProvider>
+        </ThemeProvider>
       </body>
     </html>
   );
