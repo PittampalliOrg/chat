@@ -2,6 +2,9 @@ import { Toaster } from 'sonner';
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import { ThemeProvider } from '@/components/theme-provider';
+import { NavBar } from '@/components/navigation/nav-bar';
+import { McpManagerProvider } from '@/lib/contexts/McpManagerContext';
+import { TooltipProvider } from "@/components/ui/tooltip";
 
 import './globals.css';
 
@@ -69,16 +72,16 @@ export default async function RootLayout({
           }}
         />
       </head>
-      <body className="antialiased">
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <Toaster position="top-center" />
-          {children}
-        </ThemeProvider>
+      <body className="antialiased flex flex-col h-screen">
+      <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+            <TooltipProvider>
+              <McpManagerProvider>
+                  <NavBar />
+                  <main className="flex-1 overflow-hidden">{children}</main>
+                  <Toaster position="top-center" />
+              </McpManagerProvider>
+            </TooltipProvider>
+          </ThemeProvider>
       </body>
     </html>
   );
