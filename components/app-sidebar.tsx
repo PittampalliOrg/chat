@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import { usePathname, useRouter } from "next/navigation"
-import { PlusIcon, HomeIcon, BookIcon, FolderIcon, HelpCircleIcon } from "lucide-react"
+import { PlusIcon, HomeIcon, BookIcon, FolderIcon, HelpCircleIcon, PanelLeftIcon, PanelRightIcon } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -16,6 +16,7 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  SidebarRail,
   useSidebar,
 } from "@/components/ui/sidebar"
 import { SidebarUserNav } from "@/components/sidebar-user-nav"
@@ -25,7 +26,7 @@ import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from "@/comp
 export function AppSidebar({ user }: { user?: any }) {
   const router = useRouter()
   const pathname = usePathname()
-  const { state } = useSidebar()
+  const { state, toggleSidebar } = useSidebar()
   const isCollapsed = state === "collapsed"
 
   // Navigation items with icons - shown in both collapsed and expanded states
@@ -41,36 +42,52 @@ export function AppSidebar({ user }: { user?: any }) {
   }
 
   return (
-    <Sidebar collapsible="icon" className="shadow-md">
-      {/* Logo placeholder at the top */}
-      <div className="flex justify-center items-center py-4 px-4">
+    <Sidebar collapsible="icon" className="shadow-none border-r border-border z-50">
+      {/* Logo and toggle button at the top */}
+      <div className={`flex items-center py-3 px-4 ${isCollapsed ? "justify-center" : "justify-between"}`}>
+        {!isCollapsed && (
+          <div className="flex items-center">
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              className="text-sidebar-foreground"
+            >
+              <path
+                d="M5.5 8C5.5 6.34315 6.84315 5 8.5 5H15.5C17.1569 5 18.5 6.34315 18.5 8V16C18.5 17.6569 17.1569 19 15.5 19H8.5C6.84315 19 5.5 17.6569 5.5 16V8Z"
+                stroke="currentColor"
+                strokeWidth="1.5"
+              />
+              <path
+                d="M10.5 9L13.5 12L10.5 15"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+            <span className="ml-2 font-medium text-sm">v0</span>
+          </div>
+        )}
+
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger asChild>
-              <div className="cursor-pointer">
-                <svg
-                  width={isCollapsed ? "28" : "32"}
-                  height={isCollapsed ? "28" : "32"}
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M5.5 8C5.5 6.34315 6.84315 5 8.5 5H15.5C17.1569 5 18.5 6.34315 18.5 8V16C18.5 17.6569 17.1569 19 15.5 19H8.5C6.84315 19 5.5 17.6569 5.5 16V8Z"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                  />
-                  <path
-                    d="M10.5 9L13.5 12L10.5 15"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-              </div>
+              <button
+                onClick={() => toggleSidebar()}
+                className="sidebar-toggle-button"
+                aria-label={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
+              >
+                {isCollapsed ? (
+                  <PanelRightIcon className="h-5 w-5 sidebar-toggle-icon" />
+                ) : (
+                  <PanelLeftIcon className="h-5 w-5 sidebar-toggle-icon" />
+                )}
+              </button>
             </TooltipTrigger>
-            {isCollapsed && <TooltipContent side="right">v0</TooltipContent>}
+            <TooltipContent side="right">{isCollapsed ? "Expand sidebar" : "Collapse sidebar"}</TooltipContent>
           </Tooltip>
         </TooltipProvider>
       </div>
@@ -85,7 +102,7 @@ export function AppSidebar({ user }: { user?: any }) {
                 variant="outline"
               >
                 {!isCollapsed && <span>New Chat</span>}
-                {isCollapsed && <PlusIcon className="h-4 w-4" />}
+                {isCollapsed && <PlusIcon />}
               </Button>
             </TooltipTrigger>
             {isCollapsed && <TooltipContent side="right">New Chat</TooltipContent>}
@@ -93,22 +110,22 @@ export function AppSidebar({ user }: { user?: any }) {
         </TooltipProvider>
       </SidebarHeader>
 
-      <SidebarContent className="px-1">
+      <SidebarContent className={`px-1 ${isCollapsed ? "items-center" : ""}`}>
         {/* Navigation items - shown in both collapsed and expanded states */}
-        <SidebarGroup>
-          <SidebarGroupContent>
-            <SidebarMenu>
+        <SidebarGroup className={isCollapsed ? "w-full flex flex-col items-center" : ""}>
+          <SidebarGroupContent className={isCollapsed ? "w-full flex flex-col items-center" : ""}>
+            <SidebarMenu className={isCollapsed ? "w-full items-center" : ""}>
               {navItems.map((item) => (
-                <SidebarMenuItem key={item.href}>
+                <SidebarMenuItem key={item.href} className={isCollapsed ? "flex justify-center w-full" : ""}>
                   <TooltipProvider>
                     <Tooltip>
                       <TooltipTrigger asChild>
                         <SidebarMenuButton
                           asChild
                           isActive={pathname === item.href}
-                          className="h-9 py-2 text-sm font-normal"
+                          className={`h-9 py-2 text-sm font-normal ${isCollapsed ? "justify-center w-10 px-0" : ""}`}
                         >
-                          <Link href={item.href}>
+                          <Link href={item.href} className={isCollapsed ? "flex justify-center" : ""}>
                             <item.icon className="h-4 w-4" />
                             {!isCollapsed && <span className="ml-3">{item.label}</span>}
                           </Link>
@@ -123,7 +140,7 @@ export function AppSidebar({ user }: { user?: any }) {
           </SidebarGroupContent>
         </SidebarGroup>
 
-        <div className="h-px bg-border my-2 mx-2" />
+        <div className={`h-px bg-border my-2 ${isCollapsed ? "w-10" : "mx-2"}`} />
 
         {/* Projects Section */}
         {!isCollapsed && (
@@ -179,9 +196,11 @@ export function AppSidebar({ user }: { user?: any }) {
         )}
       </SidebarContent>
 
-      <SidebarFooter className="p-2 mt-auto">
+      <SidebarFooter className={`p-3 mt-auto ${isCollapsed ? "flex justify-center" : ""}`}>
         {user && <SidebarUserNav user={user} showSymbolOnly={isCollapsed} />}
       </SidebarFooter>
+
+      <SidebarRail />
     </Sidebar>
   )
 }

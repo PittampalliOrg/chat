@@ -42,10 +42,10 @@ export function SidebarUserNav({
           <DropdownMenuTrigger asChild>
             {status === "loading" ? (
               <SidebarMenuButton className="data-[state=open]:bg-sidebar-accent bg-background data-[state=open]:text-sidebar-accent-foreground h-9 justify-between">
-                <div className="flex flex-row gap-2">
-                  <div className={`${isCollapsed ? "size-6" : "size-7"} bg-zinc-500/30 rounded-md animate-pulse`} />
+                <div className="flex items-center">
+                  <div className="size-7 bg-zinc-500/30 rounded-md animate-pulse" />
                   {!showSymbolOnly && (
-                    <span className="bg-zinc-500/30 text-transparent rounded-md animate-pulse">
+                    <span className="ml-3 bg-zinc-500/30 text-transparent rounded-md animate-pulse">
                       Loading auth status
                     </span>
                   )}
@@ -57,21 +57,21 @@ export function SidebarUserNav({
                 )}
               </SidebarMenuButton>
             ) : (
-              <SidebarMenuButton className="data-[state=open]:bg-sidebar-accent bg-background data-[state=open]:text-sidebar-accent-foreground h-9 py-1.5">
-                <div
-                  className={`flex items-center justify-center ${isCollapsed ? "w-6 h-6" : "w-7 h-7"} rounded-md bg-gradient-to-br from-purple-500 to-pink-500 text-white text-xs font-medium`}
-                >
-                  {userName.charAt(0).toUpperCase()}
+              <SidebarMenuButton className="data-[state=open]:bg-sidebar-accent bg-background data-[state=open]:text-sidebar-accent-foreground h-9 py-1.5 px-2">
+                <div className="flex items-center">
+                  <div className="flex items-center justify-center size-6 rounded-md bg-gradient-to-br from-purple-500 to-pink-500 text-white text-xs font-medium">
+                    {userName.charAt(0).toUpperCase()}
+                  </div>
+                  {!showSymbolOnly && (
+                    <>
+                      <div className="flex flex-col items-start ml-3">
+                        <span className="text-sm font-normal">{userName}</span>
+                        <span className="text-xs text-muted-foreground">Premium</span>
+                      </div>
+                      <ChevronUp className="ml-auto h-4 w-4" />
+                    </>
+                  )}
                 </div>
-                {!showSymbolOnly && (
-                  <>
-                    <div className="flex flex-col items-start ml-3">
-                      <span className="text-sm font-normal">{userName}</span>
-                      <span className="text-xs text-muted-foreground">Premium</span>
-                    </div>
-                    <ChevronUp className="ml-auto h-4 w-4" />
-                  </>
-                )}
               </SidebarMenuButton>
             )}
           </DropdownMenuTrigger>
