@@ -83,8 +83,11 @@ export function Chat({
     },
   })
 
-  const { data: votes } = useSWR<Array<Vote>>(messages.length >= 2 ? `/api/vote?chatId=${id}` : null, fetcher)
-
+  const { data: votes } = useSWR<Array<Vote>>(
+    messages.length >= 2 ? `/api/vote?chatId=${id}` : null,
+    fetcher,
+  );
+  
   const runningServers = useMemo(
     () => Object.values(serverStates).filter((s) => s.status === McpConnectionState.Running),
     [serverStates],
