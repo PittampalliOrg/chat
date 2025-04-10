@@ -15,6 +15,7 @@ import { MCPServerButton } from "./mcp-server-button"
 import { useChatSettings } from "@/lib/contexts/ChatSettingsContext"
 import useSWR from "swr"
 import { fetcher } from "@/lib/utils"
+import { SettingsDrawer } from "./settings-drawer"
 
 export function PureChatHeader() {
   const params = useParams<{ id: string }>()
@@ -27,7 +28,7 @@ export function PureChatHeader() {
   const isCollapsed = state === "collapsed"
 
   // Get chat settings from context
-  const { selectedModelId, isReadonly } = useChatSettings()
+  const { selectedModelId, isReadonly, selectedVisibilityType } = useChatSettings()
 
   // Fetch chat title if we have a chat ID
   const { data: chatData, isLoading } = useSWR(chatId ? `/api/chat/${chatId}/info` : null, fetcher, {
@@ -107,7 +108,7 @@ export function PureChatHeader() {
                   aria-label="New Chat"
                 >
                   <PlusIcon className="h-4 w-4" />
-                  <span className="sr-only">New Chat</span>
+                  <span className="md:sr-only">New Chat</span>
                 </Button>
               </TooltipTrigger>
               <TooltipContent>New Chat</TooltipContent>
@@ -124,52 +125,14 @@ export function PureChatHeader() {
 
         {/* MCP Server Button */}
         <MCPServerButton />
-
-        {/* Settings Button */}
-        <Sheet open={isSettingsOpen} onOpenChange={setIsSettingsOpen}>
-          <SheetTrigger asChild>
-            <Button variant="ghost" size="icon" className="h-8 w-8" aria-label="Settings">
-              <Settings className="h-4 w-4" />
-              <span className="sr-only">Settings</span>
-            </Button>
-          </SheetTrigger>
-          <SheetContent side="right" className="w-[300px] sm:w-[400px]">
-            <SheetHeader>
-              <SheetTitle>Settings</SheetTitle>
-              <SheetDescription>Configure your application settings</SheetDescription>
-            </SheetHeader>
-
-            <div className="mt-6 space-y-6">
-              {/* Settings content - can be customized based on current page */}
-              {pathname?.includes("/chat/") ? (
-                // Chat-specific settings
-                <div className="space-y-2">
-                  <h3 className="text-sm font-medium">Chat Settings</h3>
-                  {!isReadonly && selectedModelId && (
-                    <div className="space-y-2">
-                      <h4 className="text-xs text-muted-foreground">Model</h4>
-                      <ModelSelector selectedModelId={selectedModelId} className="w-full" />
-                    </div>
-                  )}
-                  <div className="space-y-2">
-                    <h4 className="text-xs text-muted-foreground">MCP Servers</h4>
-                    <MCPServerButton />
-                  </div>
-                </div>
-              ) : (
-                // General settings for non-chat pages
-                <div className="space-y-2">
-                  <h3 className="text-sm font-medium">General Settings</h3>
-                  <div className="space-y-2">
-                    <h4 className="text-xs text-muted-foreground">MCP Servers</h4>
-                    <MCPServerButton />
-                  </div>
-                </div>
-              )}
-            </div>
-          </SheetContent>
-        </Sheet>
+        {/* Settings Drawer */}
+        <SettingsDrawer
+          chatId={chatId}
+          selectedModelId={selectedModelId}
+          selectedVisibilityType={selectedVisibilityType}
+          isReadonly={isReadonly}
+        />
       </div>
     </header>
-  );
+  )
 }
