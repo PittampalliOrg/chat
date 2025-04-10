@@ -4,6 +4,7 @@ import { AppSidebar } from '@/components/app-sidebar';
 import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar';
 import { auth } from '../(auth)/auth';
 import Script from 'next/script';
+import { PureChatHeader } from "@/components/chat-header"
 
 export const experimental_ppr = true;
 
@@ -23,7 +24,10 @@ export default async function Layout({
       />
       <SidebarProvider defaultOpen={!isCollapsed}>
         <AppSidebar user={session?.user} />
-        <SidebarInset>{children}</SidebarInset>
+        <SidebarInset className="flex flex-col h-screen overflow-hidden">
+          <PureChatHeader />
+          <main className="flex-1 overflow-auto">{children}</main>
+        </SidebarInset>
       </SidebarProvider>
     </>
   );
