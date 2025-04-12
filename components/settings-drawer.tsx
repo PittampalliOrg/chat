@@ -69,24 +69,31 @@ export function SettingsDrawer({ chatId, selectedModelId, selectedVisibilityType
       // Mark that we're in the process of selecting
       isSelectingRef.current = true
 
-      // Update tool selection
+      // Update tool selection with improved logging
       setSelectedTools((prev: string[]) => {
         const newSet = new Set(prev)
         if (checked) {
-          newSet.add(toolId)
+          if (!newSet.has(toolId)) {
+            console.log(`Adding tool: ${toolId}`);
+            newSet.add(toolId)
+          } else {
+            console.log(`Tool already selected: ${toolId}`);
+          }
         } else {
-          newSet.delete(toolId)
+          if (newSet.has(toolId)) {
+            console.log(`Removing tool: ${toolId}`);
+            newSet.delete(toolId)
+          } else {
+            console.log(`Tool already not selected: ${toolId}`);
+          }
         }
         return Array.from(newSet)
       })
 
-      // Log the selection (as in the original implementation)
-      console.log("Tool item selected:", toolId, checked)
-
       // Reset the selecting flag after a short delay
       setTimeout(() => {
         isSelectingRef.current = false
-      }, 100)
+      }, 150) // Increased to 150ms for better reliability
     },
     [setSelectedTools],
   )
@@ -166,9 +173,10 @@ export function SettingsDrawer({ chatId, selectedModelId, selectedVisibilityType
                         onSelect={(e) => {
                           // Prevent default to avoid closing the dropdown
                           e.preventDefault()
+                          e.stopPropagation()
                           // Set selecting flag to prevent dropdown from closing
                           isSelectingRef.current = true
-                          console.log("Tool item selected:", uniqueToolId, !isChecked)
+                          // We're toggling the current state
                           handleToolSelectionChange(uniqueToolId, !isChecked)
                         }}
                         className="cursor-pointer"
