@@ -15,6 +15,7 @@ import { useArtifactSelector } from '@/hooks/use-artifact';
 import { toast } from 'sonner';
 import { unstable_serialize } from 'swr/infinite';
 import { getChatHistoryPaginationKey } from './sidebar-history';
+import { useMcpManager } from '@/lib/contexts/McpManagerContext';
 
 export function Chat({
   id,
@@ -30,6 +31,12 @@ export function Chat({
   isReadonly: boolean;
 }) {
   const { mutate } = useSWRConfig();
+  const {
+    selectedTools, serverStates
+  } = useMcpManager();
+
+  // filter the server states to only include the servers with status = 2
+  const filteredServerStates = Object.values(serverStates).filter((server) => server.status === 2);
 
   const {
     messages,
@@ -40,10 +47,11 @@ export function Chat({
     append,
     status,
     stop,
-    reload,
+    reload
+
   } = useChat({
     id,
-    body: { id, selectedChatModel: selectedChatModel },
+    body: { id, selectedChatModel, selectedTools, filteredServerStates },
     initialMessages,
     experimental_throttle: 100,
     sendExtraMessageFields: true,

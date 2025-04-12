@@ -2,8 +2,17 @@ import * as React from 'react';
 
 import { cn } from '@/lib/utils';
 
-const Input = React.forwardRef<HTMLInputElement, React.ComponentProps<'input'>>(
+export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {}
+
+const Input = React.forwardRef<HTMLInputElement, InputProps>(
   ({ className, type, ...props }, ref) => {
+    const autocompleteValue =
+      type === 'password'
+        ? props.id === 'current-password' || props.name === 'password'
+          ? 'current-password'
+          : 'new-password'
+        : props.autoComplete;
+
     return (
       <input
         type={type}
@@ -12,6 +21,7 @@ const Input = React.forwardRef<HTMLInputElement, React.ComponentProps<'input'>>(
           className,
         )}
         ref={ref}
+        autoComplete={autocompleteValue}
         {...props}
       />
     );

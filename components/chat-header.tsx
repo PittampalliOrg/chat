@@ -36,13 +36,26 @@ function PureChatHeader({
 
   const { width: windowWidth } = useWindowSize();
 
-  // Fetch chat title if we have a chat ID
-  const { data: chatData, isLoading } = useSWR(chatId ? `/api/chat/${chatId}/info` : null, fetcher, {
-    revalidateOnFocus: false,
-    dedupingInterval: 60000, // Cache for 1 minute
-  })
+  // Fetch chat title if we have a chat ID with improved error handling
+  const { data: chatData, isLoading, error: chatInfoError } = useSWR(
+    chatId ? `/api/chat/${chatId}/info` : null, 
+    async (url) => {
+      try {
+        return await fetcher(url);
+      } catch (err) {
+        console.warn(`Failed to fetch chat info: ${err}`);
+        // Return a default object instead of throwing
+        return { title: null };
+      }
+    }, 
+    {
+      revalidateOnFocus: false,
+      dedupingInterval: 60000, // Cache for 1 minute
+      shouldRetryOnError: false, // Don't retry on 404s
+    }
+  );
 
-  // Use the fetched title or a default
+  // Use the fetched title or a default, handle missing data gracefully
   const chatTitle = chatData?.title || (chatId ? `Chat ${chatId.slice(0, 8)}...` : "New Chat")
 
   // Extract breadcrumb segments from pathname with chat title

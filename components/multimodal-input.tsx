@@ -23,6 +23,9 @@ import { Textarea } from './ui/textarea';
 import { SuggestedActions } from './suggested-actions';
 import equal from 'fast-deep-equal';
 import type { UseChatHelpers } from '@ai-sdk/react';
+import { useMcpManager } from '@/lib/contexts/McpManagerContext';
+import { WrenchIcon } from 'lucide-react';
+import { McpConnectionState } from '@/lib/mcp/mcp.types';
 
 function PureMultimodalInput({
   chatId,
@@ -248,8 +251,9 @@ function PureMultimodalInput({
         }}
       />
 
-      <div className="absolute bottom-0 p-2 w-fit flex flex-row justify-start">
+      <div className="absolute bottom-0 p-2 w-fit flex flex-row justify-start gap-1">
         <AttachmentsButton fileInputRef={fileInputRef} status={status} />
+        <ToolCountButton />
       </div>
 
       <div className="absolute bottom-0 right-0 p-2 w-fit flex flex-row justify-end">
@@ -302,6 +306,60 @@ function PureAttachmentsButton({
 }
 
 const AttachmentsButton = memo(PureAttachmentsButton);
+
+function PureToolCountButton() {
+  const { selectedTools, serverStates } = useMcpManager();
+  
+  // Calculate total available tools across all connected servers
+  const availableTools = Object.values(serverStates).reduce((count, server) => {
+    if (server.status === McpConnectionState.Running && server.tools) {
+      return count + server.tools.length;
+    }
+    return count;
+  }, 0);
+  
+  // Don't show anything if no tools are available
+  if (availableTools === 0) return null;
+  
+  const hasSelectedTools = selectedTools.length > 0;
+  
+  return (
+    <Button
+      data-testid="tool-count-button"
+      className={`rounded-md flex items-center gap-1.5 h-8 px-3 ${
+        hasSelectedTools 
+          ? "bg-muted hover:bg-muted/80 text-muted-foreground" 
+          : "bg-amber-100 hover:bg-amber-200 text-amber-700 dark:bg-amber-900/30 dark:hover:bg-amber-900/50 dark:text-amber-500"
+      }`}
+      variant="outline"
+      size="sm"
+      title={hasSelectedTools 
+        ? `${selectedTools.length} tool${selectedTools.length !== 1 ? "s" : ""} selected` 
+        : `${availableTools} tools available. Click to open settings and select tools.`
+      }
+      onClick={() => {
+        // If no tools are selected, open the settings panel
+        if (!hasSelectedTools) {
+          const settingsButton = document.querySelector('button[aria-label="Settings"], button:has(.settings2-icon)');
+          if (settingsButton && settingsButton instanceof HTMLElement) {
+            settingsButton.click();
+          }
+        }
+      }}
+    >
+      <WrenchIcon size={14} className={hasSelectedTools ? "text-foreground/70" : "text-amber-600 dark:text-amber-400"} />
+      <span className={`text-xs font-medium rounded-full px-1.5 py-0.5 ${
+        hasSelectedTools 
+          ? "bg-primary/10 text-primary" 
+          : "bg-amber-200 text-amber-800 dark:bg-amber-900/60 dark:text-amber-400"
+      }`}>
+        {hasSelectedTools ? selectedTools.length : `0/${availableTools}`}
+      </span>
+    </Button>
+  )
+}
+
+const ToolCountButton = memo(PureToolCountButton);
 
 function PureStopButton({
   stop,

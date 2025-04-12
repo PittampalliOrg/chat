@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import { usePathname, useRouter } from "next/navigation"
-import { PlusIcon, HomeIcon, BookIcon, FolderIcon, HelpCircleIcon, PanelLeftIcon, PanelRightIcon } from "lucide-react"
+import { PlusIcon, HomeIcon, BookIcon, FolderIcon, HelpCircleIcon, PanelLeftIcon, PanelRightIcon, ChartNetwork } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -32,7 +32,7 @@ export function AppSidebar({ user }: { user?: any }) {
   // Navigation items with icons - shown in both collapsed and expanded states
   const navItems = [
     { href: "/", icon: HomeIcon, label: "Home" },
-    { href: "/library", icon: BookIcon, label: "Library" },
+    { href: "/workflow", icon: ChartNetwork, label: "Workflow" },
     { href: "/projects", icon: FolderIcon, label: "Projects" },
     { href: "/feedback", icon: HelpCircleIcon, label: "Feedback" },
   ]

@@ -176,6 +176,22 @@ export const McpManagerProvider: FC<{ children: ReactNode }> = ({ children }) =>
                         };
                         return { ...prev, [statusUpdateMsg.serverId]: newStateForServer };
                       });
+
+                      // If tools were included in the update and the tool fetch is complete, automatically select them
+                      if (statusUpdateMsg.tools && statusUpdateMsg.tools.length > 0 && 
+                          statusUpdateMsg.toolFetchStatus === 'fetched') {
+                          
+                          // Add all new tools to selectedTools
+                          setSelectedTools(prev => {
+                              const newTools = statusUpdateMsg.tools?.map(tool => 
+                                  `${statusUpdateMsg.serverId}/${tool.name}`
+                              ) || [];
+                              
+                              // Create a set with previous and new tools (to avoid duplicates)
+                              const combinedSet = new Set([...prev, ...newTools]);
+                              return Array.from(combinedSet);
+                          });
+                      }
                      break;
                  }
                  // Removed 'toolList' case
