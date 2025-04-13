@@ -8,7 +8,6 @@ import { DataStreamHandler } from '@/components/data-stream-handler';
 import { DEFAULT_CHAT_MODEL } from '@/lib/ai/models';
 import { DBMessage } from '@/lib/db/schema';
 import { Attachment, UIMessage } from 'ai';
-import { ArtifactTypeDebugger } from '@/components/artifact-type-debugger';
 
 export default async function Page(props: { params: Promise<{ id: string }> }) {
   const params = await props.params;
@@ -62,7 +61,6 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
           isReadonly={session?.user?.id !== chat.userId}
         />
         <DataStreamHandler id={id} />
-        <ArtifactTypeDebugger />
       </>
     );
   }
@@ -77,7 +75,6 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
         isReadonly={session?.user?.id !== chat.userId}
       />
       <DataStreamHandler id={id} />
-      <ArtifactTypeDebugger />
     </>
   );
 }

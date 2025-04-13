@@ -1,3 +1,4 @@
+// markdown.tsx
 import Link from 'next/link';
 import React, { memo } from 'react';
 import ReactMarkdown, { type Components } from 'react-markdown';
@@ -7,7 +8,19 @@ import { CodeBlock } from './code-block';
 const components: Partial<Components> = {
   // @ts-expect-error
   code: CodeBlock,
-  pre: ({ children }) => <>{children}</>,
+  // Remove the pre component override that was causing issues
+  // pre: ({ children }) => <>{children}</>,
+  p: ({ node, children, ...props }) => {
+    // Check if this paragraph only contains a code block
+    // If so, render just the children without the paragraph wrapper
+    const childrenArray = React.Children.toArray(children);
+    if (childrenArray.length === 1 && React.isValidElement(childrenArray[0]) && 
+        (childrenArray[0].type === CodeBlock || 
+         (typeof childrenArray[0].type === 'function' && childrenArray[0].type.name === 'CodeBlock'))) {
+      return <>{children}</>;
+    }
+    return <p {...props}>{children}</p>;
+  },
   ol: ({ node, children, ...props }) => {
     return (
       <ol className="list-decimal list-outside ml-4" {...props}>
