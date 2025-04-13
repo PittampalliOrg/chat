@@ -14,18 +14,8 @@ export function CodeBlock({
   children,
   ...props
 }: CodeBlockProps) {
-  if (!inline) {
-    return (
-      <div className="not-prose flex flex-col">
-        <pre
-          {...props}
-          className={`text-sm w-full overflow-x-auto dark:bg-zinc-900 p-4 border border-zinc-200 dark:border-zinc-700 rounded-xl dark:text-zinc-50 text-zinc-900`}
-        >
-          <code className="whitespace-pre-wrap break-words">{children}</code>
-        </pre>
-      </div>
-    );
-  } else {
+  // Handle inline code
+  if (inline) {
     return (
       <code
         className={`${className} text-sm bg-zinc-100 dark:bg-zinc-800 py-0.5 px-1 rounded-md`}
@@ -35,4 +25,18 @@ export function CodeBlock({
       </code>
     );
   }
+  
+  // This is a block code element - return it outside any paragraph context
+  return (
+    <div className="my-4 w-full">
+      <div className="not-prose flex flex-col">
+        <pre
+          {...props}
+          className={`text-sm w-full overflow-x-auto dark:bg-zinc-900 p-4 border border-zinc-200 dark:border-zinc-700 rounded-xl dark:text-zinc-50 text-zinc-900`}
+        >
+          <code className="whitespace-pre-wrap break-words">{children}</code>
+        </pre>
+      </div>
+    </div>
+  );
 }
