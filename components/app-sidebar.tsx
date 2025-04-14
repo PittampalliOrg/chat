@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import { usePathname, useRouter } from "next/navigation"
-import { PlusIcon, HomeIcon, BookIcon, FolderIcon, HelpCircleIcon, PanelLeftIcon, PanelRightIcon, ChartNetwork } from "lucide-react"
+import { PlusIcon, HomeIcon, BookIcon, FolderIcon, HelpCircleIcon, PanelLeftIcon, PanelRightIcon, ChartNetwork, InspectIcon } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -31,14 +31,21 @@ export function AppSidebar({ user }: { user?: any }) {
 
   // Navigation items with icons - shown in both collapsed and expanded states
   const navItems = [
-    { href: "/", icon: HomeIcon, label: "Home" },
-    { href: "/workflow", icon: ChartNetwork, label: "Workflow" },
-    { href: "/projects", icon: FolderIcon, label: "Projects" },
-    { href: "/feedback", icon: HelpCircleIcon, label: "Feedback" },
+    { href: "/", icon: HomeIcon, label: "Home", isExternal: false },
+    { href: "/workflow", icon: ChartNetwork, label: "Workflow", isExternal: false },
+    { href: "/projects", icon: FolderIcon, label: "Projects", isExternal: false },
+    { href: "/inspector", icon: InspectIcon, label: "Inspector", isExternal: true },
   ]
 
   const handleNewChat = () => {
     router.push("/")
+  }
+
+  const handleNavigation = (item: (typeof navItems)[0], e: React.MouseEvent) => {
+    if (item.isExternal) {
+      e.preventDefault()
+      window.location.href = item.href
+    }
   }
 
   return (
@@ -125,10 +132,26 @@ export function AppSidebar({ user }: { user?: any }) {
                           isActive={pathname === item.href}
                           className={`h-9 py-2 text-sm font-normal ${isCollapsed ? "justify-center w-10 px-0" : ""}`}
                         >
-                          <Link href={item.href} className={isCollapsed ? "flex justify-center" : ""}>
-                            <item.icon className="h-4 w-4" />
-                            {!isCollapsed && <span className="ml-3">{item.label}</span>}
-                          </Link>
+                          {item.isExternal ? (
+                            // Use regular anchor tag for external links (inspector app)
+                            <a
+                              href={item.href}
+                              className={isCollapsed ? "flex justify-center" : "flex items-center"}
+                              onClick={(e) => handleNavigation(item, e)}
+                            >
+                              <item.icon className="h-4 w-4" />
+                              {!isCollapsed && <span className="ml-3">{item.label}</span>}
+                            </a>
+                          ) : (
+                            // Use Next.js Link for internal navigation
+                            <Link
+                              href={item.href}
+                              className={isCollapsed ? "flex justify-center" : "flex items-center"}
+                            >
+                              <item.icon className="h-4 w-4" />
+                              {!isCollapsed && <span className="ml-3">{item.label}</span>}
+                            </Link>
+                          )}
                         </SidebarMenuButton>
                       </TooltipTrigger>
                       {isCollapsed && <TooltipContent side="right">{item.label}</TooltipContent>}
