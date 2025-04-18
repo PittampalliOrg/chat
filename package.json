@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbo",
-    "build": "tsx lib/db/migrate && next build",
+    "build": "next build",
     "start": "next start",
     "lint": "next lint && biome lint --write --unsafe",
     "lint:fix": "next lint --fix && biome lint --write --unsafe",
@@ -16,9 +16,13 @@
     "db:pull": "drizzle-kit pull",
     "db:check": "drizzle-kit check",
     "db:up": "drizzle-kit up",
-    "test": "export PLAYWRIGHT=True && pnpm exec playwright test --workers=4"
+    "test": "export PLAYWRIGHT=True && pnpm exec playwright test --workers=4",
+    "workload": "./workload.sh cluster1 rg1 fa5b32b6-1d6d-4110-bea2-8ac0e3126a38 https://eastus.oic.prod-aks.azure.com/0c4da9c5-40ea-4e7d-9c7a-e7308d4f8e38/43a1a9ca-219e-4b0a-903e-566716eb3b93/",
+    "rad:run": "rad run ./iac/azure/app.bicep --parameters oidcIssuer=https://eastus.oic.prod-aks.azure.com/0c4da9c5-40ea-4e7d-9c7a-e7308d4f8e38/43a1a9ca-219e-4b0a-903e-566716eb3b93/"
   },
   "dependencies": {
+    "@ai-sdk/anthropic": "^1.2.10",
+    "@ai-sdk/openai": "^1.3.16",
     "@ai-sdk/react": "^1.2.8",
     "@ai-sdk/xai": "^1.2.10",
     "@codemirror/lang-javascript": "^6.2.2",

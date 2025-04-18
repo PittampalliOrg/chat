@@ -1,0 +1,31 @@
+apiVersion: secrets-store.csi.x-k8s.io/v1
+kind: SecretProviderClass
+metadata:
+  name: azure-sync
+  namespace: iam-quickstart   # ← Radius puts your pod here by default
+spec:
+  provider: azure
+  parameters:
+    usePodIdentity: "false"           # we rely on Workload Identity already
+    keyvaultName: qs-ygl2zollxkbc6
+    tenantId: 0c4da9c5-40ea-4e7d-9c7a-e7308d4f8e38
+    objects: |
+      array:
+        - |
+          objectName: OPENAI-API-KEY      # vault secret name
+          objectType: secret
+          objectAlias: openai-api-key     # must match alias in your Radius volume
+        - |
+          objectName: POSTGRES-PASSWORD
+          objectType: secret
+          objectAlias: postgres-password
+  secretObjects:                       # this drives the mirroring
+    - secretName: app-secrets          # name of the K8s Secret to create/refresh
+      type: Opaque
+      labels:
+        managed-by: csi-driver
+      data:
+        - objectName: openai-api-key   # must match “objectAlias” OR secret name
+          key: OPENAI_API_KEY          # key inside the Secret’s data map
+        - objectName: postgres-password
+          key: POSTGRES_PASSWORD

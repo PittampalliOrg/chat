@@ -1,0 +1,65 @@
+# networks:
+  #  production:
+    #    external: true
+
+volumes:
+  postgres-data:
+
+services:
+
+  # frontend:
+  #   build: .
+  #   env_file:
+  #     - ./.env.local
+  #   ports:
+  #     - "3000:3000"
+  #   command: sleep infinity
+  #   networks:
+  #     - production
+  #   depends_on:
+  #     - db
+
+  frontend:
+    image: plugin
+    env_file:
+      - ./.env.local
+    volumes:
+      - .:/workspace
+      # - /var/run/docker.sock:/var/run/docker.sock
+      # - /home/vpittamp/.kube:/home/node/.kube
+    ports:
+      - "3000:3000"
+    command: sleep infinity
+    network_mode: host
+    depends_on:
+      - db
+
+  # rad:
+  #   image: rad
+  #   container_name: rad
+  #   volumes:
+  #     - ../rad/samples:/workspace
+  #     - /var/run/docker.sock:/var/run/docker.sock
+  #     - /home/vpittamp/.kube/config:/home/node/.kube/config:ro
+  #   environment:
+  #     - NODE_ENV=development
+  #   command: sleep infinity
+  #   expose:
+  #     - 3000
+  #   networks:
+  #     - production       
+
+
+  db:
+    image: postgres:latest
+    container_name: db
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ./lib/db/migrations:/docker-entrypoint-initdb.d:ro
+    environment:
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=postgres
+    network_mode: host
+    ports:
+      - "5432:5432"

@@ -11,7 +11,38 @@
   },
   "typescript.tsdk": "node_modules/typescript/lib",
   "eslint.workingDirectories": [
-    { "pattern": "app/*" },
-    { "pattern": "packages/*" }
+    {
+      "pattern": "app/*"
+    },
+    {
+      "pattern": "packages/*"
+    }
+  ],
+  "sqltools.connections": [
+    {
+      "previewLimit": 50,
+      "server": "localhost",
+      "port": 5432,
+      "driver": "PostgreSQL",
+      "name": "postgres",
+      "database": "postgres",
+      "username": "postgres",
+      "password": "postgres"
+    },
+    {
+      "pgOptions": {
+        "ssl": {
+          "rejectUnauthorized": true
+        }
+      },
+      "previewLimit": 50,
+      "server": "qs-ygl2zollxkbc6.postgres.database.azure.com",
+      "port": 5432,
+      "driver": "PostgreSQL",
+      "name": "azure",
+      "database": "postgres",
+      "username": "myadmin",
+      "password": "postgres123!"
+    }
   ]
 }
