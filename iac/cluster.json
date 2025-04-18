@@ -1,0 +1,6 @@
+{
+    "oidcIssuerProfile": {
+        "enabled": true,
+        "issuerURL": "https://eastus.oic.prod-aks.azure.com/0c4da9c5-40ea-4e7d-9c7a-e7308d4f8e38/43a1a9ca-219e-4b0a-903e-566716eb3b93/"
+    }
+}

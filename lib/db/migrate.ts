@@ -9,10 +9,12 @@ config({
 
 const runMigrate = async () => {
   if (!process.env.POSTGRES_URL) {
-    throw new Error('POSTGRES_URL is not defined');
+    console.warn('Skipping migrations: POSTGRES_URL is not defined');
+    process.exit(0);
   }
 
-  const connection = postgres(process.env.POSTGRES_URL, { max: 1 });
+  const connection = postgres("postgresql://myadmin:postgres123!@qs-ygl2zollxkbc6.postgres.database.azure.com:5432/postgres?sslmode=require",
+{ max: 1, ssl: true});
   const db = drizzle(connection);
 
   console.log('⏳ Running migrations...');

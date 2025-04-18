@@ -11,6 +11,8 @@ export default defineConfig({
   dialect: 'postgresql',
   dbCredentials: {
     // biome-ignore lint: Forbidden non-null assertion.
-    url: process.env.POSTGRES_URL!,
+    // url: process.env.POSTGRES_URL!,
+    url: "postgresql://myadmin:postgres123!@qs-ygl2zollxkbc6.postgres.database.azure.com:5432/postgres?sslmode=require",
+    ssl: true,
   },
 });

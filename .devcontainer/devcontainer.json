@@ -1,0 +1,57 @@
+{
+	"name": "Radius Dev Container",
+	"image": "mcr.microsoft.com/devcontainers/universal:linux",
+	"onCreateCommand": "bash ./.devcontainer/on-create.sh",
+	"postCreateCommand": "bash ./.devcontainer/post-create.sh && az extension add --name aks-preview && set -a && . /workspaces/chat/.env.local && set +a && helm repo add azure-workload-identity https://azure.github.io/azure-workload-identity/charts && helm repo update && helm install workload-identity-webhook azure-workload-identity/workload-identity-webhook --namespace azure-workload-identity-system --create-namespace --set azureTenantID=\"$AZURE_TENANT_ID\" && curl -L -o /tmp/azwi.tar.gz https://github.com/Azure/azure-workload-identity/releases/download/v1.5.0/azwi-v1.5.0-linux-amd64.tar.gz && tar -xzf /tmp/azwi.tar.gz -C /tmp && sudo mv /tmp/azwi /usr/local/bin/azwi && sudo chmod +x /usr/local/bin/azwi && rm /tmp/azwi.tar.gz && sudo az aks install-cli",
+	"runArgs": [
+		"--privileged",
+		"--init"
+	],
+	// Features to add to the dev container. More info: https://containers.dev/features
+	"features": {
+		"ghcr.io/devcontainers/features/docker-in-docker:2": {},
+		"ghcr.io/devcontainers/features/azure-cli:1": {},
+		"ghcr.io/devcontainers/features/kubectl-helm-minikube:1": {},
+		"ghcr.io/rio/features/k3d:1": {}
+	},
+	// Configure tool-specific properties.
+	"customizations": {
+		// Configure properties specific to VS Code.
+		"vscode": {
+			"settings": {},
+			"extensions": [
+				"ms-azuretools.vscode-dapr",
+				"ms-dotnettools.csharp",
+				"ms-azuretools.vscode-docker",
+				"ms-python.python",
+				"dunn.redis",
+				"GitHub.copilot",
+				"ms-azuretools.vscode-bicep",
+				"ms-kubernetes-tools.vscode-kubernetes-tools",
+				"ms-kubernetes-tools.vscode-aks-tools",
+				"ms-azuretools.vscode-azure-github-copilot",
+				"ms-azuretools.azure-dev",
+				"ms-vscode.vscode-node-azure-pack",
+				"mtxr.sqltools",
+				"mtxr.sqltools-driver-pg",
+				"mikeedjones.copy-file-to-chat"
+			]
+		}
+	},
+	"remoteEnv": {
+		"LOCAL_WORKSPACE_FOLDER": "${localWorkspaceFolder}"
+	},
+	// Use 'portsAttributes' to set default properties for specific forwarded ports.
+	// More info: https://containers.dev/implementors/json_reference/#port-attributes
+	"portsAttributes": {
+		"3000": {
+			"label": "demo-app",
+			"onAutoForward": "openBrowser",
+			"protocol": "http"
+		},
+		"8081": {
+			"label": "k3s",
+			"onAutoForward": "silent"
+		}
+	}
+}
