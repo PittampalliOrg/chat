@@ -1,18 +1,15 @@
-import { config } from 'dotenv';
-import { defineConfig } from 'drizzle-kit';
+import { loadEnvConfig } from "@next/env";
+import { defineConfig } from "drizzle-kit";
 
-config({
-  path: '.env.local',
-});
+loadEnvConfig(process.cwd());
+
+if (!process.env.POSTGRES_URL) {
+  throw new Error("POSTGRES_URL is undefined – check your Dapr secret store or .env");
+}
 
 export default defineConfig({
-  schema: './lib/db/schema.ts',
-  out: './lib/db/migrations',
-  dialect: 'postgresql',
-  dbCredentials: {
-    // biome-ignore lint: Forbidden non-null assertion.
-    // url: process.env.POSTGRES_URL!,
-    url: "postgresql://myadmin:postgres123!@qs-ygl2zollxkbc6.postgres.database.azure.com:5432/postgres?sslmode=require",
-    ssl: true,
-  },
+  schema: "./lib/db/schema.ts",
+  out: "./lib/db/migrations",
+  dialect: "postgresql",
+  dbCredentials: { url: process.env.POSTGRES_URL },
 });

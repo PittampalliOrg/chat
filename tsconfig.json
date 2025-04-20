@@ -28,6 +28,6 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     "next.config.js"
-  ],
+, "lib/config/init-config.js"  ],
   "exclude": ["node_modules"]
 }

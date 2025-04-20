@@ -1,6 +1,6 @@
-# networks:
-  #  production:
-    #    external: true
+networks:
+   production:
+       external: true
 
 volumes:
   postgres-data:
@@ -21,18 +21,47 @@ services:
 
   frontend:
     image: plugin
-    env_file:
-      - ./.env.local
     volumes:
       - .:/workspace
       # - /var/run/docker.sock:/var/run/docker.sock
       # - /home/vpittamp/.kube:/home/node/.kube
+    environment:
+      - NODE_ENV=development
+      - DAPR_HTTP_PORT=3500
+      - DAPR_GRPC_PORT=50002
     ports:
       - "3000:3000"
+      - "50002:50002"
+    # command: ["pnpm", "dev"]
     command: sleep infinity
-    network_mode: host
+    networks:
+      - production  
     depends_on:
+      - redis
       - db
+
+  frontend-dapr:
+    image: daprio/daprd:latest
+    command: ["./daprd",
+     "-app-id", "frontend",
+     "-app-port", "3000",
+     "-dapr-grpc-port", "50002",
+     "-components-path", "/components",
+     "-log-level", "debug"]
+    volumes:
+      - "./dapr/components:/components"
+      - "./dapr/secrets:/secrets"
+    depends_on:
+      - frontend
+      - redis
+    network_mode: "service:frontend"
+
+  redis:
+    image: redis:alpine
+    ports:
+      - "6379:6379"
+    networks:
+      - production
 
   # rad:
   #   image: rad
@@ -60,6 +89,7 @@ services:
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_USER=postgres
       - POSTGRES_DB=postgres
-    network_mode: host
+    networks:
+      - production  
     ports:
       - "5432:5432"
