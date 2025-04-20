@@ -1,0 +1,14 @@
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: azurekv
+spec:
+  type: secretstores.azure.keyvault
+  version: v1
+  metadata:
+    - name: vaultName
+      value: my‑vault‑name
+    - name: azureTenantId
+      value: "your‑tenant‑id"
+auth:
+  secretStore: azurekv
