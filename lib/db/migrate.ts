@@ -1,36 +1,32 @@
-import { loadEnvConfig } from "@next/env";
-import { initRuntime } from "@/lib/dapr/runtime";
-import { drizzle } from "drizzle-orm/postgres-js";
-import { migrate } from "drizzle-orm/postgres-js/migrator";
-import postgres from "postgres";
+import { config } from 'dotenv';
+import { drizzle } from 'drizzle-orm/postgres-js';
+import { migrate } from 'drizzle-orm/postgres-js/migrator';
+import postgres from 'postgres';
 
-// -----------------------------------------------------------------------------
-// Load .env* files for local CLI usage (noop in Docker/CI when vars are already set)
-// -----------------------------------------------------------------------------
-loadEnvConfig(process.cwd());
+config({
+  path: '.env.local',
+});
 
-(async () => {
-  // Ensure secrets are loaded (Dapr) before connecting
-  await initRuntime();
-
-  const url = process.env.POSTGRES_URL;
-  if (!url) {
-    console.error("POSTGRES_URL is not defined – aborting migrations");
-    process.exit(1);
+const runMigrate = async () => {
+  if (false) {
+    throw new Error('POSTGRES_URL is not defined');
   }
 
-  const isProd = process.env.NODE_ENV === "production";
-  const connection = postgres(url, { max: 1, ssl: isProd });
+  const connection = postgres("postgres://postgres:postgres@db:5432/postgres", { max: 1 });
   const db = drizzle(connection);
 
-  console.log("⏳ Running migrations...");
+  console.log('⏳ Running migrations...');
+
   const start = Date.now();
-  await migrate(db, { migrationsFolder: "./lib/db/migrations" });
+  await migrate(db, { migrationsFolder: './lib/db/migrations' });
   const end = Date.now();
-  console.log(`✅ Migrations completed in ${end - start} ms`);
+
+  console.log('✅ Migrations completed in', end - start, 'ms');
   process.exit(0);
-})().catch((err) => {
-  console.error("❌ Migration failed");
+};
+
+runMigrate().catch((err) => {
+  console.error('❌ Migration failed');
   console.error(err);
   process.exit(1);
 });

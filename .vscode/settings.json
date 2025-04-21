@@ -33,16 +33,6 @@
       "database": "postgres",
       "username": "myadmin",
       "password": "postgres123!"
-    },
-    {
-      "previewLimit": 50,
-      "server": "db",
-      "port": 5432,
-      "driver": "PostgreSQL",
-      "name": "postgres",
-      "database": "postgres",
-      "username": "postgres",
-      "password": "postgres"
     }
   ]
 }

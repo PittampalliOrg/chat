@@ -28,31 +28,14 @@ import {
   type Chat,
 } from './schema';
 import type { ArtifactKind } from '@/components/artifact';
-import { CommunicationProtocolEnum, DaprClient } from '@dapr/dapr';
 
-export const dapr = new DaprClient({
-  communicationProtocol: CommunicationProtocolEnum.GRPC,
-  daprHost: process.env.DAPR_HOST ?? "localhost",
-  daprPort: process.env.DAPR_GRPC_PORT ?? "50002",
-});
+// Optionally, if not using email/pass login, you can
+// use the Drizzle adapter for Auth.js / NextAuth
+// https://authjs.dev/reference/adapter/drizzle
 
-// 🔐 Get the actual secret string, not the object
-const secretObj = await dapr.secret.get("localsecretstore", "POSTGRES_URL");
-const connectionUrl = (secretObj as Record<string, string>).POSTGRES_URL;
-
-if (!connectionUrl) {
-  throw new Error("POSTGRES_URL secret was not found or empty");
-}
-
-
-if (!connectionUrl) {
-  throw new Error('POSTGRES_URL secret was not found or empty');
-}
-
-const isProd = process.env.NODE_ENV === 'production';
-const client = postgres(connectionUrl, { ssl: isProd });
+// biome-ignore lint: Forbidden non-null assertion.
+const client = postgres(process.env.POSTGRES_URL!);
 const db = drizzle(client);
-
 
 export async function getUser(email: string): Promise<Array<User>> {
   try {

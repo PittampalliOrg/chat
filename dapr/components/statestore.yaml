@@ -1,0 +1,16 @@
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: statestore          # must match CONNECTION_STATESTORE_COMPONENTNAME
+spec:
+  type: state.redis         # or state.azure.cosmosdb / state.azure.blobstorage …
+  version: v1
+  metadata:
+    - name: redisHost
+      value: redis:6379      # service name defined in docker‑compose
+    - name: redisPassword
+      value: ""
+    - name: enableTLS
+      value: "false"
+    - name: contentType      # let Dapr JSON‑marshal/unmarshal for us
+      value: application/json

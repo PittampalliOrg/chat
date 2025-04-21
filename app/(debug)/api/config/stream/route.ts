@@ -1,31 +1,20 @@
+export const dynamic = 'force-dynamic'; 
+
 import { NextRequest } from "next/server";
-import { DaprClient, CommunicationProtocolEnum } from "@dapr/dapr";
-
-// lib/dapr/client.ts
-export const dapr = new DaprClient({
-  communicationProtocol: CommunicationProtocolEnum.GRPC,
-  daprHost: process.env.DAPR_HOST ?? "localhost",
-  daprPort: process.env.DAPR_GRPC_PORT ?? "50002",
-});
-
-
-// -----------------------------------------------------------------------------
-// Dapr Configuration ➜ Server‑Sent Events route
-// -----------------------------------------------------------------------------
-// This handler exposes /api/config/stream.  It streams the current values and
-// subsequent changes of the given configuration keys stored in the Redis‑backed
-// Dapr configuration store, so that a browser can listen via EventSource.
-// -----------------------------------------------------------------------------
+import { getDaprClient } from "@/lib/dapr/client";
 
 const STORE = "configstore";
-// const KEYS: string[] = ["POSTGRES_PORT", "POSTGRES_HOST", "POSTGRES_USER", "POSTGRES_PASSWORD", "POSTGRES_DB", "POSTGRES_SSL"]; 
 
 export async function GET(_req: NextRequest) {
+  const dapr = await getDaprClient();
+  if (!dapr) {
+    return new Response("Dapr not initialized during build.", { status: 503 });
+  }
+
   const encoder = new TextEncoder();
 
   const rs = new ReadableStream<Uint8Array>({
     async start(controller) {
-      /* 1️⃣  send the current snapshot first */
       try {
         const initial = await dapr.configuration.get(STORE);
         controller.enqueue(
@@ -36,19 +25,14 @@ export async function GET(_req: NextRequest) {
         return;
       }
 
-      /* 2️⃣  subscribe to live updates */
       const sub = await dapr.configuration.subscribe(
         STORE,
-        // KEYS,
         async (cfg) => {
-          // async → returns Promise<void> so the TS signature matches
           controller.enqueue(
             encoder.encode(`data: ${JSON.stringify(cfg.items)}\n\n`),
           );
         },
       );
-
-      // store handle so we can stop it when the client disconnects
       (this as any).sub = sub;
     },
 

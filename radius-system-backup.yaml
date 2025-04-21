@@ -1,0 +1,4338 @@
+apiVersion: v1
+items:
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    annotations:
+      prometheus.io/path: /metrics
+      prometheus.io/port: "9090"
+      prometheus.io/scrape: "true"
+    creationTimestamp: "2025-04-18T16:10:32Z"
+    generateName: applications-rp-7ff8df4757-
+    labels:
+      app.kubernetes.io/name: applications-rp
+      app.kubernetes.io/part-of: radius
+      azure.workload.identity/use: "true"
+      control-plane: applications-rp
+      pod-template-hash: 7ff8df4757
+    name: applications-rp-7ff8df4757-86v7r
+    namespace: radius-system
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: applications-rp-7ff8df4757
+      uid: 2aef32f7-e867-429d-9ea6-4b8854ec34b6
+    resourceVersion: "4867"
+    uid: e57fe80a-fdb8-4a4a-ad6e-cea169ba4033
+  spec:
+    containers:
+    - args:
+      - --config-file=/etc/config/radius-self-host.yaml
+      env:
+      - name: SKIP_ARM
+        value: "false"
+      - name: ARM_AUTH_METHOD
+        value: UCPCredential
+      - name: RADIUS_ENV
+        value: self-hosted
+      - name: K8S_CLUSTER
+        value: "true"
+      - name: AZURE_CLIENT_ID
+      - name: AZURE_TENANT_ID
+        value: 0c4da9c5-40ea-4e7d-9c7a-e7308d4f8e38
+      - name: AZURE_FEDERATED_TOKEN_FILE
+        value: /var/run/secrets/azure/tokens/azure-identity-token
+      - name: AZURE_AUTHORITY_HOST
+        value: https://login.microsoftonline.com/
+      image: ghcr.io/radius-project/applications-rp:0.45
+      imagePullPolicy: IfNotPresent
+      name: applications-rp
+      ports:
+      - containerPort: 5443
+        name: applications-rp
+        protocol: TCP
+      - containerPort: 5444
+        name: app-pr-rp
+        protocol: TCP
+      - containerPort: 9090
+        name: metrics
+        protocol: TCP
+      resources:
+        limits:
+          memory: 500Mi
+        requests:
+          memory: 160Mi
+      securityContext:
+        allowPrivilegeEscalation: false
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /etc/config
+        name: config-volume
+      - mountPath: /terraform
+        name: terraform
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-t7k2d
+        readOnly: true
+      - mountPath: /var/run/secrets/azure/tokens
+        name: azure-identity-token
+        readOnly: true
+    dnsPolicy: ClusterFirst
+    enableServiceLinks: true
+    nodeName: aks-agentpool-27428197-vmss000000
+    preemptionPolicy: PreemptLowerPriority
+    priority: 0
+    restartPolicy: Always
+    schedulerName: default-scheduler
+    securityContext: {}
+    serviceAccount: applications-rp
+    serviceAccountName: applications-rp
+    terminationGracePeriodSeconds: 30
+    tolerations:
+    - effect: NoExecute
+      key: node.kubernetes.io/not-ready
+      operator: Exists
+      tolerationSeconds: 300
+    - effect: NoExecute
+      key: node.kubernetes.io/unreachable
+      operator: Exists
+      tolerationSeconds: 300
+    - effect: NoSchedule
+      key: node.kubernetes.io/memory-pressure
+      operator: Exists
+    volumes:
+    - configMap:
+        defaultMode: 420
+        name: applications-rp-config
+      name: config-volume
+    - emptyDir: {}
+      name: terraform
+    - name: kube-api-access-t7k2d
+      projected:
+        defaultMode: 420
+        sources:
+        - serviceAccountToken:
+            expirationSeconds: 3607
+            path: token
+        - configMap:
+            items:
+            - key: ca.crt
+              path: ca.crt
+            name: kube-root-ca.crt
+        - downwardAPI:
+            items:
+            - fieldRef:
+                apiVersion: v1
+                fieldPath: metadata.namespace
+              path: namespace
+    - name: azure-identity-token
+      projected:
+        defaultMode: 420
+        sources:
+        - serviceAccountToken:
+            audience: api://AzureADTokenExchange
+            expirationSeconds: 3600
+            path: azure-identity-token
+  status:
+    conditions:
+    - lastProbeTime: null
+      lastTransitionTime: "2025-04-18T16:10:40Z"
+      status: "True"
+      type: PodReadyToStartContainers
+    - lastProbeTime: null
+      lastTransitionTime: "2025-04-18T16:10:32Z"
+      status: "True"
+      type: Initialized
+    - lastProbeTime: null
+      lastTransitionTime: "2025-04-18T16:10:40Z"
+      status: "True"
+      type: Ready
+    - lastProbeTime: null
+      lastTransitionTime: "2025-04-18T16:10:40Z"
+      status: "True"
+      type: ContainersReady
+    - lastProbeTime: null
+      lastTransitionTime: "2025-04-18T16:10:32Z"
+      status: "True"
+      type: PodScheduled
+    containerStatuses:
+    - containerID: containerd://2ce72c62c47e9cd46f78f1f1e5b277a856e1d7777ff1e4a3d0e37c35923f7487
+      image: ghcr.io/radius-project/applications-rp:0.45
+      imageID: ghcr.io/radius-project/applications-rp@sha256:498a2f486834743d341b67c5e6344dae0b404f6afc9d5aa2ea1b9fb050d2f9c7
+      lastState: {}
+      name: applications-rp
+      ready: true
+      restartCount: 0
+      started: true
+      state:
+        running:
+          startedAt: "2025-04-18T16:10:39Z"
+      volumeMounts:
+      - mountPath: /etc/config
+        name: config-volume
+      - mountPath: /terraform
+        name: terraform
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-t7k2d
+        readOnly: true
+        recursiveReadOnly: Disabled
+      - mountPath: /var/run/secrets/azure/tokens
+        name: azure-identity-token
+        readOnly: true
+        recursiveReadOnly: Disabled
+    hostIP: 10.224.0.5
+    hostIPs:
+    - ip: 10.224.0.5
+    phase: Running
+    podIP: 10.244.1.162
+    podIPs:
+    - ip: 10.244.1.162
+    qosClass: Burstable
+    startTime: "2025-04-18T16:10:32Z"
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    annotations:
+      prometheus.io/path: /metrics
+      prometheus.io/port: "6443"
+      prometheus.io/scrape: "true"
+    creationTimestamp: "2025-04-18T16:10:32Z"
+    generateName: bicep-de-7bfb8f4f9d-
+    labels:
+      app.kubernetes.io/name: bicep-de
+      app.kubernetes.io/part-of: radius
+      azure.workload.identity/use: "true"
+      control-plane: bicep-de
+      pod-template-hash: 7bfb8f4f9d
+    name: bicep-de-7bfb8f4f9d-zfcds
+    namespace: radius-system
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: bicep-de-7bfb8f4f9d
+      uid: 33891a3a-3998-4e8e-ae18-820543319ed3
+    resourceVersion: "4872"
+    uid: 2b7271c3-b0ec-4087-850a-8f938f19dace
+  spec:
+    containers:
+    - args:
+      - --kubernetes=true
+      env:
+      - name: ASPNETCORE_ENVIRONMENT
+        value: Production
+      - name: SKIP_ARM
+        value: "false"
+      - name: ARM_AUTH_METHOD
+        value: UCPCredential
+      - name: ASPNETCORE_URLS
+        value: http://+:6443
+      - name: kubernetes
+        value: "true"
+      - name: RADIUSBACKENDURL
+        value: https://ucp.radius-system:443/apis/api.ucp.dev/v1alpha3
+      - name: AZURE_CLIENT_ID
+      - name: AZURE_TENANT_ID
+        value: 0c4da9c5-40ea-4e7d-9c7a-e7308d4f8e38
+      - name: AZURE_FEDERATED_TOKEN_FILE
+        value: /var/run/secrets/azure/tokens/azure-identity-token
+      - name: AZURE_AUTHORITY_HOST
+        value: https://login.microsoftonline.com/
+      image: ghcr.io/radius-project/deployment-engine:0.45
+      imagePullPolicy: IfNotPresent
+      name: de
+      ports:
+      - containerPort: 6443
+        name: bicep-de-api
+        protocol: TCP
+      resources:
+        limits:
+          memory: 300Mi
+        requests:
+          memory: 130Mi
+      securityContext:
+        allowPrivilegeEscalation: false
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /app/appsettings.Production.json
+        name: appsettings-vol
+        subPath: appsettings.Production.json
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-zdcvt
+        readOnly: true
+      - mountPath: /var/run/secrets/azure/tokens
+        name: azure-identity-token
+        readOnly: true
+    dnsPolicy: ClusterFirst
+    enableServiceLinks: true
+    nodeName: aks-agentpool-27428197-vmss000000
+    preemptionPolicy: PreemptLowerPriority
+    priority: 0
+    restartPolicy: Always
+    schedulerName: default-scheduler
+    securityContext: {}
+    serviceAccount: bicep-de
+    serviceAccountName: bicep-de
+    terminationGracePeriodSeconds: 10
+    tolerations:
+    - effect: NoExecute
+      key: node.kubernetes.io/not-ready
+      operator: Exists
+      tolerationSeconds: 300
+    - effect: NoExecute
+      key: node.kubernetes.io/unreachable
+      operator: Exists
+      tolerationSeconds: 300
+    - effect: NoSchedule
+      key: node.kubernetes.io/memory-pressure
+      operator: Exists
+    volumes:
+    - configMap:
+        defaultMode: 420
+        name: bicep-de-config
+      name: appsettings-vol
+    - name: kube-api-access-zdcvt
+      projected:
+        defaultMode: 420
+        sources:
+        - serviceAccountToken:
+            expirationSeconds: 3607
+            path: token
+        - configMap:
+            items:
+            - key: ca.crt
+              path: ca.crt
+            name: kube-root-ca.crt
+        - downwardAPI:
+            items:
+            - fieldRef:
+                apiVersion: v1
+                fieldPath: metadata.namespace
+              path: namespace
+    - name: azure-identity-token
+      projected:
+        defaultMode: 420
+        sources:
+        - serviceAccountToken:
+            audience: api://AzureADTokenExchange
+            expirationSeconds: 3600
+            path: azure-identity-token
+  status:
+    conditions:
+    - lastProbeTime: null
+      lastTransitionTime: "2025-04-18T16:10:40Z"
+      status: "True"
+      type: PodReadyToStartContainers
+    - lastProbeTime: null
+      lastTransitionTime: "2025-04-18T16:10:32Z"
+      status: "True"
+      type: Initialized
+    - lastProbeTime: null
+      lastTransitionTime: "2025-04-18T16:10:40Z"
+      status: "True"
+      type: Ready
+    - lastProbeTime: null
+      lastTransitionTime: "2025-04-18T16:10:40Z"
+      status: "True"
+      type: ContainersReady
+    - lastProbeTime: null
+      lastTransitionTime: "2025-04-18T16:10:32Z"
+      status: "True"
+      type: PodScheduled
+    containerStatuses:
+    - containerID: containerd://00fc2d9e6edc5b98ade656e50d30501a91bd367aec321fd29ebb1d67a52db314
+      image: ghcr.io/radius-project/deployment-engine:0.45
+      imageID: ghcr.io/radius-project/deployment-engine@sha256:b3b89c73c454d34e0d78d0cf20d6e41ca49608b9ae6ad9db4bf2aaa1aed3b61c
+      lastState: {}
+      name: de
+      ready: true
+      restartCount: 0
+      started: true
+      state:
+        running:
+          startedAt: "2025-04-18T16:10:39Z"
+      volumeMounts:
+      - mountPath: /app/appsettings.Production.json
+        name: appsettings-vol
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-zdcvt
+        readOnly: true
+        recursiveReadOnly: Disabled
+      - mountPath: /var/run/secrets/azure/tokens
+        name: azure-identity-token
+        readOnly: true
+        recursiveReadOnly: Disabled
+    hostIP: 10.224.0.5
+    hostIPs:
+    - ip: 10.224.0.5
+    phase: Running
+    podIP: 10.244.1.176
+    podIPs:
+    - ip: 10.244.1.176
+    qosClass: Burstable
+    startTime: "2025-04-18T16:10:32Z"
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    annotations:
+      checksum/config: 7eb711e98f407e6c17d8a1788ba0a1a74b1017a4b5dd24ed6cd675faa9f08416
+    creationTimestamp: "2025-04-18T16:12:16Z"
+    generateName: contour-contour-6c7c5c7f79-
+    labels:
+      app.kubernetes.io/component: contour
+      app.kubernetes.io/instance: contour
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/name: contour
+      helm.sh/chart: contour-11.1.1
+      pod-template-hash: 6c7c5c7f79
+    name: contour-contour-6c7c5c7f79-smwxp
+    namespace: radius-system
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: contour-contour-6c7c5c7f79
+      uid: 6a2c96a2-8948-4ee1-a3d0-552fc7d5803f
+    resourceVersion: "6285"
+    uid: 922fdb40-e198-477e-89f4-b86c09ce8de2
+  spec:
+    affinity:
+      podAntiAffinity:
+        preferredDuringSchedulingIgnoredDuringExecution:
+        - podAffinityTerm:
+            labelSelector:
+              matchLabels:
+                app.kubernetes.io/component: contour
+                app.kubernetes.io/instance: contour
+                app.kubernetes.io/name: contour
+            topologyKey: kubernetes.io/hostname
+          weight: 1
+    containers:
+    - args:
+      - serve
+      - --incluster
+      - --xds-address=0.0.0.0
+      - --xds-port=8001
+      - --http-port=8000
+      - --envoy-service-http-port=8080
+      - --envoy-service-https-port=8443
+      - --contour-cafile=/certs/ca.crt
+      - --contour-cert-file=/certs/tls.crt
+      - --contour-key-file=/certs/tls.key
+      - --config-path=/config/contour.yaml
+      - --envoy-service-namespace=radius-system
+      - --envoy-service-name=contour-envoy
+      - --leader-election-resource-name=radius-system
+      - --log-format=text
+      - --kubernetes-debug=0
+      command:
+      - contour
+      env:
+      - name: CONTOUR_NAMESPACE
+        valueFrom:
+          fieldRef:
+            apiVersion: v1
+            fieldPath: metadata.namespace
+      - name: POD_NAME
+        valueFrom:
+          fieldRef:
+            apiVersion: v1
+            fieldPath: metadata.name
+      - name: BITNAMI_DEBUG
+        value: "false"
+      image: docker.io/bitnami/contour:1.24.2-debian-11-r1
+      imagePullPolicy: IfNotPresent
+      livenessProbe:
+        failureThreshold: 6
+        httpGet:
+          path: /healthz
+          port: 8000
+          scheme: HTTP
+        initialDelaySeconds: 120
+        periodSeconds: 20
+        successThreshold: 1
+        timeoutSeconds: 5
+      name: contour
+      ports:
+      - containerPort: 8001
+        name: xds
+        protocol: TCP
+      - containerPort: 8000
+        name: metrics
+        protocol: TCP
+      readinessProbe:
+        failureThreshold: 3
+        httpGet:
+          path: /healthz
+          port: 8000
+          scheme: HTTP
+        initialDelaySeconds: 15
+        periodSeconds: 10
+        successThreshold: 1
+        timeoutSeconds: 5
+      resources: {}
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1001
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /certs
+        name: contourcert
+        readOnly: true
+      - mountPath: /config
+        name: contour-config
+        readOnly: true
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-hs286
+        readOnly: true
+    dnsPolicy: ClusterFirst
+    enableServiceLinks: true
+    nodeName: aks-agentpool-27428197-vmss000000
+    preemptionPolicy: PreemptLowerPriority
+    priority: 0
+    restartPolicy: Always
+    schedulerName: default-scheduler
+    securityContext:
+      fsGroup: 1001
+    serviceAccount: contour-contour
+    serviceAccountName: contour-contour
+    terminationGracePeriodSeconds: 30
+    tolerations:
+    - effect: NoExecute
+      key: node.kubernetes.io/not-ready
+      operator: Exists
+      tolerationSeconds: 300
+    - effect: NoExecute
+      key: node.kubernetes.io/unreachable
+      operator: Exists
+      tolerationSeconds: 300
+    volumes:
+    - name: contourcert
+      secret:
+        defaultMode: 420
+        secretName: contourcert
+    - configMap:
+        defaultMode: 420
+        items:
+        - key: contour.yaml
+          path: contour.yaml
+        name: contour
+      name: contour-config
+    - name: kube-api-access-hs286
+      projected:
+        defaultMode: 420
+        sources:
+        - serviceAccountToken:
+            expirationSeconds: 3607
+            path: token
+        - configMap:
+            items:
+            - key: ca.crt
+              path: ca.crt
+            name: kube-root-ca.crt
+        - downwardAPI:
+            items:
+            - fieldRef:
+                apiVersion: v1
+                fieldPath: metadata.namespace
+              path: namespace
+  status:
+    conditions:
+    - lastProbeTime: null
+      lastTransitionTime: "2025-04-18T16:12:17Z"
+      status: "True"
+      type: PodReadyToStartContainers
+    - lastProbeTime: null
+      lastTransitionTime: "2025-04-18T16:12:16Z"
+      status: "True"
+      type: Initialized
+    - lastProbeTime: null
+      lastTransitionTime: "2025-04-18T16:12:36Z"
+      status: "True"
+      type: Ready
+    - lastProbeTime: null
+      lastTransitionTime: "2025-04-18T16:12:36Z"
+      status: "True"
+      type: ContainersReady
+    - lastProbeTime: null
+      lastTransitionTime: "2025-04-18T16:12:16Z"
+      status: "True"
+      type: PodScheduled
+    containerStatuses:
+    - containerID: containerd://238b1ff6d619c695e5a62e0ae61f3d72a6fe497ab0090fef3f0e1a5bfe7cd0ab
+      image: docker.io/bitnami/contour:1.24.2-debian-11-r1
+      imageID: docker.io/bitnami/contour@sha256:9ef8dabf87af91a6977766b952db1bc13231ac597a238a9d995fb7992604594b
+      lastState: {}
+      name: contour
+      ready: true
+      restartCount: 0
+      started: true
+      state:
+        running:
+          startedAt: "2025-04-18T16:12:17Z"
+      volumeMounts:
+      - mountPath: /certs
+        name: contourcert
+        readOnly: true
+        recursiveReadOnly: Disabled
+      - mountPath: /config
+        name: contour-config
+        readOnly: true
+        recursiveReadOnly: Disabled
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-hs286
+        readOnly: true
+        recursiveReadOnly: Disabled
+    hostIP: 10.224.0.5
+    hostIPs:
+    - ip: 10.224.0.5
+    phase: Running
+    podIP: 10.244.1.104
+    podIPs:
+    - ip: 10.244.1.104
+    qosClass: BestEffort
+    startTime: "2025-04-18T16:12:16Z"
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    creationTimestamp: "2025-04-18T16:12:16Z"
+    generateName: contour-envoy-
+    labels:
+      app.kubernetes.io/component: envoy
+      app.kubernetes.io/instance: contour
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/name: contour
+      controller-revision-hash: 645955cc5b
+      helm.sh/chart: contour-11.1.1
+      pod-template-generation: "1"
+    name: contour-envoy-qcbq8
+    namespace: radius-system
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: DaemonSet
+      name: contour-envoy
+      uid: 94988bb6-aaff-4b38-b76d-c7dcbc9bfe5b
+    resourceVersion: "6317"
+    uid: d4220a01-2a25-4fb7-ad7e-db81214081b8
+  spec:
+    affinity:
+      nodeAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+          - matchFields:
+            - key: metadata.name
+              operator: In
+              values:
+              - aks-agentpool-27428197-vmss000001
+    automountServiceAccountToken: false
+    containers:
+    - args:
+      - envoy
+      - shutdown-manager
+      command:
+      - contour
+      image: docker.io/bitnami/contour:1.24.2-debian-11-r1
+      imagePullPolicy: IfNotPresent
+      lifecycle:
+        preStop:
+          exec:
+            command:
+            - contour
+            - envoy
+            - shutdown
+      name: shutdown-manager
+      resources: {}
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /admin
+        name: envoy-admin
+    - args:
+      - -c
+      - /config/envoy.json
+      - --service-cluster $(CONTOUR_NAMESPACE)
+      - --service-node $(ENVOY_POD_NAME)
+      - --log-level info
+      command:
+      - envoy
+      env:
+      - name: CONTOUR_NAMESPACE
+        valueFrom:
+          fieldRef:
+            apiVersion: v1
+            fieldPath: metadata.namespace
+      - name: ENVOY_POD_NAME
+        valueFrom:
+          fieldRef:
+            apiVersion: v1
+            fieldPath: metadata.name
+      image: docker.io/bitnami/envoy:1.24.3-debian-11-r4
+      imagePullPolicy: IfNotPresent
+      lifecycle:
+        preStop:
+          httpGet:
+            path: /shutdown
+            port: 8090
+            scheme: HTTP
+      livenessProbe:
+        failureThreshold: 6
+        httpGet:
+          path: /ready
+          port: 8002
+          scheme: HTTP
+        initialDelaySeconds: 120
+        periodSeconds: 20
+        successThreshold: 1
+        timeoutSeconds: 5
+      name: envoy
+      ports:
+      - containerPort: 8080
+        hostPort: 80
+        name: http
+        protocol: TCP
+      - containerPort: 8443
+        hostPort: 443
+        name: https
+        protocol: TCP
+      - containerPort: 8002
+        name: metrics
+        protocol: TCP
+      readinessProbe:
+        failureThreshold: 3
+        httpGet:
+          path: /ready
+          port: 8002
+          scheme: HTTP
+        initialDelaySeconds: 10
+        periodSeconds: 3
+        successThreshold: 1
+        timeoutSeconds: 1
+      resources: {}
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1001
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /config
+        name: envoy-config
+      - mountPath: /certs
+        name: envoycert
+      - mountPath: /admin
+        name: envoy-admin
+    dnsPolicy: ClusterFirst
+    enableServiceLinks: true
+    initContainers:
+    - args:
+      - bootstrap
+      - /config/envoy.json
+      - --xds-address=contour
+      - --xds-port=8001
+      - --resources-dir=/config/resources
+      - --envoy-cafile=/certs/ca.crt
+      - --envoy-cert-file=/certs/tls.crt
+      - --envoy-key-file=/certs/tls.key
+      command:
+      - contour
+      env:
+      - name: CONTOUR_NAMESPACE
+        valueFrom:
+          fieldRef:
+            apiVersion: v1
+            fieldPath: metadata.namespace
+      image: docker.io/bitnami/contour:1.24.2-debian-11-r1
+      imagePullPolicy: IfNotPresent
+      name: envoy-initconfig
+      resources: {}
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /config
+        name: envoy-config
+      - mountPath: /certs
+        name: envoycert
+        readOnly: true
+      - mountPath: /admin
+        name: envoy-admin
+    nodeName: aks-agentpool-27428197-vmss000001
+    preemptionPolicy: PreemptLowerPriority
+    priority: 0
+    restartPolicy: Always
+    schedulerName: default-scheduler
+    securityContext: {}
+    serviceAccount: contour-envoy
+    serviceAccountName: contour-envoy
+    terminationGracePeriodSeconds: 300
+    tolerations:
+    - effect: NoExecute
+      key: node.kubernetes.io/not-ready
+      operator: Exists
+    - effect: NoExecute
+      key: node.kubernetes.io/unreachable
+      operator: Exists
+    - effect: NoSchedule
+      key: node.kubernetes.io/disk-pressure
+      operator: Exists
+    - effect: NoSchedule
+      key: node.kubernetes.io/memory-pressure
+      operator: Exists
+    - effect: NoSchedule
+      key: node.kubernetes.io/pid-pressure
+      operator: Exists
+    - effect: NoSchedule
+      key: node.kubernetes.io/unschedulable
+      operator: Exists
+    volumes:
+    - emptyDir: {}
+      name: envoy-admin
+    - emptyDir: {}
+      name: envoy-config
+    - name: envoycert
+      secret:
+        defaultMode: 420
+        secretName: envoycert
+  status:
+    conditions:
+    - lastProbeTime: null
+      lastTransitionTime: "2025-04-18T16:12:20Z"
+      status: "True"
+      type: PodReadyToStartContainers
+    - lastProbeTime: null
+      lastTransitionTime: "2025-04-18T16:12:21Z"
+      status: "True"
+      type: Initialized
+    - lastProbeTime: null
+      lastTransitionTime: "2025-04-18T16:12:40Z"
+      status: "True"
+      type: Ready
+    - lastProbeTime: null
+      lastTransitionTime: "2025-04-18T16:12:40Z"
+      status: "True"
+      type: ContainersReady
+    - lastProbeTime: null
+      lastTransitionTime: "2025-04-18T16:12:16Z"
+      status: "True"
+      type: PodScheduled
+    containerStatuses:
+    - containerID: containerd://96c32bd5cf6c888ee9c677723e37bcdc09e2fe41635b4f5a1394ea4f197dc7a2
+      image: docker.io/bitnami/envoy:1.24.3-debian-11-r4
+      imageID: docker.io/bitnami/envoy@sha256:3f4422337371233ab61e833a81348108b8edafcd40f5801f15fddddc86f8c664
+      lastState: {}
+      name: envoy
+      ready: true
+      restartCount: 0
+      started: true
+      state:
+        running:
+          startedAt: "2025-04-18T16:12:24Z"
+      volumeMounts:
+      - mountPath: /config
+        name: envoy-config
+      - mountPath: /certs
+        name: envoycert
+      - mountPath: /admin
+        name: envoy-admin
+    - containerID: containerd://9ef3d6e186a7a769e09f85f465fbc38d028599ff5e544b3f280bda8962078103
+      image: docker.io/bitnami/contour:1.24.2-debian-11-r1
+      imageID: docker.io/bitnami/contour@sha256:9ef8dabf87af91a6977766b952db1bc13231ac597a238a9d995fb7992604594b
+      lastState: {}
+      name: shutdown-manager
+      ready: true
+      restartCount: 0
+      started: true
+      state:
+        running:
+          startedAt: "2025-04-18T16:12:21Z"
+      volumeMounts:
+      - mountPath: /admin
+        name: envoy-admin
+    hostIP: 10.224.0.4
+    hostIPs:
+    - ip: 10.224.0.4
+    initContainerStatuses:
+    - containerID: containerd://546ab41fa7268c2bcc4e0b0a267253521f3d1b9ea65ac6c76dd71c0a4249cc44
+      image: docker.io/bitnami/contour:1.24.2-debian-11-r1
+      imageID: docker.io/bitnami/contour@sha256:9ef8dabf87af91a6977766b952db1bc13231ac597a238a9d995fb7992604594b
+      lastState: {}
+      name: envoy-initconfig
+      ready: true
+      restartCount: 0
+      started: false
+      state:
+        terminated:
+          containerID: containerd://546ab41fa7268c2bcc4e0b0a267253521f3d1b9ea65ac6c76dd71c0a4249cc44
+          exitCode: 0
+          finishedAt: "2025-04-18T16:12:19Z"
+          reason: Completed
+          startedAt: "2025-04-18T16:12:19Z"
+      volumeMounts:
+      - mountPath: /config
+        name: envoy-config
+      - mountPath: /certs
+        name: envoycert
+        readOnly: true
+        recursiveReadOnly: Disabled
+      - mountPath: /admin
+        name: envoy-admin
+    phase: Running
+    podIP: 10.244.0.57
+    podIPs:
+    - ip: 10.244.0.57
+    qosClass: BestEffort
+    startTime: "2025-04-18T16:12:16Z"
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    creationTimestamp: "2025-04-18T16:12:16Z"
+    generateName: contour-envoy-
+    labels:
+      app.kubernetes.io/component: envoy
+      app.kubernetes.io/instance: contour
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/name: contour
+      controller-revision-hash: 645955cc5b
+      helm.sh/chart: contour-11.1.1
+      pod-template-generation: "1"
+    name: contour-envoy-x7jkm
+    namespace: radius-system
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: DaemonSet
+      name: contour-envoy
+      uid: 94988bb6-aaff-4b38-b76d-c7dcbc9bfe5b
+    resourceVersion: "6295"
+    uid: 43ca2b02-bb63-461b-b9b6-7ace884a5246
+  spec:
+    affinity:
+      nodeAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+          - matchFields:
+            - key: metadata.name
+              operator: In
+              values:
+              - aks-agentpool-27428197-vmss000000
+    automountServiceAccountToken: false
+    containers:
+    - args:
+      - envoy
+      - shutdown-manager
+      command:
+      - contour
+      image: docker.io/bitnami/contour:1.24.2-debian-11-r1
+      imagePullPolicy: IfNotPresent
+      lifecycle:
+        preStop:
+          exec:
+            command:
+            - contour
+            - envoy
+            - shutdown
+      name: shutdown-manager
+      resources: {}
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /admin
+        name: envoy-admin
+    - args:
+      - -c
+      - /config/envoy.json
+      - --service-cluster $(CONTOUR_NAMESPACE)
+      - --service-node $(ENVOY_POD_NAME)
+      - --log-level info
+      command:
+      - envoy
+      env:
+      - name: CONTOUR_NAMESPACE
+        valueFrom:
+          fieldRef:
+            apiVersion: v1
+            fieldPath: metadata.namespace
+      - name: ENVOY_POD_NAME
+        valueFrom:
+          fieldRef:
+            apiVersion: v1
+            fieldPath: metadata.name
+      image: docker.io/bitnami/envoy:1.24.3-debian-11-r4
+      imagePullPolicy: IfNotPresent
+      lifecycle:
+        preStop:
+          httpGet:
+            path: /shutdown
+            port: 8090
+            scheme: HTTP
+      livenessProbe:
+        failureThreshold: 6
+        httpGet:
+          path: /ready
+          port: 8002
+          scheme: HTTP
+        initialDelaySeconds: 120
+        periodSeconds: 20
+        successThreshold: 1
+        timeoutSeconds: 5
+      name: envoy
+      ports:
+      - containerPort: 8080
+        hostPort: 80
+        name: http
+        protocol: TCP
+      - containerPort: 8443
+        hostPort: 443
+        name: https
+        protocol: TCP
+      - containerPort: 8002
+        name: metrics
+        protocol: TCP
+      readinessProbe:
+        failureThreshold: 3
+        httpGet:
+          path: /ready
+          port: 8002
+          scheme: HTTP
+        initialDelaySeconds: 10
+        periodSeconds: 3
+        successThreshold: 1
+        timeoutSeconds: 1
+      resources: {}
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1001
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /config
+        name: envoy-config
+      - mountPath: /certs
+        name: envoycert
+      - mountPath: /admin
+        name: envoy-admin
+    dnsPolicy: ClusterFirst
+    enableServiceLinks: true
+    initContainers:
+    - args:
+      - bootstrap
+      - /config/envoy.json
+      - --xds-address=contour
+      - --xds-port=8001
+      - --resources-dir=/config/resources
+      - --envoy-cafile=/certs/ca.crt
+      - --envoy-cert-file=/certs/tls.crt
+      - --envoy-key-file=/certs/tls.key
+      command:
+      - contour
+      env:
+      - name: CONTOUR_NAMESPACE
+        valueFrom:
+          fieldRef:
+            apiVersion: v1
+            fieldPath: metadata.namespace
+      image: docker.io/bitnami/contour:1.24.2-debian-11-r1
+      imagePullPolicy: IfNotPresent
+      name: envoy-initconfig
+      resources: {}
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /config
+        name: envoy-config
+      - mountPath: /certs
+        name: envoycert
+        readOnly: true
+      - mountPath: /admin
+        name: envoy-admin
+    nodeName: aks-agentpool-27428197-vmss000000
+    preemptionPolicy: PreemptLowerPriority
+    priority: 0
+    restartPolicy: Always
+    schedulerName: default-scheduler
+    securityContext: {}
+    serviceAccount: contour-envoy
+    serviceAccountName: contour-envoy
+    terminationGracePeriodSeconds: 300
+    tolerations:
+    - effect: NoExecute
+      key: node.kubernetes.io/not-ready
+      operator: Exists
+    - effect: NoExecute
+      key: node.kubernetes.io/unreachable
+      operator: Exists
+    - effect: NoSchedule
+      key: node.kubernetes.io/disk-pressure
+      operator: Exists
+    - effect: NoSchedule
+      key: node.kubernetes.io/memory-pressure
+      operator: Exists
+    - effect: NoSchedule
+      key: node.kubernetes.io/pid-pressure
+      operator: Exists
+    - effect: NoSchedule
+      key: node.kubernetes.io/unschedulable
+      operator: Exists
+    volumes:
+    - emptyDir: {}
+      name: envoy-admin
+    - emptyDir: {}
+      name: envoy-config
+    - name: envoycert
+      secret:
+        defaultMode: 420
+        secretName: envoycert
+  status:
+    conditions:
+    - lastProbeTime: null
+      lastTransitionTime: "2025-04-18T16:12:17Z"
+      status: "True"
+      type: PodReadyToStartContainers
+    - lastProbeTime: null
+      lastTransitionTime: "2025-04-18T16:12:17Z"
+      status: "True"
+      type: Initialized
+    - lastProbeTime: null
+      lastTransitionTime: "2025-04-18T16:12:37Z"
+      status: "True"
+      type: Ready
+    - lastProbeTime: null
+      lastTransitionTime: "2025-04-18T16:12:37Z"
+      status: "True"
+      type: ContainersReady
+    - lastProbeTime: null
+      lastTransitionTime: "2025-04-18T16:12:16Z"
+      status: "True"
+      type: PodScheduled
+    containerStatuses:
+    - containerID: containerd://cd2234090436bcbf74473d2ef13363fd7d855a9a1fdaf424bd4082e1221c5977
+      image: docker.io/bitnami/envoy:1.24.3-debian-11-r4
+      imageID: docker.io/bitnami/envoy@sha256:3f4422337371233ab61e833a81348108b8edafcd40f5801f15fddddc86f8c664
+      lastState: {}
+      name: envoy
+      ready: true
+      restartCount: 0
+      started: true
+      state:
+        running:
+          startedAt: "2025-04-18T16:12:20Z"
+      volumeMounts:
+      - mountPath: /config
+        name: envoy-config
+      - mountPath: /certs
+        name: envoycert
+      - mountPath: /admin
+        name: envoy-admin
+    - containerID: containerd://d1426966e66e0ad16fe8acbbdb8ef54e6c75337273721fdbfb2ec28107707ba4
+      image: docker.io/bitnami/contour:1.24.2-debian-11-r1
+      imageID: docker.io/bitnami/contour@sha256:9ef8dabf87af91a6977766b952db1bc13231ac597a238a9d995fb7992604594b
+      lastState: {}
+      name: shutdown-manager
+      ready: true
+      restartCount: 0
+      started: true
+      state:
+        running:
+          startedAt: "2025-04-18T16:12:17Z"
+      volumeMounts:
+      - mountPath: /admin
+        name: envoy-admin
+    hostIP: 10.224.0.5
+    hostIPs:
+    - ip: 10.224.0.5
+    initContainerStatuses:
+    - containerID: containerd://419a12dc8900d7ce7d1c8b94a510ecba0ae7763443471254f98a0a2610d93fe1
+      image: docker.io/bitnami/contour:1.24.2-debian-11-r1
+      imageID: docker.io/bitnami/contour@sha256:9ef8dabf87af91a6977766b952db1bc13231ac597a238a9d995fb7992604594b
+      lastState: {}
+      name: envoy-initconfig
+      ready: true
+      restartCount: 0
+      started: false
+      state:
+        terminated:
+          containerID: containerd://419a12dc8900d7ce7d1c8b94a510ecba0ae7763443471254f98a0a2610d93fe1
+          exitCode: 0
+          finishedAt: "2025-04-18T16:12:17Z"
+          reason: Completed
+          startedAt: "2025-04-18T16:12:17Z"
+      volumeMounts:
+      - mountPath: /config
+        name: envoy-config
+      - mountPath: /certs
+        name: envoycert
+        readOnly: true
+        recursiveReadOnly: Disabled
+      - mountPath: /admin
+        name: envoy-admin
+    phase: Running
+    podIP: 10.244.1.13
+    podIPs:
+    - ip: 10.244.1.13
+    qosClass: BestEffort
+    startTime: "2025-04-18T16:12:16Z"
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    annotations:
+      prometheus.io/path: /metrics
+      prometheus.io/port: "9090"
+      prometheus.io/scrape: "true"
+    creationTimestamp: "2025-04-18T16:10:32Z"
+    generateName: controller-74bddc6c8b-
+    labels:
+      app.kubernetes.io/name: controller
+      app.kubernetes.io/part-of: radius
+      control-plane: controller
+      pod-template-hash: 74bddc6c8b
+    name: controller-74bddc6c8b-hnmsw
+    namespace: radius-system
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: controller-74bddc6c8b
+      uid: 2f77182e-d855-4292-ae4b-79497f96a3b0
+    resourceVersion: "1067531"
+    uid: 492fbc71-1f0b-49ef-b28f-cb469eda6490
+  spec:
+    containers:
+    - args:
+      - --config-file
+      - /etc/config/controller-config.yaml
+      env:
+      - name: TLS_CERT_DIR
+        value: /var/tls/cert
+      - name: PORT
+        value: "9443"
+      - name: RAD_BICEP
+        value: /usr/local/bin/bicep
+      image: ghcr.io/radius-project/controller:0.45
+      imagePullPolicy: Always
+      name: controller
+      ports:
+      - containerPort: 9443
+        name: controller
+        protocol: TCP
+      - containerPort: 9090
+        name: metrics
+        protocol: TCP
+      - containerPort: 3000
+        name: healthz
+        protocol: TCP
+      resources:
+        limits:
+          memory: 300Mi
+        requests:
+          memory: 60Mi
+      securityContext:
+        allowPrivilegeEscalation: false
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /usr/local/bin
+        name: bicep
+      - mountPath: /bicepconfig.json
+        name: bicepconfig
+        subPath: bicepconfig.json
+      - mountPath: /etc/config
+        name: config-volume
+      - mountPath: /var/tls/cert
+        name: cert
+        readOnly: true
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-dltq5
+        readOnly: true
+    dnsPolicy: ClusterFirst
+    enableServiceLinks: true
+    initContainers:
+    - command:
+      - sh
+      - -c
+      - mv /bicepconfig.json /bicepconfig/bicepconfig.json && mv /bicep /usr/local/bin/bicep
+      image: ghcr.io/radius-project/bicep:0.45
+      imagePullPolicy: IfNotPresent
+      name: bicep
+      resources: {}
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /usr/local/bin
+        name: bicep
+      - mountPath: /bicepconfig
+        name: bicepconfig
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-dltq5
+        readOnly: true
+    nodeName: aks-agentpool-27428197-vmss000000
+    preemptionPolicy: PreemptLowerPriority
+    priority: 0
+    restartPolicy: Always
+    schedulerName: default-scheduler
+    securityContext: {}
+    serviceAccount: controller
+    serviceAccountName: controller
+    terminationGracePeriodSeconds: 30
+    tolerations:
+    - effect: NoExecute
+      key: node.kubernetes.io/not-ready
+      operator: Exists
+      tolerationSeconds: 300
+    - effect: NoExecute
+      key: node.kubernetes.io/unreachable
+      operator: Exists
+      tolerationSeconds: 300
+    - effect: NoSchedule
+      key: node.kubernetes.io/memory-pressure
+      operator: Exists
+    volumes:
+    - emptyDir: {}
+      name: bicep
+    - emptyDir: {}
+      name: bicepconfig
+    - configMap:
+        defaultMode: 420
+        name: controller-config
+      name: config-volume
+    - name: cert
+      secret:
+        defaultMode: 420
+        secretName: controller-cert
+    - name: kube-api-access-dltq5
+      projected:
+        defaultMode: 420
+        sources:
+        - serviceAccountToken:
+            expirationSeconds: 3607
+            path: token
+        - configMap:
+            items:
+            - key: ca.crt
+              path: ca.crt
+            name: kube-root-ca.crt
+        - downwardAPI:
+            items:
+            - fieldRef:
+                apiVersion: v1
+                fieldPath: metadata.namespace
+              path: namespace
+  status:
+    conditions:
+    - lastProbeTime: null
+      lastTransitionTime: "2025-04-18T16:10:37Z"
+      status: "True"
+      type: PodReadyToStartContainers
+    - lastProbeTime: null
+      lastTransitionTime: "2025-04-18T16:10:40Z"
+      status: "True"
+      type: Initialized
+    - lastProbeTime: null
+      lastTransitionTime: "2025-04-21T00:26:44Z"
+      status: "True"
+      type: Ready
+    - lastProbeTime: null
+      lastTransitionTime: "2025-04-21T00:26:44Z"
+      status: "True"
+      type: ContainersReady
+    - lastProbeTime: null
+      lastTransitionTime: "2025-04-18T16:10:32Z"
+      status: "True"
+      type: PodScheduled
+    containerStatuses:
+    - containerID: containerd://e64b60d6db228d4fd3d44be7d19b7cdc3d886f01a398e79ec04ecd8b9f701a71
+      image: ghcr.io/radius-project/controller:0.45
+      imageID: ghcr.io/radius-project/controller@sha256:b1cf3955552e16f4243351e2e28d68f88c0bcee681bc122165f99083b6fede78
+      lastState:
+        terminated:
+          containerID: containerd://ec5bbc543d19a02b71a6316dace1e0ed1a9ba18a54a5e8ac1f5bb8286f476ec4
+          exitCode: 0
+          finishedAt: "2025-04-21T00:21:32Z"
+          reason: Completed
+          startedAt: "2025-04-21T00:19:32Z"
+      name: controller
+      ready: true
+      restartCount: 478
+      started: true
+      state:
+        running:
+          startedAt: "2025-04-21T00:26:44Z"
+      volumeMounts:
+      - mountPath: /usr/local/bin
+        name: bicep
+      - mountPath: /bicepconfig.json
+        name: bicepconfig
+      - mountPath: /etc/config
+        name: config-volume
+      - mountPath: /var/tls/cert
+        name: cert
+        readOnly: true
+        recursiveReadOnly: Disabled
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-dltq5
+        readOnly: true
+        recursiveReadOnly: Disabled
+    hostIP: 10.224.0.5
+    hostIPs:
+    - ip: 10.224.0.5
+    initContainerStatuses:
+    - containerID: containerd://5e7c97b73e6e8c0de177e68f8d87fd3dea2061c5aea4b802c4bea97b649e649f
+      image: ghcr.io/radius-project/bicep:0.45
+      imageID: ghcr.io/radius-project/bicep@sha256:28e264e127ea7124c4421e35580ebbf0f354695fd7bf775c81f48bc109d580be
+      lastState: {}
+      name: bicep
+      ready: true
+      restartCount: 0
+      started: false
+      state:
+        terminated:
+          containerID: containerd://5e7c97b73e6e8c0de177e68f8d87fd3dea2061c5aea4b802c4bea97b649e649f
+          exitCode: 0
+          finishedAt: "2025-04-18T16:10:36Z"
+          reason: Completed
+          startedAt: "2025-04-18T16:10:36Z"
+      volumeMounts:
+      - mountPath: /usr/local/bin
+        name: bicep
+      - mountPath: /bicepconfig
+        name: bicepconfig
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-dltq5
+        readOnly: true
+        recursiveReadOnly: Disabled
+    phase: Running
+    podIP: 10.244.1.110
+    podIPs:
+    - ip: 10.244.1.110
+    qosClass: Burstable
+    startTime: "2025-04-18T16:10:32Z"
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    creationTimestamp: "2025-04-18T16:10:32Z"
+    generateName: dashboard-b65cf4dd7-
+    labels:
+      app.kubernetes.io/name: dashboard
+      app.kubernetes.io/part-of: radius
+      control-plane: dashboard
+      pod-template-hash: b65cf4dd7
+    name: dashboard-b65cf4dd7-88h98
+    namespace: radius-system
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: dashboard-b65cf4dd7
+      uid: 4d0332a3-3388-4377-8106-dc17c28d2d95
+    resourceVersion: "5032"
+    uid: c56d69b2-f4f3-40a6-bdb9-236129ab6c11
+  spec:
+    containers:
+    - image: ghcr.io/radius-project/dashboard:0.45
+      imagePullPolicy: Always
+      name: dashboard
+      ports:
+      - containerPort: 7007
+        name: http
+        protocol: TCP
+      resources: {}
+      securityContext:
+        allowPrivilegeEscalation: false
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-q9qkm
+        readOnly: true
+    dnsPolicy: ClusterFirst
+    enableServiceLinks: true
+    nodeName: aks-agentpool-27428197-vmss000000
+    preemptionPolicy: PreemptLowerPriority
+    priority: 0
+    restartPolicy: Always
+    schedulerName: default-scheduler
+    securityContext: {}
+    serviceAccount: dashboard
+    serviceAccountName: dashboard
+    terminationGracePeriodSeconds: 30
+    tolerations:
+    - effect: NoExecute
+      key: node.kubernetes.io/not-ready
+      operator: Exists
+      tolerationSeconds: 300
+    - effect: NoExecute
+      key: node.kubernetes.io/unreachable
+      operator: Exists
+      tolerationSeconds: 300
+    volumes:
+    - name: kube-api-access-q9qkm
+      projected:
+        defaultMode: 420
+        sources:
+        - serviceAccountToken:
+            expirationSeconds: 3607
+            path: token
+        - configMap:
+            items:
+            - key: ca.crt
+              path: ca.crt
+            name: kube-root-ca.crt
+        - downwardAPI:
+            items:
+            - fieldRef:
+                apiVersion: v1
+                fieldPath: metadata.namespace
+              path: namespace
+  status:
+    conditions:
+    - lastProbeTime: null
+      lastTransitionTime: "2025-04-18T16:10:49Z"
+      status: "True"
+      type: PodReadyToStartContainers
+    - lastProbeTime: null
+      lastTransitionTime: "2025-04-18T16:10:32Z"
+      status: "True"
+      type: Initialized
+    - lastProbeTime: null
+      lastTransitionTime: "2025-04-18T16:10:49Z"
+      status: "True"
+      type: Ready
+    - lastProbeTime: null
+      lastTransitionTime: "2025-04-18T16:10:49Z"
+      status: "True"
+      type: ContainersReady
+    - lastProbeTime: null
+      lastTransitionTime: "2025-04-18T16:10:32Z"
+      status: "True"
+      type: PodScheduled
+    containerStatuses:
+    - containerID: containerd://d50769d2266ef75cdd5e5e4a6a856467c048585c1b4794022a93c6d48a3b9f9b
+      image: ghcr.io/radius-project/dashboard:0.45
+      imageID: ghcr.io/radius-project/dashboard@sha256:246c7d7d93bea6dba4199f7c71e51fae4deaa38f17bf33bd37fa868e77142be2
+      lastState: {}
+      name: dashboard
+      ready: true
+      restartCount: 0
+      started: true
+      state:
+        running:
+          startedAt: "2025-04-18T16:10:48Z"
+      volumeMounts:
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-q9qkm
+        readOnly: true
+        recursiveReadOnly: Disabled
+    hostIP: 10.224.0.5
+    hostIPs:
+    - ip: 10.224.0.5
+    phase: Running
+    podIP: 10.244.1.194
+    podIPs:
+    - ip: 10.244.1.194
+    qosClass: BestEffort
+    startTime: "2025-04-18T16:10:32Z"
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    creationTimestamp: "2025-04-18T16:10:32Z"
+    generateName: database-
+    labels:
+      app.kubernetes.io/name: database
+      app.kubernetes.io/part-of: radius
+      apps.kubernetes.io/pod-index: "0"
+      control-plane: database
+      controller-revision-hash: database-f9df69f78
+      statefulset.kubernetes.io/pod-name: database-0
+    name: database-0
+    namespace: radius-system
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: StatefulSet
+      name: database
+      uid: eefbb0c8-5b17-4474-9656-8ed8fa2731c0
+    resourceVersion: "5095"
+    uid: 34626388-e941-437d-a526-fe43c4d5144f
+  spec:
+    containers:
+    - env:
+      - name: POSTGRES_DB
+        valueFrom:
+          secretKeyRef:
+            key: POSTGRES_DB
+            name: database-secret
+      - name: POSTGRES_USER
+        valueFrom:
+          secretKeyRef:
+            key: POSTGRES_USER
+            name: database-secret
+      - name: POSTGRES_PASSWORD
+        valueFrom:
+          secretKeyRef:
+            key: POSTGRES_PASSWORD
+            name: database-secret
+      image: ghcr.io/radius-project/mirror/postgres:latest
+      imagePullPolicy: IfNotPresent
+      name: database
+      ports:
+      - containerPort: 5432
+        name: postgres
+        protocol: TCP
+      resources:
+        limits:
+          cpu: "2"
+          memory: 1Gi
+        requests:
+          cpu: "2"
+          memory: 512Mi
+      securityContext:
+        allowPrivilegeEscalation: false
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /var/lib/postgresql/data
+        name: database
+        subPath: postgres
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-kqx9t
+        readOnly: true
+    dnsPolicy: ClusterFirst
+    enableServiceLinks: true
+    hostname: database-0
+    nodeName: aks-agentpool-27428197-vmss000001
+    preemptionPolicy: PreemptLowerPriority
+    priority: 0
+    restartPolicy: Always
+    schedulerName: default-scheduler
+    securityContext: {}
+    serviceAccount: database
+    serviceAccountName: database
+    subdomain: database
+    terminationGracePeriodSeconds: 30
+    tolerations:
+    - effect: NoExecute
+      key: node.kubernetes.io/not-ready
+      operator: Exists
+      tolerationSeconds: 300
+    - effect: NoExecute
+      key: node.kubernetes.io/unreachable
+      operator: Exists
+      tolerationSeconds: 300
+    - effect: NoSchedule
+      key: node.kubernetes.io/memory-pressure
+      operator: Exists
+    volumes:
+    - name: database
+      persistentVolumeClaim:
+        claimName: database-database-0
+    - name: kube-api-access-kqx9t
+      projected:
+        defaultMode: 420
+        sources:
+        - serviceAccountToken:
+            expirationSeconds: 3607
+            path: token
+        - configMap:
+            items:
+            - key: ca.crt
+              path: ca.crt
+            name: kube-root-ca.crt
+        - downwardAPI:
+            items:
+            - fieldRef:
+                apiVersion: v1
+                fieldPath: metadata.namespace
+              path: namespace
+  status:
+    conditions:
+    - lastProbeTime: null
+      lastTransitionTime: "2025-04-18T16:10:53Z"
+      status: "True"
+      type: PodReadyToStartContainers
+    - lastProbeTime: null
+      lastTransitionTime: "2025-04-18T16:10:36Z"
+      status: "True"
+      type: Initialized
+    - lastProbeTime: null
+      lastTransitionTime: "2025-04-18T16:10:53Z"
+      status: "True"
+      type: Ready
+    - lastProbeTime: null
+      lastTransitionTime: "2025-04-18T16:10:53Z"
+      status: "True"
+      type: ContainersReady
+    - lastProbeTime: null
+      lastTransitionTime: "2025-04-18T16:10:36Z"
+      status: "True"
+      type: PodScheduled
+    containerStatuses:
+    - containerID: containerd://f8ece0a5f5bb6f715245b4e8f973e59fff7041a49df3d314f2b97ae3d0c8f520
+      image: ghcr.io/radius-project/mirror/postgres:latest
+      imageID: ghcr.io/radius-project/mirror/postgres@sha256:1c8cca931de35ce846ae3ef6680a9a38458275770e2d40fcf3390b16eeb07983
+      lastState: {}
+      name: database
+      ready: true
+      restartCount: 0
+      started: true
+      state:
+        running:
+          startedAt: "2025-04-18T16:10:52Z"
+      volumeMounts:
+      - mountPath: /var/lib/postgresql/data
+        name: database
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-kqx9t
+        readOnly: true
+        recursiveReadOnly: Disabled
+    hostIP: 10.224.0.4
+    hostIPs:
+    - ip: 10.224.0.4
+    phase: Running
+    podIP: 10.244.0.208
+    podIPs:
+    - ip: 10.244.0.208
+    qosClass: Burstable
+    startTime: "2025-04-18T16:10:36Z"
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    annotations:
+      prometheus.io/path: /metrics
+      prometheus.io/port: "9090"
+      prometheus.io/scrape: "true"
+    creationTimestamp: "2025-04-18T16:10:32Z"
+    generateName: dynamic-rp-848dbb5f6f-
+    labels:
+      app.kubernetes.io/name: dynamic-rp
+      app.kubernetes.io/part-of: radius
+      azure.workload.identity/use: "true"
+      control-plane: dynamic-rp
+      pod-template-hash: 848dbb5f6f
+    name: dynamic-rp-848dbb5f6f-tvbpg
+    namespace: radius-system
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: dynamic-rp-848dbb5f6f
+      uid: 844b39a9-01f6-44fb-8739-c57d29ca5a64
+    resourceVersion: "4883"
+    uid: e0809489-84a3-4ba6-979a-71e52007c307
+  spec:
+    containers:
+    - args:
+      - --config-file=/etc/config/radius-self-host.yaml
+      env:
+      - name: SKIP_ARM
+        value: "false"
+      - name: ARM_AUTH_METHOD
+        value: UCPCredential
+      - name: RADIUS_ENV
+        value: self-hosted
+      - name: K8S_CLUSTER
+        value: "true"
+      - name: AZURE_CLIENT_ID
+      - name: AZURE_TENANT_ID
+        value: 0c4da9c5-40ea-4e7d-9c7a-e7308d4f8e38
+      - name: AZURE_FEDERATED_TOKEN_FILE
+        value: /var/run/secrets/azure/tokens/azure-identity-token
+      - name: AZURE_AUTHORITY_HOST
+        value: https://login.microsoftonline.com/
+      image: ghcr.io/radius-project/dynamic-rp:0.45
+      imagePullPolicy: IfNotPresent
+      name: dynamic-rp
+      ports:
+      - containerPort: 5443
+        name: dynamic-rp
+        protocol: TCP
+      - containerPort: 9090
+        name: metrics
+        protocol: TCP
+      resources:
+        limits:
+          memory: 500Mi
+        requests:
+          memory: 160Mi
+      securityContext:
+        allowPrivilegeEscalation: false
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /etc/config
+        name: config-volume
+      - mountPath: /terraform
+        name: terraform
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-snk9m
+        readOnly: true
+      - mountPath: /var/run/secrets/azure/tokens
+        name: azure-identity-token
+        readOnly: true
+    dnsPolicy: ClusterFirst
+    enableServiceLinks: true
+    nodeName: aks-agentpool-27428197-vmss000000
+    preemptionPolicy: PreemptLowerPriority
+    priority: 0
+    restartPolicy: Always
+    schedulerName: default-scheduler
+    securityContext: {}
+    serviceAccount: dynamic-rp
+    serviceAccountName: dynamic-rp
+    terminationGracePeriodSeconds: 30
+    tolerations:
+    - effect: NoExecute
+      key: node.kubernetes.io/not-ready
+      operator: Exists
+      tolerationSeconds: 300
+    - effect: NoExecute
+      key: node.kubernetes.io/unreachable
+      operator: Exists
+      tolerationSeconds: 300
+    - effect: NoSchedule
+      key: node.kubernetes.io/memory-pressure
+      operator: Exists
+    volumes:
+    - configMap:
+        defaultMode: 420
+        name: dynamic-rp-config
+      name: config-volume
+    - emptyDir: {}
+      name: terraform
+    - name: kube-api-access-snk9m
+      projected:
+        defaultMode: 420
+        sources:
+        - serviceAccountToken:
+            expirationSeconds: 3607
+            path: token
+        - configMap:
+            items:
+            - key: ca.crt
+              path: ca.crt
+            name: kube-root-ca.crt
+        - downwardAPI:
+            items:
+            - fieldRef:
+                apiVersion: v1
+                fieldPath: metadata.namespace
+              path: namespace
+    - name: azure-identity-token
+      projected:
+        defaultMode: 420
+        sources:
+        - serviceAccountToken:
+            audience: api://AzureADTokenExchange
+            expirationSeconds: 3600
+            path: azure-identity-token
+  status:
+    conditions:
+    - lastProbeTime: null
+      lastTransitionTime: "2025-04-18T16:10:40Z"
+      status: "True"
+      type: PodReadyToStartContainers
+    - lastProbeTime: null
+      lastTransitionTime: "2025-04-18T16:10:32Z"
+      status: "True"
+      type: Initialized
+    - lastProbeTime: null
+      lastTransitionTime: "2025-04-18T16:10:40Z"
+      status: "True"
+      type: Ready
+    - lastProbeTime: null
+      lastTransitionTime: "2025-04-18T16:10:40Z"
+      status: "True"
+      type: ContainersReady
+    - lastProbeTime: null
+      lastTransitionTime: "2025-04-18T16:10:32Z"
+      status: "True"
+      type: PodScheduled
+    containerStatuses:
+    - containerID: containerd://ec33344a81f7f875af8419adda35f1dd58722222e7788d562263ec7283531964
+      image: ghcr.io/radius-project/dynamic-rp:0.45
+      imageID: ghcr.io/radius-project/dynamic-rp@sha256:1eb510fbc0d6e7f38230734eee997a93a6718df895b3f9f615f5b5ccf09a2699
+      lastState: {}
+      name: dynamic-rp
+      ready: true
+      restartCount: 0
+      started: true
+      state:
+        running:
+          startedAt: "2025-04-18T16:10:39Z"
+      volumeMounts:
+      - mountPath: /etc/config
+        name: config-volume
+      - mountPath: /terraform
+        name: terraform
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-snk9m
+        readOnly: true
+        recursiveReadOnly: Disabled
+      - mountPath: /var/run/secrets/azure/tokens
+        name: azure-identity-token
+        readOnly: true
+        recursiveReadOnly: Disabled
+    hostIP: 10.224.0.5
+    hostIPs:
+    - ip: 10.224.0.5
+    phase: Running
+    podIP: 10.244.1.19
+    podIPs:
+    - ip: 10.244.1.19
+    qosClass: Burstable
+    startTime: "2025-04-18T16:10:32Z"
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    annotations:
+      prometheus.io/path: /metrics
+      prometheus.io/port: "9090"
+      prometheus.io/scrape: "true"
+    creationTimestamp: "2025-04-18T16:10:32Z"
+    generateName: ucp-7c55456765-
+    labels:
+      app.kubernetes.io/name: ucp
+      app.kubernetes.io/part-of: radius
+      azure.workload.identity/use: "true"
+      control-plane: ucp
+      pod-template-hash: 7c55456765
+    name: ucp-7c55456765-lrft8
+    namespace: radius-system
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: ucp-7c55456765
+      uid: 62d57850-f7c1-4b13-b155-45135c06e4f1
+    resourceVersion: "4877"
+    uid: 24e3a3b5-9f94-42b2-8ade-15ceb44f13fc
+  spec:
+    containers:
+    - args:
+      - --config-file=/etc/config/ucp-config.yaml
+      env:
+      - name: TLS_CERT_DIR
+        value: /var/tls/cert
+      - name: PORT
+        value: "9443"
+      - name: AZURE_CLIENT_ID
+      - name: AZURE_TENANT_ID
+        value: 0c4da9c5-40ea-4e7d-9c7a-e7308d4f8e38
+      - name: AZURE_FEDERATED_TOKEN_FILE
+        value: /var/run/secrets/azure/tokens/azure-identity-token
+      - name: AZURE_AUTHORITY_HOST
+        value: https://login.microsoftonline.com/
+      image: ghcr.io/radius-project/ucpd:0.45
+      imagePullPolicy: IfNotPresent
+      name: ucp
+      ports:
+      - containerPort: 9443
+        name: ucp
+        protocol: TCP
+      - containerPort: 9090
+        name: metrics
+        protocol: TCP
+      resources:
+        limits:
+          memory: 300Mi
+        requests:
+          memory: 60Mi
+      securityContext:
+        allowPrivilegeEscalation: false
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /etc/config
+        name: config-volume
+      - mountPath: /var/tls/cert
+        name: cert
+        readOnly: true
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-pvcnj
+        readOnly: true
+      - mountPath: /var/run/secrets/azure/tokens
+        name: azure-identity-token
+        readOnly: true
+    dnsPolicy: ClusterFirst
+    enableServiceLinks: true
+    nodeName: aks-agentpool-27428197-vmss000000
+    preemptionPolicy: PreemptLowerPriority
+    priority: 0
+    restartPolicy: Always
+    schedulerName: default-scheduler
+    securityContext: {}
+    serviceAccount: ucp
+    serviceAccountName: ucp
+    terminationGracePeriodSeconds: 30
+    tolerations:
+    - effect: NoExecute
+      key: node.kubernetes.io/not-ready
+      operator: Exists
+      tolerationSeconds: 300
+    - effect: NoExecute
+      key: node.kubernetes.io/unreachable
+      operator: Exists
+      tolerationSeconds: 300
+    - effect: NoSchedule
+      key: node.kubernetes.io/memory-pressure
+      operator: Exists
+    volumes:
+    - configMap:
+        defaultMode: 420
+        name: ucp-config
+      name: config-volume
+    - name: cert
+      secret:
+        defaultMode: 420
+        secretName: ucp-cert
+    - name: kube-api-access-pvcnj
+      projected:
+        defaultMode: 420
+        sources:
+        - serviceAccountToken:
+            expirationSeconds: 3607
+            path: token
+        - configMap:
+            items:
+            - key: ca.crt
+              path: ca.crt
+            name: kube-root-ca.crt
+        - downwardAPI:
+            items:
+            - fieldRef:
+                apiVersion: v1
+                fieldPath: metadata.namespace
+              path: namespace
+    - name: azure-identity-token
+      projected:
+        defaultMode: 420
+        sources:
+        - serviceAccountToken:
+            audience: api://AzureADTokenExchange
+            expirationSeconds: 3600
+            path: azure-identity-token
+  status:
+    conditions:
+    - lastProbeTime: null
+      lastTransitionTime: "2025-04-18T16:10:40Z"
+      status: "True"
+      type: PodReadyToStartContainers
+    - lastProbeTime: null
+      lastTransitionTime: "2025-04-18T16:10:32Z"
+      status: "True"
+      type: Initialized
+    - lastProbeTime: null
+      lastTransitionTime: "2025-04-18T16:10:40Z"
+      status: "True"
+      type: Ready
+    - lastProbeTime: null
+      lastTransitionTime: "2025-04-18T16:10:40Z"
+      status: "True"
+      type: ContainersReady
+    - lastProbeTime: null
+      lastTransitionTime: "2025-04-18T16:10:32Z"
+      status: "True"
+      type: PodScheduled
+    containerStatuses:
+    - containerID: containerd://41f77a1e0f1b5583b682fb2ef625620df7c7d9b1191cb706b6ed1c175b0c214d
+      image: ghcr.io/radius-project/ucpd:0.45
+      imageID: ghcr.io/radius-project/ucpd@sha256:82e2bf572cf08c3bce228759c156f77f4956f17f66cdce936ffed8413a90372f
+      lastState: {}
+      name: ucp
+      ready: true
+      restartCount: 0
+      started: true
+      state:
+        running:
+          startedAt: "2025-04-18T16:10:39Z"
+      volumeMounts:
+      - mountPath: /etc/config
+        name: config-volume
+      - mountPath: /var/tls/cert
+        name: cert
+        readOnly: true
+        recursiveReadOnly: Disabled
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-pvcnj
+        readOnly: true
+        recursiveReadOnly: Disabled
+      - mountPath: /var/run/secrets/azure/tokens
+        name: azure-identity-token
+        readOnly: true
+        recursiveReadOnly: Disabled
+    hostIP: 10.224.0.5
+    hostIPs:
+    - ip: 10.224.0.5
+    phase: Running
+    podIP: 10.244.1.92
+    podIPs:
+    - ip: 10.244.1.92
+    qosClass: Burstable
+    startTime: "2025-04-18T16:10:32Z"
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      meta.helm.sh/release-name: radius
+      meta.helm.sh/release-namespace: radius-system
+    creationTimestamp: "2025-04-18T16:10:31Z"
+    labels:
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/name: applications-rp
+      app.kubernetes.io/part-of: radius
+    name: applications-rp
+    namespace: radius-system
+    resourceVersion: "4686"
+    uid: f65db43d-c3fa-4415-bd7b-e7fc0210628f
+  spec:
+    clusterIP: 10.0.7.82
+    clusterIPs:
+    - 10.0.7.82
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: core-http
+      port: 5443
+      protocol: TCP
+      targetPort: 5443
+    - name: portablers-http
+      port: 5444
+      protocol: TCP
+      targetPort: 5444
+    selector:
+      app.kubernetes.io/name: applications-rp
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      meta.helm.sh/release-name: radius
+      meta.helm.sh/release-namespace: radius-system
+    creationTimestamp: "2025-04-18T16:10:31Z"
+    labels:
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/name: bicep-de
+      app.kubernetes.io/part-of: radius
+    name: bicep-de
+    namespace: radius-system
+    resourceVersion: "4698"
+    uid: abb8be24-e813-44b8-b0b7-85eef1331bf6
+  spec:
+    clusterIP: 10.0.47.138
+    clusterIPs:
+    - 10.0.47.138
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: http
+      port: 6443
+      protocol: TCP
+      targetPort: 6443
+    selector:
+      app.kubernetes.io/name: bicep-de
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      meta.helm.sh/release-name: contour
+      meta.helm.sh/release-namespace: radius-system
+    creationTimestamp: "2025-04-18T16:12:16Z"
+    labels:
+      app.kubernetes.io/component: contour
+      app.kubernetes.io/instance: contour
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/name: contour
+      helm.sh/chart: contour-11.1.1
+    name: contour
+    namespace: radius-system
+    resourceVersion: "6091"
+    uid: bc496800-6268-411b-b845-89d2da78ded1
+  spec:
+    clusterIP: 10.0.69.41
+    clusterIPs:
+    - 10.0.69.41
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: tcp-xds
+      port: 8001
+      protocol: TCP
+      targetPort: xds
+    selector:
+      app.kubernetes.io/component: contour
+      app.kubernetes.io/instance: contour
+      app.kubernetes.io/name: contour
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      meta.helm.sh/release-name: contour
+      meta.helm.sh/release-namespace: radius-system
+      service.beta.kubernetes.io/aws-load-balancer-backend-protocol: tcp
+    creationTimestamp: "2025-04-18T16:12:16Z"
+    finalizers:
+    - service.kubernetes.io/load-balancer-cleanup
+    labels:
+      app.kubernetes.io/component: envoy
+      app.kubernetes.io/instance: contour
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/name: contour
+      helm.sh/chart: contour-11.1.1
+    name: contour-envoy
+    namespace: radius-system
+    resourceVersion: "6216"
+    uid: 005d5d4f-9b23-43f5-a255-ca2f8d081a1e
+  spec:
+    allocateLoadBalancerNodePorts: true
+    clusterIP: 10.0.226.71
+    clusterIPs:
+    - 10.0.226.71
+    externalTrafficPolicy: Local
+    healthCheckNodePort: 32614
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: http
+      nodePort: 31536
+      port: 80
+      protocol: TCP
+      targetPort: http
+    - name: https
+      nodePort: 31848
+      port: 443
+      protocol: TCP
+      targetPort: https
+    selector:
+      app.kubernetes.io/component: envoy
+      app.kubernetes.io/instance: contour
+      app.kubernetes.io/name: contour
+    sessionAffinity: None
+    type: LoadBalancer
+  status:
+    loadBalancer:
+      ingress:
+      - ip: 48.216.175.35
+        ipMode: VIP
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      meta.helm.sh/release-name: radius
+      meta.helm.sh/release-namespace: radius-system
+    creationTimestamp: "2025-04-18T16:10:31Z"
+    labels:
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/name: controller
+      app.kubernetes.io/part-of: radius
+    name: controller
+    namespace: radius-system
+    resourceVersion: "4694"
+    uid: 5d290518-f90d-4701-b5b3-22a8583cb28c
+  spec:
+    clusterIP: 10.0.111.61
+    clusterIPs:
+    - 10.0.111.61
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: https
+      port: 443
+      protocol: TCP
+      targetPort: 9443
+    selector:
+      app.kubernetes.io/name: controller
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      meta.helm.sh/release-name: radius
+      meta.helm.sh/release-namespace: radius-system
+    creationTimestamp: "2025-04-18T16:10:31Z"
+    labels:
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/name: dashboard
+      app.kubernetes.io/part-of: radius
+    name: dashboard
+    namespace: radius-system
+    resourceVersion: "4682"
+    uid: ddf7a150-49ac-4b77-a530-6a98ca1ed5b9
+  spec:
+    clusterIP: 10.0.1.103
+    clusterIPs:
+    - 10.0.1.103
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: http
+      port: 80
+      protocol: TCP
+      targetPort: 7007
+    selector:
+      app.kubernetes.io/name: dashboard
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      meta.helm.sh/release-name: radius
+      meta.helm.sh/release-namespace: radius-system
+    creationTimestamp: "2025-04-18T16:10:31Z"
+    labels:
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/name: database
+      app.kubernetes.io/part-of: radius
+    name: database
+    namespace: radius-system
+    resourceVersion: "4690"
+    uid: 122f9558-2692-4a9b-9734-caf4a9dfd728
+  spec:
+    clusterIP: 10.0.2.128
+    clusterIPs:
+    - 10.0.2.128
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: postgres
+      port: 5432
+      protocol: TCP
+      targetPort: 5432
+    selector:
+      app.kubernetes.io/name: database
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      meta.helm.sh/release-name: radius
+      meta.helm.sh/release-namespace: radius-system
+    creationTimestamp: "2025-04-18T16:10:31Z"
+    labels:
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/name: dynamic-rp
+      app.kubernetes.io/part-of: radius
+    name: dynamic-rp
+    namespace: radius-system
+    resourceVersion: "4674"
+    uid: c85307ca-fbb1-40f2-a25d-b877e744b521
+  spec:
+    clusterIP: 10.0.115.54
+    clusterIPs:
+    - 10.0.115.54
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: http
+      port: 8082
+      protocol: TCP
+      targetPort: 8082
+    selector:
+      app.kubernetes.io/name: dynamic-rp
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      meta.helm.sh/release-name: radius
+      meta.helm.sh/release-namespace: radius-system
+    creationTimestamp: "2025-04-18T16:10:31Z"
+    labels:
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/name: ucp
+      app.kubernetes.io/part-of: radius
+    name: ucp
+    namespace: radius-system
+    resourceVersion: "4678"
+    uid: c27dcb45-b169-4e8a-8891-41f352dfb7fd
+  spec:
+    clusterIP: 10.0.115.34
+    clusterIPs:
+    - 10.0.115.34
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: https
+      port: 443
+      protocol: TCP
+      targetPort: 9443
+    selector:
+      app.kubernetes.io/name: ucp
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: apps/v1
+  kind: DaemonSet
+  metadata:
+    annotations:
+      deprecated.daemonset.template.generation: "1"
+      meta.helm.sh/release-name: contour
+      meta.helm.sh/release-namespace: radius-system
+    creationTimestamp: "2025-04-18T16:12:16Z"
+    generation: 1
+    labels:
+      app.kubernetes.io/component: envoy
+      app.kubernetes.io/instance: contour
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/name: contour
+      helm.sh/chart: contour-11.1.1
+    name: contour-envoy
+    namespace: radius-system
+    resourceVersion: "6320"
+    uid: 94988bb6-aaff-4b38-b76d-c7dcbc9bfe5b
+  spec:
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        app.kubernetes.io/component: envoy
+        app.kubernetes.io/instance: contour
+        app.kubernetes.io/name: contour
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app.kubernetes.io/component: envoy
+          app.kubernetes.io/instance: contour
+          app.kubernetes.io/managed-by: Helm
+          app.kubernetes.io/name: contour
+          helm.sh/chart: contour-11.1.1
+      spec:
+        affinity: {}
+        automountServiceAccountToken: false
+        containers:
+        - args:
+          - envoy
+          - shutdown-manager
+          command:
+          - contour
+          image: docker.io/bitnami/contour:1.24.2-debian-11-r1
+          imagePullPolicy: IfNotPresent
+          lifecycle:
+            preStop:
+              exec:
+                command:
+                - contour
+                - envoy
+                - shutdown
+          name: shutdown-manager
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: /admin
+            name: envoy-admin
+        - args:
+          - -c
+          - /config/envoy.json
+          - --service-cluster $(CONTOUR_NAMESPACE)
+          - --service-node $(ENVOY_POD_NAME)
+          - --log-level info
+          command:
+          - envoy
+          env:
+          - name: CONTOUR_NAMESPACE
+            valueFrom:
+              fieldRef:
+                apiVersion: v1
+                fieldPath: metadata.namespace
+          - name: ENVOY_POD_NAME
+            valueFrom:
+              fieldRef:
+                apiVersion: v1
+                fieldPath: metadata.name
+          image: docker.io/bitnami/envoy:1.24.3-debian-11-r4
+          imagePullPolicy: IfNotPresent
+          lifecycle:
+            preStop:
+              httpGet:
+                path: /shutdown
+                port: 8090
+                scheme: HTTP
+          livenessProbe:
+            failureThreshold: 6
+            httpGet:
+              path: /ready
+              port: 8002
+              scheme: HTTP
+            initialDelaySeconds: 120
+            periodSeconds: 20
+            successThreshold: 1
+            timeoutSeconds: 5
+          name: envoy
+          ports:
+          - containerPort: 8080
+            hostPort: 80
+            name: http
+            protocol: TCP
+          - containerPort: 8443
+            hostPort: 443
+            name: https
+            protocol: TCP
+          - containerPort: 8002
+            name: metrics
+            protocol: TCP
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /ready
+              port: 8002
+              scheme: HTTP
+            initialDelaySeconds: 10
+            periodSeconds: 3
+            successThreshold: 1
+            timeoutSeconds: 1
+          resources: {}
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 1001
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: /config
+            name: envoy-config
+          - mountPath: /certs
+            name: envoycert
+          - mountPath: /admin
+            name: envoy-admin
+        dnsPolicy: ClusterFirst
+        initContainers:
+        - args:
+          - bootstrap
+          - /config/envoy.json
+          - --xds-address=contour
+          - --xds-port=8001
+          - --resources-dir=/config/resources
+          - --envoy-cafile=/certs/ca.crt
+          - --envoy-cert-file=/certs/tls.crt
+          - --envoy-key-file=/certs/tls.key
+          command:
+          - contour
+          env:
+          - name: CONTOUR_NAMESPACE
+            valueFrom:
+              fieldRef:
+                apiVersion: v1
+                fieldPath: metadata.namespace
+          image: docker.io/bitnami/contour:1.24.2-debian-11-r1
+          imagePullPolicy: IfNotPresent
+          name: envoy-initconfig
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: /config
+            name: envoy-config
+          - mountPath: /certs
+            name: envoycert
+            readOnly: true
+          - mountPath: /admin
+            name: envoy-admin
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        serviceAccount: contour-envoy
+        serviceAccountName: contour-envoy
+        terminationGracePeriodSeconds: 300
+        volumes:
+        - emptyDir: {}
+          name: envoy-admin
+        - emptyDir: {}
+          name: envoy-config
+        - name: envoycert
+          secret:
+            defaultMode: 420
+            secretName: envoycert
+    updateStrategy:
+      rollingUpdate:
+        maxSurge: 0
+        maxUnavailable: 1
+      type: RollingUpdate
+  status:
+    currentNumberScheduled: 2
+    desiredNumberScheduled: 2
+    numberAvailable: 2
+    numberMisscheduled: 0
+    numberReady: 2
+    observedGeneration: 1
+    updatedNumberScheduled: 2
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "1"
+      meta.helm.sh/release-name: radius
+      meta.helm.sh/release-namespace: radius-system
+    creationTimestamp: "2025-04-18T16:10:31Z"
+    generation: 1
+    labels:
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/name: applications-rp
+      app.kubernetes.io/part-of: radius
+      control-plane: applications-rp
+    name: applications-rp
+    namespace: radius-system
+    resourceVersion: "4871"
+    uid: 0ef39c25-0cda-4be8-8d3b-ea2d973118b7
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 1
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        app.kubernetes.io/name: applications-rp
+    strategy:
+      rollingUpdate:
+        maxSurge: 25%
+        maxUnavailable: 25%
+      type: RollingUpdate
+    template:
+      metadata:
+        annotations:
+          prometheus.io/path: /metrics
+          prometheus.io/port: "9090"
+          prometheus.io/scrape: "true"
+        creationTimestamp: null
+        labels:
+          app.kubernetes.io/name: applications-rp
+          app.kubernetes.io/part-of: radius
+          azure.workload.identity/use: "true"
+          control-plane: applications-rp
+      spec:
+        containers:
+        - args:
+          - --config-file=/etc/config/radius-self-host.yaml
+          env:
+          - name: SKIP_ARM
+            value: "false"
+          - name: ARM_AUTH_METHOD
+            value: UCPCredential
+          - name: RADIUS_ENV
+            value: self-hosted
+          - name: K8S_CLUSTER
+            value: "true"
+          image: ghcr.io/radius-project/applications-rp:0.45
+          imagePullPolicy: IfNotPresent
+          name: applications-rp
+          ports:
+          - containerPort: 5443
+            name: applications-rp
+            protocol: TCP
+          - containerPort: 5444
+            name: app-pr-rp
+            protocol: TCP
+          - containerPort: 9090
+            name: metrics
+            protocol: TCP
+          resources:
+            limits:
+              memory: 500Mi
+            requests:
+              memory: 160Mi
+          securityContext:
+            allowPrivilegeEscalation: false
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: /etc/config
+            name: config-volume
+          - mountPath: /terraform
+            name: terraform
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        serviceAccount: applications-rp
+        serviceAccountName: applications-rp
+        terminationGracePeriodSeconds: 30
+        volumes:
+        - configMap:
+            defaultMode: 420
+            name: applications-rp-config
+          name: config-volume
+        - emptyDir: {}
+          name: terraform
+  status:
+    availableReplicas: 1
+    conditions:
+    - lastTransitionTime: "2025-04-18T16:10:40Z"
+      lastUpdateTime: "2025-04-18T16:10:40Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    - lastTransitionTime: "2025-04-18T16:10:32Z"
+      lastUpdateTime: "2025-04-18T16:10:40Z"
+      message: ReplicaSet "applications-rp-7ff8df4757" has successfully progressed.
+      reason: NewReplicaSetAvailable
+      status: "True"
+      type: Progressing
+    observedGeneration: 1
+    readyReplicas: 1
+    replicas: 1
+    updatedReplicas: 1
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "1"
+      meta.helm.sh/release-name: radius
+      meta.helm.sh/release-namespace: radius-system
+    creationTimestamp: "2025-04-18T16:10:31Z"
+    generation: 1
+    labels:
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/name: bicep-de
+      app.kubernetes.io/part-of: radius
+      control-plane: bicep-de
+    name: bicep-de
+    namespace: radius-system
+    resourceVersion: "4876"
+    uid: b99b77bd-ed7d-4d49-942b-ca450d276b6d
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 1
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        app.kubernetes.io/name: bicep-de
+    strategy:
+      rollingUpdate:
+        maxSurge: 25%
+        maxUnavailable: 25%
+      type: RollingUpdate
+    template:
+      metadata:
+        annotations:
+          prometheus.io/path: /metrics
+          prometheus.io/port: "6443"
+          prometheus.io/scrape: "true"
+        creationTimestamp: null
+        labels:
+          app.kubernetes.io/name: bicep-de
+          app.kubernetes.io/part-of: radius
+          azure.workload.identity/use: "true"
+          control-plane: bicep-de
+      spec:
+        containers:
+        - args:
+          - --kubernetes=true
+          env:
+          - name: ASPNETCORE_ENVIRONMENT
+            value: Production
+          - name: SKIP_ARM
+            value: "false"
+          - name: ARM_AUTH_METHOD
+            value: UCPCredential
+          - name: ASPNETCORE_URLS
+            value: http://+:6443
+          - name: kubernetes
+            value: "true"
+          - name: RADIUSBACKENDURL
+            value: https://ucp.radius-system:443/apis/api.ucp.dev/v1alpha3
+          image: ghcr.io/radius-project/deployment-engine:0.45
+          imagePullPolicy: IfNotPresent
+          name: de
+          ports:
+          - containerPort: 6443
+            name: bicep-de-api
+            protocol: TCP
+          resources:
+            limits:
+              memory: 300Mi
+            requests:
+              memory: 130Mi
+          securityContext:
+            allowPrivilegeEscalation: false
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: /app/appsettings.Production.json
+            name: appsettings-vol
+            subPath: appsettings.Production.json
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        serviceAccount: bicep-de
+        serviceAccountName: bicep-de
+        terminationGracePeriodSeconds: 10
+        volumes:
+        - configMap:
+            defaultMode: 420
+            name: bicep-de-config
+          name: appsettings-vol
+  status:
+    availableReplicas: 1
+    conditions:
+    - lastTransitionTime: "2025-04-18T16:10:40Z"
+      lastUpdateTime: "2025-04-18T16:10:40Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    - lastTransitionTime: "2025-04-18T16:10:32Z"
+      lastUpdateTime: "2025-04-18T16:10:40Z"
+      message: ReplicaSet "bicep-de-7bfb8f4f9d" has successfully progressed.
+      reason: NewReplicaSetAvailable
+      status: "True"
+      type: Progressing
+    observedGeneration: 1
+    readyReplicas: 1
+    replicas: 1
+    updatedReplicas: 1
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "1"
+      meta.helm.sh/release-name: contour
+      meta.helm.sh/release-namespace: radius-system
+    creationTimestamp: "2025-04-18T16:12:16Z"
+    generation: 1
+    labels:
+      app.kubernetes.io/component: contour
+      app.kubernetes.io/instance: contour
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/name: contour
+      helm.sh/chart: contour-11.1.1
+    name: contour-contour
+    namespace: radius-system
+    resourceVersion: "6289"
+    uid: 7a0f660a-8502-45a4-a4f0-5ae73750be74
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 1
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        app.kubernetes.io/component: contour
+        app.kubernetes.io/instance: contour
+        app.kubernetes.io/name: contour
+    strategy:
+      rollingUpdate:
+        maxSurge: 25%
+        maxUnavailable: 25%
+      type: RollingUpdate
+    template:
+      metadata:
+        annotations:
+          checksum/config: 7eb711e98f407e6c17d8a1788ba0a1a74b1017a4b5dd24ed6cd675faa9f08416
+        creationTimestamp: null
+        labels:
+          app.kubernetes.io/component: contour
+          app.kubernetes.io/instance: contour
+          app.kubernetes.io/managed-by: Helm
+          app.kubernetes.io/name: contour
+          helm.sh/chart: contour-11.1.1
+      spec:
+        affinity:
+          podAntiAffinity:
+            preferredDuringSchedulingIgnoredDuringExecution:
+            - podAffinityTerm:
+                labelSelector:
+                  matchLabels:
+                    app.kubernetes.io/component: contour
+                    app.kubernetes.io/instance: contour
+                    app.kubernetes.io/name: contour
+                topologyKey: kubernetes.io/hostname
+              weight: 1
+        containers:
+        - args:
+          - serve
+          - --incluster
+          - --xds-address=0.0.0.0
+          - --xds-port=8001
+          - --http-port=8000
+          - --envoy-service-http-port=8080
+          - --envoy-service-https-port=8443
+          - --contour-cafile=/certs/ca.crt
+          - --contour-cert-file=/certs/tls.crt
+          - --contour-key-file=/certs/tls.key
+          - --config-path=/config/contour.yaml
+          - --envoy-service-namespace=radius-system
+          - --envoy-service-name=contour-envoy
+          - --leader-election-resource-name=radius-system
+          - --log-format=text
+          - --kubernetes-debug=0
+          command:
+          - contour
+          env:
+          - name: CONTOUR_NAMESPACE
+            valueFrom:
+              fieldRef:
+                apiVersion: v1
+                fieldPath: metadata.namespace
+          - name: POD_NAME
+            valueFrom:
+              fieldRef:
+                apiVersion: v1
+                fieldPath: metadata.name
+          - name: BITNAMI_DEBUG
+            value: "false"
+          image: docker.io/bitnami/contour:1.24.2-debian-11-r1
+          imagePullPolicy: IfNotPresent
+          livenessProbe:
+            failureThreshold: 6
+            httpGet:
+              path: /healthz
+              port: 8000
+              scheme: HTTP
+            initialDelaySeconds: 120
+            periodSeconds: 20
+            successThreshold: 1
+            timeoutSeconds: 5
+          name: contour
+          ports:
+          - containerPort: 8001
+            name: xds
+            protocol: TCP
+          - containerPort: 8000
+            name: metrics
+            protocol: TCP
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /healthz
+              port: 8000
+              scheme: HTTP
+            initialDelaySeconds: 15
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 5
+          resources: {}
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 1001
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: /certs
+            name: contourcert
+            readOnly: true
+          - mountPath: /config
+            name: contour-config
+            readOnly: true
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext:
+          fsGroup: 1001
+        serviceAccount: contour-contour
+        serviceAccountName: contour-contour
+        terminationGracePeriodSeconds: 30
+        volumes:
+        - name: contourcert
+          secret:
+            defaultMode: 420
+            secretName: contourcert
+        - configMap:
+            defaultMode: 420
+            items:
+            - key: contour.yaml
+              path: contour.yaml
+            name: contour
+          name: contour-config
+  status:
+    availableReplicas: 1
+    conditions:
+    - lastTransitionTime: "2025-04-18T16:12:36Z"
+      lastUpdateTime: "2025-04-18T16:12:36Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    - lastTransitionTime: "2025-04-18T16:12:16Z"
+      lastUpdateTime: "2025-04-18T16:12:36Z"
+      message: ReplicaSet "contour-contour-6c7c5c7f79" has successfully progressed.
+      reason: NewReplicaSetAvailable
+      status: "True"
+      type: Progressing
+    observedGeneration: 1
+    readyReplicas: 1
+    replicas: 1
+    updatedReplicas: 1
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "1"
+      meta.helm.sh/release-name: radius
+      meta.helm.sh/release-namespace: radius-system
+    creationTimestamp: "2025-04-18T16:10:32Z"
+    generation: 1
+    labels:
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/name: controller
+      app.kubernetes.io/part-of: radius
+      control-plane: controller
+    name: controller
+    namespace: radius-system
+    resourceVersion: "1067542"
+    uid: f06453c4-3f42-4039-a595-4d7cc5c22a55
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 1
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        app.kubernetes.io/name: controller
+    strategy:
+      rollingUpdate:
+        maxSurge: 25%
+        maxUnavailable: 25%
+      type: RollingUpdate
+    template:
+      metadata:
+        annotations:
+          prometheus.io/path: /metrics
+          prometheus.io/port: "9090"
+          prometheus.io/scrape: "true"
+        creationTimestamp: null
+        labels:
+          app.kubernetes.io/name: controller
+          app.kubernetes.io/part-of: radius
+          control-plane: controller
+      spec:
+        containers:
+        - args:
+          - --config-file
+          - /etc/config/controller-config.yaml
+          env:
+          - name: TLS_CERT_DIR
+            value: /var/tls/cert
+          - name: PORT
+            value: "9443"
+          - name: RAD_BICEP
+            value: /usr/local/bin/bicep
+          image: ghcr.io/radius-project/controller:0.45
+          imagePullPolicy: Always
+          name: controller
+          ports:
+          - containerPort: 9443
+            name: controller
+            protocol: TCP
+          - containerPort: 9090
+            name: metrics
+            protocol: TCP
+          - containerPort: 3000
+            name: healthz
+            protocol: TCP
+          resources:
+            limits:
+              memory: 300Mi
+            requests:
+              memory: 60Mi
+          securityContext:
+            allowPrivilegeEscalation: false
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: /usr/local/bin
+            name: bicep
+          - mountPath: /bicepconfig.json
+            name: bicepconfig
+            subPath: bicepconfig.json
+          - mountPath: /etc/config
+            name: config-volume
+          - mountPath: /var/tls/cert
+            name: cert
+            readOnly: true
+        dnsPolicy: ClusterFirst
+        initContainers:
+        - command:
+          - sh
+          - -c
+          - mv /bicepconfig.json /bicepconfig/bicepconfig.json && mv /bicep /usr/local/bin/bicep
+          image: ghcr.io/radius-project/bicep:0.45
+          imagePullPolicy: IfNotPresent
+          name: bicep
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: /usr/local/bin
+            name: bicep
+          - mountPath: /bicepconfig
+            name: bicepconfig
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        serviceAccount: controller
+        serviceAccountName: controller
+        terminationGracePeriodSeconds: 30
+        volumes:
+        - emptyDir: {}
+          name: bicep
+        - emptyDir: {}
+          name: bicepconfig
+        - configMap:
+            defaultMode: 420
+            name: controller-config
+          name: config-volume
+        - name: cert
+          secret:
+            defaultMode: 420
+            secretName: controller-cert
+  status:
+    availableReplicas: 1
+    conditions:
+    - lastTransitionTime: "2025-04-18T16:10:32Z"
+      lastUpdateTime: "2025-04-18T16:10:43Z"
+      message: ReplicaSet "controller-74bddc6c8b" has successfully progressed.
+      reason: NewReplicaSetAvailable
+      status: "True"
+      type: Progressing
+    - lastTransitionTime: "2025-04-21T00:26:44Z"
+      lastUpdateTime: "2025-04-21T00:26:44Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    observedGeneration: 1
+    readyReplicas: 1
+    replicas: 1
+    updatedReplicas: 1
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "1"
+      meta.helm.sh/release-name: radius
+      meta.helm.sh/release-namespace: radius-system
+    creationTimestamp: "2025-04-18T16:10:32Z"
+    generation: 1
+    labels:
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/name: dashboard
+      app.kubernetes.io/part-of: radius
+      control-plane: dashboard
+    name: dashboard
+    namespace: radius-system
+    resourceVersion: "5037"
+    uid: c02cfe81-0eeb-48bc-bddc-f9f953a539d8
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 1
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        app.kubernetes.io/name: dashboard
+    strategy:
+      rollingUpdate:
+        maxSurge: 25%
+        maxUnavailable: 25%
+      type: RollingUpdate
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app.kubernetes.io/name: dashboard
+          app.kubernetes.io/part-of: radius
+          control-plane: dashboard
+      spec:
+        containers:
+        - image: ghcr.io/radius-project/dashboard:0.45
+          imagePullPolicy: Always
+          name: dashboard
+          ports:
+          - containerPort: 7007
+            name: http
+            protocol: TCP
+          resources: {}
+          securityContext:
+            allowPrivilegeEscalation: false
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        serviceAccount: dashboard
+        serviceAccountName: dashboard
+        terminationGracePeriodSeconds: 30
+  status:
+    availableReplicas: 1
+    conditions:
+    - lastTransitionTime: "2025-04-18T16:10:49Z"
+      lastUpdateTime: "2025-04-18T16:10:49Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    - lastTransitionTime: "2025-04-18T16:10:32Z"
+      lastUpdateTime: "2025-04-18T16:10:49Z"
+      message: ReplicaSet "dashboard-b65cf4dd7" has successfully progressed.
+      reason: NewReplicaSetAvailable
+      status: "True"
+      type: Progressing
+    observedGeneration: 1
+    readyReplicas: 1
+    replicas: 1
+    updatedReplicas: 1
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "1"
+      meta.helm.sh/release-name: radius
+      meta.helm.sh/release-namespace: radius-system
+    creationTimestamp: "2025-04-18T16:10:32Z"
+    generation: 1
+    labels:
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/name: dynamic-rp
+      app.kubernetes.io/part-of: radius
+      control-plane: dynamic-rp
+    name: dynamic-rp
+    namespace: radius-system
+    resourceVersion: "4887"
+    uid: eea64e22-53f2-4b83-86cd-3554250aeaff
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 1
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        app.kubernetes.io/name: dynamic-rp
+    strategy:
+      rollingUpdate:
+        maxSurge: 25%
+        maxUnavailable: 25%
+      type: RollingUpdate
+    template:
+      metadata:
+        annotations:
+          prometheus.io/path: /metrics
+          prometheus.io/port: "9090"
+          prometheus.io/scrape: "true"
+        creationTimestamp: null
+        labels:
+          app.kubernetes.io/name: dynamic-rp
+          app.kubernetes.io/part-of: radius
+          azure.workload.identity/use: "true"
+          control-plane: dynamic-rp
+      spec:
+        containers:
+        - args:
+          - --config-file=/etc/config/radius-self-host.yaml
+          env:
+          - name: SKIP_ARM
+            value: "false"
+          - name: ARM_AUTH_METHOD
+            value: UCPCredential
+          - name: RADIUS_ENV
+            value: self-hosted
+          - name: K8S_CLUSTER
+            value: "true"
+          image: ghcr.io/radius-project/dynamic-rp:0.45
+          imagePullPolicy: IfNotPresent
+          name: dynamic-rp
+          ports:
+          - containerPort: 5443
+            name: dynamic-rp
+            protocol: TCP
+          - containerPort: 9090
+            name: metrics
+            protocol: TCP
+          resources:
+            limits:
+              memory: 500Mi
+            requests:
+              memory: 160Mi
+          securityContext:
+            allowPrivilegeEscalation: false
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: /etc/config
+            name: config-volume
+          - mountPath: /terraform
+            name: terraform
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        serviceAccount: dynamic-rp
+        serviceAccountName: dynamic-rp
+        terminationGracePeriodSeconds: 30
+        volumes:
+        - configMap:
+            defaultMode: 420
+            name: dynamic-rp-config
+          name: config-volume
+        - emptyDir: {}
+          name: terraform
+  status:
+    availableReplicas: 1
+    conditions:
+    - lastTransitionTime: "2025-04-18T16:10:40Z"
+      lastUpdateTime: "2025-04-18T16:10:40Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    - lastTransitionTime: "2025-04-18T16:10:32Z"
+      lastUpdateTime: "2025-04-18T16:10:40Z"
+      message: ReplicaSet "dynamic-rp-848dbb5f6f" has successfully progressed.
+      reason: NewReplicaSetAvailable
+      status: "True"
+      type: Progressing
+    observedGeneration: 1
+    readyReplicas: 1
+    replicas: 1
+    updatedReplicas: 1
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "1"
+      meta.helm.sh/release-name: radius
+      meta.helm.sh/release-namespace: radius-system
+    creationTimestamp: "2025-04-18T16:10:31Z"
+    generation: 1
+    labels:
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/name: ucp
+      app.kubernetes.io/part-of: radius
+      control-plane: ucp
+    name: ucp
+    namespace: radius-system
+    resourceVersion: "4881"
+    uid: 4831f95c-2c02-4d44-8d54-e0210dd82145
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 1
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        app.kubernetes.io/name: ucp
+    strategy:
+      rollingUpdate:
+        maxSurge: 25%
+        maxUnavailable: 25%
+      type: RollingUpdate
+    template:
+      metadata:
+        annotations:
+          prometheus.io/path: /metrics
+          prometheus.io/port: "9090"
+          prometheus.io/scrape: "true"
+        creationTimestamp: null
+        labels:
+          app.kubernetes.io/name: ucp
+          app.kubernetes.io/part-of: radius
+          azure.workload.identity/use: "true"
+          control-plane: ucp
+      spec:
+        containers:
+        - args:
+          - --config-file=/etc/config/ucp-config.yaml
+          env:
+          - name: TLS_CERT_DIR
+            value: /var/tls/cert
+          - name: PORT
+            value: "9443"
+          image: ghcr.io/radius-project/ucpd:0.45
+          imagePullPolicy: IfNotPresent
+          name: ucp
+          ports:
+          - containerPort: 9443
+            name: ucp
+            protocol: TCP
+          - containerPort: 9090
+            name: metrics
+            protocol: TCP
+          resources:
+            limits:
+              memory: 300Mi
+            requests:
+              memory: 60Mi
+          securityContext:
+            allowPrivilegeEscalation: false
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: /etc/config
+            name: config-volume
+          - mountPath: /var/tls/cert
+            name: cert
+            readOnly: true
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        serviceAccount: ucp
+        serviceAccountName: ucp
+        terminationGracePeriodSeconds: 30
+        volumes:
+        - configMap:
+            defaultMode: 420
+            name: ucp-config
+          name: config-volume
+        - name: cert
+          secret:
+            defaultMode: 420
+            secretName: ucp-cert
+  status:
+    availableReplicas: 1
+    conditions:
+    - lastTransitionTime: "2025-04-18T16:10:40Z"
+      lastUpdateTime: "2025-04-18T16:10:40Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    - lastTransitionTime: "2025-04-18T16:10:32Z"
+      lastUpdateTime: "2025-04-18T16:10:40Z"
+      message: ReplicaSet "ucp-7c55456765" has successfully progressed.
+      reason: NewReplicaSetAvailable
+      status: "True"
+      type: Progressing
+    observedGeneration: 1
+    readyReplicas: 1
+    replicas: 1
+    updatedReplicas: 1
+- apiVersion: apps/v1
+  kind: ReplicaSet
+  metadata:
+    annotations:
+      deployment.kubernetes.io/desired-replicas: "1"
+      deployment.kubernetes.io/max-replicas: "2"
+      deployment.kubernetes.io/revision: "1"
+      meta.helm.sh/release-name: radius
+      meta.helm.sh/release-namespace: radius-system
+    creationTimestamp: "2025-04-18T16:10:32Z"
+    generation: 1
+    labels:
+      app.kubernetes.io/name: applications-rp
+      app.kubernetes.io/part-of: radius
+      azure.workload.identity/use: "true"
+      control-plane: applications-rp
+      pod-template-hash: 7ff8df4757
+    name: applications-rp-7ff8df4757
+    namespace: radius-system
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: Deployment
+      name: applications-rp
+      uid: 0ef39c25-0cda-4be8-8d3b-ea2d973118b7
+    resourceVersion: "4870"
+    uid: 2aef32f7-e867-429d-9ea6-4b8854ec34b6
+  spec:
+    replicas: 1
+    selector:
+      matchLabels:
+        app.kubernetes.io/name: applications-rp
+        pod-template-hash: 7ff8df4757
+    template:
+      metadata:
+        annotations:
+          prometheus.io/path: /metrics
+          prometheus.io/port: "9090"
+          prometheus.io/scrape: "true"
+        creationTimestamp: null
+        labels:
+          app.kubernetes.io/name: applications-rp
+          app.kubernetes.io/part-of: radius
+          azure.workload.identity/use: "true"
+          control-plane: applications-rp
+          pod-template-hash: 7ff8df4757
+      spec:
+        containers:
+        - args:
+          - --config-file=/etc/config/radius-self-host.yaml
+          env:
+          - name: SKIP_ARM
+            value: "false"
+          - name: ARM_AUTH_METHOD
+            value: UCPCredential
+          - name: RADIUS_ENV
+            value: self-hosted
+          - name: K8S_CLUSTER
+            value: "true"
+          image: ghcr.io/radius-project/applications-rp:0.45
+          imagePullPolicy: IfNotPresent
+          name: applications-rp
+          ports:
+          - containerPort: 5443
+            name: applications-rp
+            protocol: TCP
+          - containerPort: 5444
+            name: app-pr-rp
+            protocol: TCP
+          - containerPort: 9090
+            name: metrics
+            protocol: TCP
+          resources:
+            limits:
+              memory: 500Mi
+            requests:
+              memory: 160Mi
+          securityContext:
+            allowPrivilegeEscalation: false
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: /etc/config
+            name: config-volume
+          - mountPath: /terraform
+            name: terraform
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        serviceAccount: applications-rp
+        serviceAccountName: applications-rp
+        terminationGracePeriodSeconds: 30
+        volumes:
+        - configMap:
+            defaultMode: 420
+            name: applications-rp-config
+          name: config-volume
+        - emptyDir: {}
+          name: terraform
+  status:
+    availableReplicas: 1
+    fullyLabeledReplicas: 1
+    observedGeneration: 1
+    readyReplicas: 1
+    replicas: 1
+- apiVersion: apps/v1
+  kind: ReplicaSet
+  metadata:
+    annotations:
+      deployment.kubernetes.io/desired-replicas: "1"
+      deployment.kubernetes.io/max-replicas: "2"
+      deployment.kubernetes.io/revision: "1"
+      meta.helm.sh/release-name: radius
+      meta.helm.sh/release-namespace: radius-system
+    creationTimestamp: "2025-04-18T16:10:32Z"
+    generation: 1
+    labels:
+      app.kubernetes.io/name: bicep-de
+      app.kubernetes.io/part-of: radius
+      azure.workload.identity/use: "true"
+      control-plane: bicep-de
+      pod-template-hash: 7bfb8f4f9d
+    name: bicep-de-7bfb8f4f9d
+    namespace: radius-system
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: Deployment
+      name: bicep-de
+      uid: b99b77bd-ed7d-4d49-942b-ca450d276b6d
+    resourceVersion: "4875"
+    uid: 33891a3a-3998-4e8e-ae18-820543319ed3
+  spec:
+    replicas: 1
+    selector:
+      matchLabels:
+        app.kubernetes.io/name: bicep-de
+        pod-template-hash: 7bfb8f4f9d
+    template:
+      metadata:
+        annotations:
+          prometheus.io/path: /metrics
+          prometheus.io/port: "6443"
+          prometheus.io/scrape: "true"
+        creationTimestamp: null
+        labels:
+          app.kubernetes.io/name: bicep-de
+          app.kubernetes.io/part-of: radius
+          azure.workload.identity/use: "true"
+          control-plane: bicep-de
+          pod-template-hash: 7bfb8f4f9d
+      spec:
+        containers:
+        - args:
+          - --kubernetes=true
+          env:
+          - name: ASPNETCORE_ENVIRONMENT
+            value: Production
+          - name: SKIP_ARM
+            value: "false"
+          - name: ARM_AUTH_METHOD
+            value: UCPCredential
+          - name: ASPNETCORE_URLS
+            value: http://+:6443
+          - name: kubernetes
+            value: "true"
+          - name: RADIUSBACKENDURL
+            value: https://ucp.radius-system:443/apis/api.ucp.dev/v1alpha3
+          image: ghcr.io/radius-project/deployment-engine:0.45
+          imagePullPolicy: IfNotPresent
+          name: de
+          ports:
+          - containerPort: 6443
+            name: bicep-de-api
+            protocol: TCP
+          resources:
+            limits:
+              memory: 300Mi
+            requests:
+              memory: 130Mi
+          securityContext:
+            allowPrivilegeEscalation: false
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: /app/appsettings.Production.json
+            name: appsettings-vol
+            subPath: appsettings.Production.json
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        serviceAccount: bicep-de
+        serviceAccountName: bicep-de
+        terminationGracePeriodSeconds: 10
+        volumes:
+        - configMap:
+            defaultMode: 420
+            name: bicep-de-config
+          name: appsettings-vol
+  status:
+    availableReplicas: 1
+    fullyLabeledReplicas: 1
+    observedGeneration: 1
+    readyReplicas: 1
+    replicas: 1
+- apiVersion: apps/v1
+  kind: ReplicaSet
+  metadata:
+    annotations:
+      deployment.kubernetes.io/desired-replicas: "1"
+      deployment.kubernetes.io/max-replicas: "2"
+      deployment.kubernetes.io/revision: "1"
+      meta.helm.sh/release-name: contour
+      meta.helm.sh/release-namespace: radius-system
+    creationTimestamp: "2025-04-18T16:12:16Z"
+    generation: 1
+    labels:
+      app.kubernetes.io/component: contour
+      app.kubernetes.io/instance: contour
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/name: contour
+      helm.sh/chart: contour-11.1.1
+      pod-template-hash: 6c7c5c7f79
+    name: contour-contour-6c7c5c7f79
+    namespace: radius-system
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: Deployment
+      name: contour-contour
+      uid: 7a0f660a-8502-45a4-a4f0-5ae73750be74
+    resourceVersion: "6288"
+    uid: 6a2c96a2-8948-4ee1-a3d0-552fc7d5803f
+  spec:
+    replicas: 1
+    selector:
+      matchLabels:
+        app.kubernetes.io/component: contour
+        app.kubernetes.io/instance: contour
+        app.kubernetes.io/name: contour
+        pod-template-hash: 6c7c5c7f79
+    template:
+      metadata:
+        annotations:
+          checksum/config: 7eb711e98f407e6c17d8a1788ba0a1a74b1017a4b5dd24ed6cd675faa9f08416
+        creationTimestamp: null
+        labels:
+          app.kubernetes.io/component: contour
+          app.kubernetes.io/instance: contour
+          app.kubernetes.io/managed-by: Helm
+          app.kubernetes.io/name: contour
+          helm.sh/chart: contour-11.1.1
+          pod-template-hash: 6c7c5c7f79
+      spec:
+        affinity:
+          podAntiAffinity:
+            preferredDuringSchedulingIgnoredDuringExecution:
+            - podAffinityTerm:
+                labelSelector:
+                  matchLabels:
+                    app.kubernetes.io/component: contour
+                    app.kubernetes.io/instance: contour
+                    app.kubernetes.io/name: contour
+                topologyKey: kubernetes.io/hostname
+              weight: 1
+        containers:
+        - args:
+          - serve
+          - --incluster
+          - --xds-address=0.0.0.0
+          - --xds-port=8001
+          - --http-port=8000
+          - --envoy-service-http-port=8080
+          - --envoy-service-https-port=8443
+          - --contour-cafile=/certs/ca.crt
+          - --contour-cert-file=/certs/tls.crt
+          - --contour-key-file=/certs/tls.key
+          - --config-path=/config/contour.yaml
+          - --envoy-service-namespace=radius-system
+          - --envoy-service-name=contour-envoy
+          - --leader-election-resource-name=radius-system
+          - --log-format=text
+          - --kubernetes-debug=0
+          command:
+          - contour
+          env:
+          - name: CONTOUR_NAMESPACE
+            valueFrom:
+              fieldRef:
+                apiVersion: v1
+                fieldPath: metadata.namespace
+          - name: POD_NAME
+            valueFrom:
+              fieldRef:
+                apiVersion: v1
+                fieldPath: metadata.name
+          - name: BITNAMI_DEBUG
+            value: "false"
+          image: docker.io/bitnami/contour:1.24.2-debian-11-r1
+          imagePullPolicy: IfNotPresent
+          livenessProbe:
+            failureThreshold: 6
+            httpGet:
+              path: /healthz
+              port: 8000
+              scheme: HTTP
+            initialDelaySeconds: 120
+            periodSeconds: 20
+            successThreshold: 1
+            timeoutSeconds: 5
+          name: contour
+          ports:
+          - containerPort: 8001
+            name: xds
+            protocol: TCP
+          - containerPort: 8000
+            name: metrics
+            protocol: TCP
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /healthz
+              port: 8000
+              scheme: HTTP
+            initialDelaySeconds: 15
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 5
+          resources: {}
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 1001
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: /certs
+            name: contourcert
+            readOnly: true
+          - mountPath: /config
+            name: contour-config
+            readOnly: true
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext:
+          fsGroup: 1001
+        serviceAccount: contour-contour
+        serviceAccountName: contour-contour
+        terminationGracePeriodSeconds: 30
+        volumes:
+        - name: contourcert
+          secret:
+            defaultMode: 420
+            secretName: contourcert
+        - configMap:
+            defaultMode: 420
+            items:
+            - key: contour.yaml
+              path: contour.yaml
+            name: contour
+          name: contour-config
+  status:
+    availableReplicas: 1
+    fullyLabeledReplicas: 1
+    observedGeneration: 1
+    readyReplicas: 1
+    replicas: 1
+- apiVersion: apps/v1
+  kind: ReplicaSet
+  metadata:
+    annotations:
+      deployment.kubernetes.io/desired-replicas: "1"
+      deployment.kubernetes.io/max-replicas: "2"
+      deployment.kubernetes.io/revision: "1"
+      meta.helm.sh/release-name: radius
+      meta.helm.sh/release-namespace: radius-system
+    creationTimestamp: "2025-04-18T16:10:32Z"
+    generation: 1
+    labels:
+      app.kubernetes.io/name: controller
+      app.kubernetes.io/part-of: radius
+      control-plane: controller
+      pod-template-hash: 74bddc6c8b
+    name: controller-74bddc6c8b
+    namespace: radius-system
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: Deployment
+      name: controller
+      uid: f06453c4-3f42-4039-a595-4d7cc5c22a55
+    resourceVersion: "1067538"
+    uid: 2f77182e-d855-4292-ae4b-79497f96a3b0
+  spec:
+    replicas: 1
+    selector:
+      matchLabels:
+        app.kubernetes.io/name: controller
+        pod-template-hash: 74bddc6c8b
+    template:
+      metadata:
+        annotations:
+          prometheus.io/path: /metrics
+          prometheus.io/port: "9090"
+          prometheus.io/scrape: "true"
+        creationTimestamp: null
+        labels:
+          app.kubernetes.io/name: controller
+          app.kubernetes.io/part-of: radius
+          control-plane: controller
+          pod-template-hash: 74bddc6c8b
+      spec:
+        containers:
+        - args:
+          - --config-file
+          - /etc/config/controller-config.yaml
+          env:
+          - name: TLS_CERT_DIR
+            value: /var/tls/cert
+          - name: PORT
+            value: "9443"
+          - name: RAD_BICEP
+            value: /usr/local/bin/bicep
+          image: ghcr.io/radius-project/controller:0.45
+          imagePullPolicy: Always
+          name: controller
+          ports:
+          - containerPort: 9443
+            name: controller
+            protocol: TCP
+          - containerPort: 9090
+            name: metrics
+            protocol: TCP
+          - containerPort: 3000
+            name: healthz
+            protocol: TCP
+          resources:
+            limits:
+              memory: 300Mi
+            requests:
+              memory: 60Mi
+          securityContext:
+            allowPrivilegeEscalation: false
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: /usr/local/bin
+            name: bicep
+          - mountPath: /bicepconfig.json
+            name: bicepconfig
+            subPath: bicepconfig.json
+          - mountPath: /etc/config
+            name: config-volume
+          - mountPath: /var/tls/cert
+            name: cert
+            readOnly: true
+        dnsPolicy: ClusterFirst
+        initContainers:
+        - command:
+          - sh
+          - -c
+          - mv /bicepconfig.json /bicepconfig/bicepconfig.json && mv /bicep /usr/local/bin/bicep
+          image: ghcr.io/radius-project/bicep:0.45
+          imagePullPolicy: IfNotPresent
+          name: bicep
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: /usr/local/bin
+            name: bicep
+          - mountPath: /bicepconfig
+            name: bicepconfig
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        serviceAccount: controller
+        serviceAccountName: controller
+        terminationGracePeriodSeconds: 30
+        volumes:
+        - emptyDir: {}
+          name: bicep
+        - emptyDir: {}
+          name: bicepconfig
+        - configMap:
+            defaultMode: 420
+            name: controller-config
+          name: config-volume
+        - name: cert
+          secret:
+            defaultMode: 420
+            secretName: controller-cert
+  status:
+    availableReplicas: 1
+    fullyLabeledReplicas: 1
+    observedGeneration: 1
+    readyReplicas: 1
+    replicas: 1
+- apiVersion: apps/v1
+  kind: ReplicaSet
+  metadata:
+    annotations:
+      deployment.kubernetes.io/desired-replicas: "1"
+      deployment.kubernetes.io/max-replicas: "2"
+      deployment.kubernetes.io/revision: "1"
+      meta.helm.sh/release-name: radius
+      meta.helm.sh/release-namespace: radius-system
+    creationTimestamp: "2025-04-18T16:10:32Z"
+    generation: 1
+    labels:
+      app.kubernetes.io/name: dashboard
+      app.kubernetes.io/part-of: radius
+      control-plane: dashboard
+      pod-template-hash: b65cf4dd7
+    name: dashboard-b65cf4dd7
+    namespace: radius-system
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: Deployment
+      name: dashboard
+      uid: c02cfe81-0eeb-48bc-bddc-f9f953a539d8
+    resourceVersion: "5035"
+    uid: 4d0332a3-3388-4377-8106-dc17c28d2d95
+  spec:
+    replicas: 1
+    selector:
+      matchLabels:
+        app.kubernetes.io/name: dashboard
+        pod-template-hash: b65cf4dd7
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app.kubernetes.io/name: dashboard
+          app.kubernetes.io/part-of: radius
+          control-plane: dashboard
+          pod-template-hash: b65cf4dd7
+      spec:
+        containers:
+        - image: ghcr.io/radius-project/dashboard:0.45
+          imagePullPolicy: Always
+          name: dashboard
+          ports:
+          - containerPort: 7007
+            name: http
+            protocol: TCP
+          resources: {}
+          securityContext:
+            allowPrivilegeEscalation: false
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        serviceAccount: dashboard
+        serviceAccountName: dashboard
+        terminationGracePeriodSeconds: 30
+  status:
+    availableReplicas: 1
+    fullyLabeledReplicas: 1
+    observedGeneration: 1
+    readyReplicas: 1
+    replicas: 1
+- apiVersion: apps/v1
+  kind: ReplicaSet
+  metadata:
+    annotations:
+      deployment.kubernetes.io/desired-replicas: "1"
+      deployment.kubernetes.io/max-replicas: "2"
+      deployment.kubernetes.io/revision: "1"
+      meta.helm.sh/release-name: radius
+      meta.helm.sh/release-namespace: radius-system
+    creationTimestamp: "2025-04-18T16:10:32Z"
+    generation: 1
+    labels:
+      app.kubernetes.io/name: dynamic-rp
+      app.kubernetes.io/part-of: radius
+      azure.workload.identity/use: "true"
+      control-plane: dynamic-rp
+      pod-template-hash: 848dbb5f6f
+    name: dynamic-rp-848dbb5f6f
+    namespace: radius-system
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: Deployment
+      name: dynamic-rp
+      uid: eea64e22-53f2-4b83-86cd-3554250aeaff
+    resourceVersion: "4886"
+    uid: 844b39a9-01f6-44fb-8739-c57d29ca5a64
+  spec:
+    replicas: 1
+    selector:
+      matchLabels:
+        app.kubernetes.io/name: dynamic-rp
+        pod-template-hash: 848dbb5f6f
+    template:
+      metadata:
+        annotations:
+          prometheus.io/path: /metrics
+          prometheus.io/port: "9090"
+          prometheus.io/scrape: "true"
+        creationTimestamp: null
+        labels:
+          app.kubernetes.io/name: dynamic-rp
+          app.kubernetes.io/part-of: radius
+          azure.workload.identity/use: "true"
+          control-plane: dynamic-rp
+          pod-template-hash: 848dbb5f6f
+      spec:
+        containers:
+        - args:
+          - --config-file=/etc/config/radius-self-host.yaml
+          env:
+          - name: SKIP_ARM
+            value: "false"
+          - name: ARM_AUTH_METHOD
+            value: UCPCredential
+          - name: RADIUS_ENV
+            value: self-hosted
+          - name: K8S_CLUSTER
+            value: "true"
+          image: ghcr.io/radius-project/dynamic-rp:0.45
+          imagePullPolicy: IfNotPresent
+          name: dynamic-rp
+          ports:
+          - containerPort: 5443
+            name: dynamic-rp
+            protocol: TCP
+          - containerPort: 9090
+            name: metrics
+            protocol: TCP
+          resources:
+            limits:
+              memory: 500Mi
+            requests:
+              memory: 160Mi
+          securityContext:
+            allowPrivilegeEscalation: false
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: /etc/config
+            name: config-volume
+          - mountPath: /terraform
+            name: terraform
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        serviceAccount: dynamic-rp
+        serviceAccountName: dynamic-rp
+        terminationGracePeriodSeconds: 30
+        volumes:
+        - configMap:
+            defaultMode: 420
+            name: dynamic-rp-config
+          name: config-volume
+        - emptyDir: {}
+          name: terraform
+  status:
+    availableReplicas: 1
+    fullyLabeledReplicas: 1
+    observedGeneration: 1
+    readyReplicas: 1
+    replicas: 1
+- apiVersion: apps/v1
+  kind: ReplicaSet
+  metadata:
+    annotations:
+      deployment.kubernetes.io/desired-replicas: "1"
+      deployment.kubernetes.io/max-replicas: "2"
+      deployment.kubernetes.io/revision: "1"
+      meta.helm.sh/release-name: radius
+      meta.helm.sh/release-namespace: radius-system
+    creationTimestamp: "2025-04-18T16:10:32Z"
+    generation: 1
+    labels:
+      app.kubernetes.io/name: ucp
+      app.kubernetes.io/part-of: radius
+      azure.workload.identity/use: "true"
+      control-plane: ucp
+      pod-template-hash: 7c55456765
+    name: ucp-7c55456765
+    namespace: radius-system
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: Deployment
+      name: ucp
+      uid: 4831f95c-2c02-4d44-8d54-e0210dd82145
+    resourceVersion: "4880"
+    uid: 62d57850-f7c1-4b13-b155-45135c06e4f1
+  spec:
+    replicas: 1
+    selector:
+      matchLabels:
+        app.kubernetes.io/name: ucp
+        pod-template-hash: 7c55456765
+    template:
+      metadata:
+        annotations:
+          prometheus.io/path: /metrics
+          prometheus.io/port: "9090"
+          prometheus.io/scrape: "true"
+        creationTimestamp: null
+        labels:
+          app.kubernetes.io/name: ucp
+          app.kubernetes.io/part-of: radius
+          azure.workload.identity/use: "true"
+          control-plane: ucp
+          pod-template-hash: 7c55456765
+      spec:
+        containers:
+        - args:
+          - --config-file=/etc/config/ucp-config.yaml
+          env:
+          - name: TLS_CERT_DIR
+            value: /var/tls/cert
+          - name: PORT
+            value: "9443"
+          image: ghcr.io/radius-project/ucpd:0.45
+          imagePullPolicy: IfNotPresent
+          name: ucp
+          ports:
+          - containerPort: 9443
+            name: ucp
+            protocol: TCP
+          - containerPort: 9090
+            name: metrics
+            protocol: TCP
+          resources:
+            limits:
+              memory: 300Mi
+            requests:
+              memory: 60Mi
+          securityContext:
+            allowPrivilegeEscalation: false
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: /etc/config
+            name: config-volume
+          - mountPath: /var/tls/cert
+            name: cert
+            readOnly: true
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        serviceAccount: ucp
+        serviceAccountName: ucp
+        terminationGracePeriodSeconds: 30
+        volumes:
+        - configMap:
+            defaultMode: 420
+            name: ucp-config
+          name: config-volume
+        - name: cert
+          secret:
+            defaultMode: 420
+            secretName: ucp-cert
+  status:
+    availableReplicas: 1
+    fullyLabeledReplicas: 1
+    observedGeneration: 1
+    readyReplicas: 1
+    replicas: 1
+- apiVersion: apps/v1
+  kind: StatefulSet
+  metadata:
+    annotations:
+      meta.helm.sh/release-name: radius
+      meta.helm.sh/release-namespace: radius-system
+    creationTimestamp: "2025-04-18T16:10:32Z"
+    generation: 1
+    labels:
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/name: database
+      app.kubernetes.io/part-of: radius
+      control-plane: database
+    name: database
+    namespace: radius-system
+    resourceVersion: "5097"
+    uid: eefbb0c8-5b17-4474-9656-8ed8fa2731c0
+  spec:
+    persistentVolumeClaimRetentionPolicy:
+      whenDeleted: Retain
+      whenScaled: Retain
+    podManagementPolicy: OrderedReady
+    replicas: 1
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        app.kubernetes.io/name: database
+    serviceName: database
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app.kubernetes.io/name: database
+          app.kubernetes.io/part-of: radius
+          control-plane: database
+      spec:
+        containers:
+        - env:
+          - name: POSTGRES_DB
+            valueFrom:
+              secretKeyRef:
+                key: POSTGRES_DB
+                name: database-secret
+          - name: POSTGRES_USER
+            valueFrom:
+              secretKeyRef:
+                key: POSTGRES_USER
+                name: database-secret
+          - name: POSTGRES_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: POSTGRES_PASSWORD
+                name: database-secret
+          image: ghcr.io/radius-project/mirror/postgres:latest
+          imagePullPolicy: IfNotPresent
+          name: database
+          ports:
+          - containerPort: 5432
+            name: postgres
+            protocol: TCP
+          resources:
+            limits:
+              cpu: "2"
+              memory: 1Gi
+            requests:
+              cpu: "2"
+              memory: 512Mi
+          securityContext:
+            allowPrivilegeEscalation: false
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: /var/lib/postgresql/data
+            name: database
+            subPath: postgres
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        serviceAccount: database
+        serviceAccountName: database
+        terminationGracePeriodSeconds: 30
+    updateStrategy:
+      rollingUpdate:
+        partition: 0
+      type: RollingUpdate
+    volumeClaimTemplates:
+    - apiVersion: v1
+      kind: PersistentVolumeClaim
+      metadata:
+        creationTimestamp: null
+        name: database
+      spec:
+        accessModes:
+        - ReadWriteOnce
+        resources:
+          requests:
+            storage: 1Gi
+        volumeMode: Filesystem
+      status:
+        phase: Pending
+  status:
+    availableReplicas: 1
+    collisionCount: 0
+    currentReplicas: 1
+    currentRevision: database-f9df69f78
+    observedGeneration: 1
+    readyReplicas: 1
+    replicas: 1
+    updateRevision: database-f9df69f78
+    updatedReplicas: 1
+kind: List
+metadata:
+  resourceVersion: ""
