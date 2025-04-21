@@ -1,100 +1,85 @@
+# 'iac/setup-eso.sh'  – v2, cluster‑scoped SecretStore & namespace fix
 #!/usr/bin/env bash
 set -euo pipefail
 
-###############################################################################
-# CONFIGURE ME – fill in or export these before running                       #
-###############################################################################
-SUB_ID="fa5b32b6-1d6d-4110-bea2-8ac0e3126a38"   # Azure subscription ID
-RG="rg1"                                        # Resource group with AKS & KV
-CLUSTER="cluster2"                              # AKS cluster name
-VAULT="qs-ygl2zollxkbc6"                        # Key Vault name
-NAMESPACE="external-secrets"                    # k8s namespace for ESO
-SA_NAME="eso-azure-wi-sa"                       # ServiceAccount name
-APP_NAME="eso-${CLUSTER}"                       # AAD app display name
-EXTERNAL_SECRET_FILE="${1:-}"                   # Optional: path to your ExternalSecret yaml
+################################## CONFIG #####################################
+SUB_ID="fa5b32b6-1d6d-4110-bea2-8ac0e3126a38"           # Azure subscription
+RG="rg1"                                                # resource group
+CLUSTER="cluster2"                                      # AKS cluster name
+VAULT="qs-ygl2zollxkbc6"                                # Key Vault name
+ESO_NS="external-secrets"                               # ESO controller ns
+SA_NAME="eso-azure-wi-sa"                               # workload‑id SA
+APP_NAME="eso-${CLUSTER}"                               # AAD app display name
+EXT_SECRET_FILE="${1:-}"                                # optional ES yaml
 ###############################################################################
 
 echo -e "\n👉  Using subscription $SUB_ID"
 az account set --subscription "$SUB_ID"
 
-###############################################################################
-# 1. Ensure CLI tools exist                                                   #
-###############################################################################
+######################## 1. Prereq binaries ###################################
 for tool in az kubectl helm; do
-  command -v "$tool" >/dev/null 2>&1 || { echo "❌ $tool not found in \$PATH"; exit 1; }
+  command -v "$tool" >/dev/null || { echo "❌ $tool missing"; exit 1; }
 done
 
-###############################################################################
-# 2. Install azwi CLI if missing                                              #
-###############################################################################
+######################## 2. azwi CLI ##########################################
 if ! command -v azwi &>/dev/null; then
-  echo "ℹ️  Installing azwi CLI..."
+  echo "ℹ️  Installing azwi…"
   curl -sL https://raw.githubusercontent.com/Azure/azure-workload-identity/main/scripts/azure-workload-identity-release.sh | bash
   export PATH="$HOME/.azure-workload-identity/bin:$PATH"
 fi
 
-###############################################################################
-# 3. Enable OIDC & Workload Identity on the cluster                           #
-###############################################################################
-echo "ℹ️  Enabling OIDC issuer + Workload Identity on AKS (no‑op if already on)…"
-az aks update -g "$RG" -n "$CLUSTER" \
-  --enable-oidc-issuer \
-  --enable-workload-identity
-
-echo "ℹ️  Fetching cluster credentials…"
+######################## 3. Enable OIDC / fetch creds #########################
+az aks update -g "$RG" -n "$CLUSTER" --enable-oidc-issuer --enable-workload-identity
 az aks get-credentials -g "$RG" -n "$CLUSTER" --overwrite-existing
-
-OIDC_ISSUER="$(az aks show -g "$RG" -n "$CLUSTER" \
-  --query oidcIssuerProfile.issuerUrl -o tsv)"
+OIDC_ISSUER=$(az aks show -g "$RG" -n "$CLUSTER" --query oidcIssuerProfile.issuerUrl -o tsv)
 echo "   OIDC issuer: $OIDC_ISSUER"
 
 ###############################################################################
-# 4. Namespace and ServiceAccount                                             #
+# 3b. Grant kubelet identity AcrPull on ACR                                   #
 ###############################################################################
-kubectl create namespace "$NAMESPACE" --dry-run=client -o yaml | kubectl apply -f -
-echo "ℹ️  Creating/patching ServiceAccount $SA_NAME in $NAMESPACE…"
+ACR_NAME="vpittamp"                                  # <- adjust if needed
+ACR_ID=$(az acr show -n "$ACR_NAME" --query id -o tsv)
+KUBE_OID=$(az aks show -g "$RG" -n "$CLUSTER" \
+           --query 'identityProfile.kubeletidentity.objectId' -o tsv)
 
-# Run the full azwi workflow (app + SA + federated identity + RBAC in one go)
-VAULT_ID="$(az keyvault show -g "$RG" -n "$VAULT" --query id -o tsv)"
+echo "ℹ️  Granting AcrPull on $ACR_NAME to kubelet identity $KUBE_OID…"
+az role assignment create \
+  --assignee-object-id "$KUBE_OID" \
+  --role AcrPull \
+  --scope "$ACR_ID" \
+  --only-show-errors || true     # ignore if already assigned
+
+
+######################## 4. Namespace & ServiceAccount ########################
+kubectl create namespace "$ESO_NS" --dry-run=client -o yaml | kubectl apply -f -
+VAULT_ID=$(az keyvault show -g "$RG" -n "$VAULT" --query id -o tsv)
+
 azwi serviceaccount create \
   --aad-application-name "$APP_NAME" \
-  --service-account-namespace "$NAMESPACE" \
+  --service-account-namespace "$ESO_NS" \
   --service-account-name "$SA_NAME" \
   --service-account-issuer-url "$OIDC_ISSUER" \
   --azure-scope "$VAULT_ID" \
-  --azure-role "Key Vault Secrets User"
+  --azure-role "Key Vault Secrets User"       # :contentReference[oaicite:2]{index=2}
 
-# Grab client‑id for later confirmation
-AZURE_CLIENT_ID="$(kubectl get sa "$SA_NAME" -n "$NAMESPACE" \
-  -o jsonpath='{.metadata.annotations.azure\.workload\.identity\/client-id}')"
-echo "   ServiceAccount annotated with client‑id: $AZURE_CLIENT_ID"
+AZURE_CLIENT_ID=$(kubectl -n "$ESO_NS" get sa "$SA_NAME" -o jsonpath='{.metadata.annotations.azure\.workload\.identity/client-id}')
+echo "   SA client‑id: $AZURE_CLIENT_ID"
 
-###############################################################################
-# 5. Install External Secrets Operator via Helm                               #
-###############################################################################
-if ! helm status external-secrets -n "$NAMESPACE" &>/dev/null; then
-  echo "ℹ️  Installing External Secrets Operator Helm chart…"
+######################## 5. Install ESO via Helm ##############################
+if ! helm status external-secrets -n "$ESO_NS" &>/dev/null; then
   helm repo add external-secrets https://charts.external-secrets.io
   helm repo update
   helm upgrade --install external-secrets external-secrets/external-secrets \
-    --namespace "$NAMESPACE" \
-    --create-namespace \
-    --set installCRDs=true
-else
-  echo "ℹ️  External Secrets Operator already installed."
+       --namespace "$ESO_NS" --create-namespace --set installCRDs=true   # :contentReference[oaicite:3]{index=3}
 fi
+kubectl -n "$ESO_NS" rollout status deploy/external-secrets
 
-kubectl rollout status deploy/external-secrets -n "$NAMESPACE"
-
-###############################################################################
-# 6. Create SecretStore tied to Key Vault                                     #
-###############################################################################
+######################## 6. ClusterSecretStore (cluster‑scoped) ###############
 cat <<EOF | kubectl apply -f -
 apiVersion: external-secrets.io/v1beta1
-kind: SecretStore
+kind: ClusterSecretStore
 metadata:
-  name: azure-kv
-  namespace: $NAMESPACE
+  name: azure-keyvault-store
 spec:
   provider:
     azurekv:
@@ -102,59 +87,55 @@ spec:
       vaultUrl: https://${VAULT}.vault.azure.net
       serviceAccountRef:
         name: $SA_NAME
+        namespace: $ESO_NS          # << REQUIRED for ClusterSecretStore  :contentReference[oaicite:4]{index=4}
 EOF
 
-# Wait until SecretStore is Ready (max 2 min)
-echo "ℹ️  Waiting for SecretStore readiness…"
+echo "ℹ️  Waiting for ClusterSecretStore readiness…"
 kubectl wait --for=condition=Ready \
-  secretstore/azure-kv -n "$NAMESPACE" --timeout=120s
+  clustersecretstore/azure-keyvault-store --timeout=120s     # :contentReference[oaicite:5]{index=5}
 
-###############################################################################
-# 7. Apply ExternalSecret(s) if a file was supplied                           #
-###############################################################################
-if [[ -n "$EXTERNAL_SECRET_FILE" && -f "$EXTERNAL_SECRET_FILE" ]]; then
-  echo "ℹ️  Applying user‑supplied ExternalSecret file: $EXTERNAL_SECRET_FILE"
-  kubectl apply -f "$EXTERNAL_SECRET_FILE" -n "$NAMESPACE"
-else
-  echo "ℹ️  No ExternalSecret file supplied – skipping."
+######################## 7. Apply user ExternalSecret (optional) ##############
+if [[ -n "$EXT_SECRET_FILE" && -f "$EXT_SECRET_FILE" ]]; then
+  echo "ℹ️  Applying user ExternalSecret: $EXT_SECRET_FILE"
+  kubectl apply -f "$EXT_SECRET_FILE"
 fi
 
-###############################################################################
-# 8. Summary & test read                                                      #
-###############################################################################
-echo -e "\n✅  Setup complete."
-echo "   SecretStore:  $(kubectl get secretstore azure-kv -n "$NAMESPACE" -o jsonpath='{.status.conditions[?(@.type=="Ready")].status}')" 
-echo "   ServiceAccount annotation: $(kubectl get sa "$SA_NAME" -n "$NAMESPACE" -o jsonpath='{.metadata.annotations.azure\.workload\.identity\/client-id}')"
+######################## 8. Summary ###########################################
+echo -e "\n✅  External Secrets set‑up complete."
+echo "   ClusterSecretStore Ready: $(kubectl get clustersecretstore azure-keyvault-store -o jsonpath='{.status.conditions[?(@.type=="Ready")].status}')"
+echo "   SA annotation:           $AZURE_CLIENT_ID"
 
-read -r -p $'👉  Enter a Key Vault secret name to test (or press Enter to skip): ' KV_SECRET
-if [[ -n "$KV_SECRET" ]]; then
+###############################################################################
+# 9. Optional test: read one secret
+###############################################################################
+read -r -p $'👉  Enter a Key Vault secret name to test (or Enter to skip): ' KV
+if [[ -n "$KV" ]]; then
   cat <<EOF | kubectl apply -f -
 apiVersion: external-secrets.io/v1beta1
 kind: ExternalSecret
 metadata:
   name: test-secret
-  namespace: $NAMESPACE
 spec:
-  refreshInterval: 5m
+  refreshInterval: 2m
   secretStoreRef:
-    name: azure-kv
-    kind: SecretStore
+    kind: ClusterSecretStore
+    name: azure-keyvault-store
   target:
     name: test-secret
     creationPolicy: Owner
   data:
-  - secretKey: $KV_SECRET
+  - secretKey: ${KV//-/_}         # map hyphens→underscores for env‑var style
     remoteRef:
-      key: $KV_SECRET
+      key: $KV
 EOF
-  echo "ℹ️  Waiting up to 60 s for test secret to sync…"
+  echo "ℹ️  Waiting up to 60s for sync…"
   for i in {1..12}; do
-    if kubectl get secret test-secret -n "$NAMESPACE" &>/dev/null; then
-      VALUE=$(kubectl get secret test-secret -n "$NAMESPACE" -o jsonpath="{.data.$KV_SECRET}" | base64 -d)
-      echo "✅  Synced!  '$KV_SECRET' value: $VALUE"
+    if kubectl get secret test-secret &>/dev/null; then
+      VAL=$(kubectl get secret test-secret -o jsonpath="{.data.${KV//-/_}}" | base64 -d)
+      echo "✅  Synced! value: $VAL"
       exit 0
     fi
     sleep 5
   done
-  echo "⚠️  Timed out waiting for test secret to sync."
+  echo "⚠️  Timed out waiting for sync."
 fi
