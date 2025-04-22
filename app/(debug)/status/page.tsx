@@ -23,14 +23,19 @@ async function fetchInfo(): Promise<ContainerInfo> {
     .map(({ name, value }: { name: string; value: string }) => `${name}=${value}`)
     .join("; ")
 
-  const base = process.env.NEXT_PUBLIC_BASE_URL ?? ""
+    const base =
+    process.env.NEXT_PUBLIC_BASE_URL ||
+    (cookieStore.get("host")?.value
+      ? `http://${cookieStore.get("host")!.value}`
+      : "http://localhost:3000");
+
   const res = await fetch(`${base}/api/container-info`, {
     headers: cookieHeader ? { cookie: cookieHeader } : undefined,
     cache: "no-store",
-  })
+  });
 
-  if (!res.ok) notFound()
-  return res.json()
+  if (!res.ok) notFound();
+  return res.json();
 }
 
 // Helper function to categorize environment variables

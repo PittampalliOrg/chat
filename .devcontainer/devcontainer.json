@@ -18,7 +18,20 @@
 	"customizations": {
 		// Configure properties specific to VS Code.
 		"vscode": {
-			"settings": {},
+			"settings": {
+				"sqltools.connections": [
+					{
+						"driver": "PostgreSQL",
+						"name": "PostgreSQL",
+						"server": "localhost",
+						"port": 15432,
+						"database": "postgres",
+						"username": "postgres",
+						"password": "postgres",
+						"askForPassword": false
+					}
+				]
+			},
 			"extensions": [
 				"ms-azuretools.vscode-dapr",
 				"ms-dotnettools.csharp",
