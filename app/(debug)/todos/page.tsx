@@ -13,15 +13,23 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { Skeleton } from "@/components/ui/skeleton"
 import { useToast } from "@/hooks/use-toast"
 
+interface ConnectionInfo {
+  usingDapr: boolean;
+  storeName: string | null;
+  kind: string;        // simplified – any string
+}
+
 interface Item {
   id?: string;
   title: string;
   done: boolean;
-  clientId?: string; // local‑only identifier
+  clientId?: string;
 }
+
 interface ItemResponse {
   message: string | null;
   items: Item[];
+  connection?: ConnectionInfo;   // <-- add this line
 }
 
 /* ------------------------------------------------------------------ */
@@ -131,14 +139,24 @@ function TodoPage() {
   return (
     <main className="container mx-auto py-10 px-4 max-w-3xl">
       <Card>
-        <CardHeader className="pb-3">
-          <div className="flex items-center justify-between">
-            <CardTitle className="text-2xl font-bold">Todo List</CardTitle>
-            <Button variant="outline" size="icon" onClick={refresh} disabled={loading}>
-              <RefreshCw className={cn('h-4 w-4', loading && 'animate-spin')} />
-              <span className="sr-only">Refresh</span>
-            </Button>
-          </div>
+      <CardHeader className="pb-3">
+  <div className="flex items-center justify-between">
+    <CardTitle className="text-2xl font-bold">Todo List</CardTitle>
+
+    {/* connection badge */}
+    {data?.connection && (
+      <Badge variant={data.connection.usingDapr ? 'default' : 'secondary'}>
+        {data.connection.usingDapr
+          ? `Dapr • ${data.connection.storeName ?? 'unknown'}`
+          : `Repo • ${data.connection.kind}`}
+      </Badge>
+    )}
+
+    <Button variant="outline" size="icon" onClick={refresh} disabled={loading}>
+      <RefreshCw className={cn('h-4 w-4', loading && 'animate-spin')} />
+      <span className="sr-only">Refresh</span>
+    </Button>
+  </div>
           {data?.message && (
             <Badge variant="outline" className="text-xs font-normal">
               {data.message}

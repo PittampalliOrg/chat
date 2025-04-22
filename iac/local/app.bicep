@@ -1,35 +1,61 @@
+// Import the set of Radius resource types
+// (Applications.Core, Applications.Dapr, etc.)
 extension radius
 
-param application string
+@description('The environment ID to deploy the application and its resourcs into. Passed in automatically by the rad CLI.')
 param environment string
-param image string = 'vpittamp.azurecr.io/chat-frontend:0.0.6'
+
+@description('FQDN served by the gateway')
+param fqdn string = 'chat.pittampalli.com'
+
+// @description('Base‑64‑encoded TLS cert (PEM)')
+// @secure()
+// param tlscrt string
+
+// @description('Base‑64‑encoded TLS private key (PEM)')
+// @secure()
+// param tlskey string
+
+
+resource application 'Applications.Core/applications@2023-10-01-preview' = {
+  name: 'chat'
+  properties: {
+    environment: environment
+  }
+}
 
 resource frontend 'Applications.Core/containers@2023-10-01-preview' = {
   name: 'frontend'
   properties: {
-    application: application
-    environment: environment
+    application: application.id
     container: {
-      image: image
+      image: 'vpittamp.azurecr.io/chat-frontend:0.0.8'
       ports: {
         web: {
           containerPort: 3000
         }
       }
-      livenessProbe: {
-        kind: 'httpGet'
-        containerPort: 3000
-        path: '/healthz'
-        initialDelaySeconds: 10
-      }
       env: {
-        POSTGRES_URL:      { value: 'postgres://postgres:postgres@postgresql:5432/postgres' }
-        AZURE_API_KEY:     { value: '' }
-        ANTHROPIC_API_KEY: { value: '' }
-        OPENAI_API_KEY:    { value: '' }
-        NEXTAUTH_SECRET:   { value: '' }
-        AUTH_TRUST_HOST:   { value: 'true' }
+        POSTGRES_URL: { value: 'postgres://postgres:postgres@postgresql:5432/postgres' }
+        AZURE_API_KEY: { value: '' }
+        ANTHROPIC_API_KEY: {
+          value: ''
+        }
+        OPENAI_API_KEY: {
+          value: ''
+        }
+        NEXTAUTH_SECRET: { value: '' }
+        AUTH_TRUST_HOST: { value: 'true' }
         AZURE_RESOURCE_NAME: { value: 'daprazureopenai' }
+      }
+    }
+    
+    connections: {
+      statestore: {
+        source: statestore.id
+      }
+      postgresql: {
+        source: postgresql.id
       }
     }
     extensions: [
@@ -38,52 +64,21 @@ resource frontend 'Applications.Core/containers@2023-10-01-preview' = {
         appId: 'frontend'
       }
     ]
-    connections: {
-      statestore:       { source: statestore.id }
-      localsecretstore: { source: secrets.id }
-      postgresql:       { source: postgresql.id }
-    }
   }
 }
 
 resource statestore 'Applications.Dapr/stateStores@2023-10-01-preview' = {
   name: 'statestore'
   properties: {
-    application: application
     environment: environment
-  }
-}
-
-resource secrets 'Applications.Core/secretStores@2023-10-01-preview' = {
-  name: 'secretstore'
-  properties: {
-    application: application
-    environment: environment
-    type: 'generic'
-    data: {
-      POSTGRES_URL:      { value: 'postgres://postgres:postgres@db:5432/postgres' }
-      AZURE_API_KEY:     { value: '' }
-      ANTHROPIC_API_KEY: { value: '' }
-      OPENAI_API_KEY:    { value: '' }
-      NEXTAUTH_SECRET:   { value: '' }
-      AUTH_TRUST_HOST:   { value: 'true' }
-    }
-  }
-}
-
-resource secretstore 'Applications.Dapr/secretStores@2023-10-01-preview' = {
-  name: 'localsecretstore'
-  properties: {
-    application: application
-    environment: environment
+    application: application.id
   }
 }
 
 resource postgresql 'Applications.Core/containers@2023-10-01-preview' = {
   name: 'postgresql'
   properties: {
-    application: application
-    environment: environment
+    application: application.id
     container: {
       image: 'postgres:latest'
       ports: {
@@ -92,9 +87,9 @@ resource postgresql 'Applications.Core/containers@2023-10-01-preview' = {
         }
       }
       env: {
-        POSTGRES_USER:     { value: 'postgres' }
+        POSTGRES_USER: { value: 'postgres' }
         POSTGRES_PASSWORD: { value: 'postgres' }
-        POSTGRES_DB:       { value: 'postgres' }
+        POSTGRES_DB: { value: 'postgres' }
       }
       volumes: {
         migrations: {
@@ -104,9 +99,27 @@ resource postgresql 'Applications.Core/containers@2023-10-01-preview' = {
         }
       }
     }
-    connections: {
-      statestore:       { source: statestore.id }
-      localsecretstore: { source: secrets.id }
-    }
+  }
+}
+
+resource gateway 'Applications.Core/gateways@2023-10-01-preview' = {
+  name: 'gateway'
+  properties: {
+    application: application.id
+    hostname: { prefix: '401k' }
+    routes: [
+      {
+        path: '/'
+        destination: 'http://${frontend.name}:3000'
+      }
+    ]
+  }
+}
+
+resource secretstore 'Applications.Dapr/secretStores@2023-10-01-preview' = {
+  name: 'secretstore'
+  properties: {
+    environment: environment
+    application: application.id
   }
 }
