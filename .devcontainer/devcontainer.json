@@ -1,70 +1,126 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/devcontainers/templates/tree/main/src/kubernetes-helm
 {
-	"name": "Radius Dev Container",
+	"name": "Kubernetes - Local Configuration",
+	// Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
 	"image": "mcr.microsoft.com/devcontainers/universal:linux",
 	"onCreateCommand": "bash ./.devcontainer/on-create.sh",
-	"postCreateCommand": "bash ./.devcontainer/post-create.sh && az extension add --name aks-preview && set -a && . /workspaces/chat/.env.local && set +a && helm repo add azure-workload-identity https://azure.github.io/azure-workload-identity/charts && helm repo update && helm install workload-identity-webhook azure-workload-identity/workload-identity-webhook --namespace azure-workload-identity-system --create-namespace --set azureTenantID=\"$AZURE_TENANT_ID\" && curl -L -o /tmp/azwi.tar.gz https://github.com/Azure/azure-workload-identity/releases/download/v1.5.0/azwi-v1.5.0-linux-amd64.tar.gz && tar -xzf /tmp/azwi.tar.gz -C /tmp && sudo mv /tmp/azwi /usr/local/bin/azwi && sudo chmod +x /usr/local/bin/azwi && rm /tmp/azwi.tar.gz && sudo az aks install-cli",
-	"runArgs": [
-		"--privileged",
-		"--init"
-	],
-	// Features to add to the dev container. More info: https://containers.dev/features
+	"postCreateCommand": "bash ./.devcontainer/post-create.sh",
+"runArgs": [
+  "--privileged",
+  "--init",
+  "--add-host", "host.docker.internal:host-gateway",
+  "--add-host", "kubernetes.docker.internal:host-gateway"
+],
+
 	"features": {
-		"ghcr.io/devcontainers/features/docker-in-docker:2": {},
+		"ghcr.io/devcontainers/features/docker-outside-of-docker:1": {
+			"enableNonRootDocker": "true",
+			"moby": "true"
+		},
+		"ghcr.io/devcontainers/features/kubectl-helm-minikube:1": {
+			"version": "latest",
+			"helm": "latest",
+			"minikube": "none"
+		},
+		"./local-features/copy-kube-config": {},   
 		"ghcr.io/devcontainers/features/azure-cli:1": {},
-		"ghcr.io/devcontainers/features/kubectl-helm-minikube:1": {},
-		"ghcr.io/rio/features/k3d:1": {}
+		"ghcr.io/devcontainers/features/github-cli": {}
 	},
-	// Configure tool-specific properties.
+	"remoteEnv": {
+		"SYNC_LOCALHOST_KUBECONFIG": "true",
+		"LOCAL_WORKSPACE_FOLDER": "${localWorkspaceFolder}"
+	},
+	"initializeCommand": "cd .devcontainer && bash ensure-mount-sources",
+	"mounts": [
+		{
+			"source": "${env:HOME}${env:USERPROFILE}/.kube",
+			"target": "/usr/local/share/kube-localhost",
+			"type": "bind"
+		},
+		{
+			"source": "${env:HOME}${env:USERPROFILE}/.minikube",
+			"target": "/usr/local/share/minikube-localhost",
+			"type": "bind"
+		},
+		{
+			"source": "profile",
+			"target": "/root",
+			"type": "volume"
+		},
+		{
+			"target": "/root/.vscode-server",
+			"type": "volume"
+		}
+	],
 	"customizations": {
-		// Configure properties specific to VS Code.
 		"vscode": {
+			"extensions": [
+				"vscode.typescript-language-features",
+				"GitHub.copilot",
+				"denoland.vscode-deno",
+				"Supabase.vscode-supabase-extension",
+				"ms-azuretools.vscode-docker",
+				"dbaeumer.vscode-eslint",
+				"Postman.postman-for-vscode",
+				"ms-edgedevtools.vscode-edge-devtools",
+				"tamasfe.even-better-toml",
+				"eamodio.gitlens",
+				"ms-playwright.playwright",
+				"ms-toolsai.jupyter",
+				"ms-graph.kiota",
+				"ms-vscode.azure-account",
+				"mutantdino.resourcemonitor",
+				"github.vscode-github-actions",
+				"bradlc.vscode-tailwindcss",
+				"ms-vscode.vscode-typescript-next",
+				"ms-azuretools.vscode-dapr",
+				"mtxr.sqltools",
+				"mtxr.sqltools-driver-pg",
+				"ms-azuretools.vscode-azure-github-copilot",
+				"mikeedjones.copy-file-to-chat",
+				"ms-python.python",
+				"ultram4rine.sqltools-clickhouse-driver",
+				"Grafana.vscode-jsonnet",
+				"phidn.vsc-copy-ai",
+				"cweijan.vscode-redis-client",
+				"ms-kubernetes-tools.vscode-aks-tools",
+				"ms-kubernetes-tools.vscode-kubernetes-tools",
+				"ms-vscode.vscode-node-azure-pack",
+				"ms-azuretools.vscode-azureresourcegroups",
+				"ms-kubernetes-tools.kind-vscode"
+			],
 			"settings": {
 				"sqltools.connections": [
 					{
 						"driver": "PostgreSQL",
 						"name": "PostgreSQL",
-						"server": "localhost",
-						"port": 15432,
+						"server": "db",
+						"port": 5432,
 						"database": "postgres",
 						"username": "postgres",
 						"password": "postgres",
 						"askForPassword": false
+					},
+					{
+						"driver": "PostgreSQL",
+						"name": "PostgreSQL",
+						"server": "vinodvm.postgres.database.azure.com",
+						"port": 5432,
+						"database": "postgres",
+						"username": "vpittamp",
+						"askForPassword": true
 					}
 				]
-			},
-			"extensions": [
-				"ms-azuretools.vscode-dapr",
-				"ms-dotnettools.csharp",
-				"ms-azuretools.vscode-docker",
-				"ms-python.python",
-				"dunn.redis",
-				"GitHub.copilot",
-				"ms-azuretools.vscode-bicep",
-				"ms-kubernetes-tools.vscode-kubernetes-tools",
-				"ms-kubernetes-tools.vscode-aks-tools",
-				"ms-azuretools.vscode-azure-github-copilot",
-				"ms-azuretools.azure-dev",
-				"ms-vscode.vscode-node-azure-pack",
-				"mtxr.sqltools",
-				"mtxr.sqltools-driver-pg",
-				"mikeedjones.copy-file-to-chat"
-			]
+			}
 		}
 	},
-	"remoteEnv": {
-		"LOCAL_WORKSPACE_FOLDER": "${localWorkspaceFolder}"
-	},
-	// Use 'portsAttributes' to set default properties for specific forwarded ports.
-	// More info: https://containers.dev/implementors/json_reference/#port-attributes
-	"portsAttributes": {
-		"3000": {
-			"label": "demo-app",
-			"onAutoForward": "openBrowser",
-			"protocol": "http"
-		},
-		"8081": {
-			"label": "k3s",
-			"onAutoForward": "silent"
-		}
-	}
+	// Use 'forwardPorts' to make a list of ports inside the container available locally.
+	// "forwardPorts": [],
+	// Use 'postCreateCommand' to run commands after the container is created.
+	// "postCreateCommand": "kubectl version",
+	// Configure tool-specific properties.
+	// "customizations": {},
+	// Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
+	"remoteUser": "root"
 }

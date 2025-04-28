@@ -1,14 +1,38 @@
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
-  name: azurekv
+  name: azurekeyvault
+auth:
+  secretStore: localsecretstore
 spec:
   type: secretstores.azure.keyvault
   version: v1
   metadata:
-    - name: vaultName
-      value: my‑vault‑name
-    - name: azureTenantId
-      value: "your‑tenant‑id"
-auth:
-  secretStore: azurekv
+  
+  - name: vaultName
+    value: qs-ygl2zollxkbc6
+  # See authentication section below for all options
+  - name: azureTenantId
+    value: 0c4da9c5-40ea-4e7d-9c7a-e7308d4f8e38
+  - name: azureClientId
+    value: 601f6ea7-d9fb-41b6-9620-5fcbea7c5613
+  - name: azureClientSecret
+    secretKeyRef:
+      name: SERVICEPRINCIPAL_CLIENT_SECRET
+
+  # - name: usePodIdentity
+  #   value: "true"
+
+  # ── Application secrets (env‑vars) ───────────────────────────────
+  - name: AZURE_API_KEY
+    secretKeyRef:
+      name: AZURE-API-KEY
+  - name: ANTHROPIC_API_KEY
+    secretKeyRef:
+      name: ANTHROPIC-API-KEY
+  - name: OPENAI_API_KEY
+    secretKeyRef:
+      name: OPENAI-API-KEY
+  - name: NEXTAUTH_SECRET
+    secretKeyRef:
+      name: NEXTAUTH-SECRET

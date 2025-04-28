@@ -1,5 +1,4 @@
 import type { NextAuthConfig } from 'next-auth';
-import { publicPaths } from "@/lib/auth-paths"
 
 export const authConfig = {
   pages: {
@@ -13,14 +12,6 @@ export const authConfig = {
   callbacks: {
     authorized({ auth, request: { nextUrl } }) {
       const isLoggedIn = !!auth?.user;
-      const pathname = nextUrl.pathname
-
-      // Check if the current path is in the public paths array
-      const isPublicPath = publicPaths.some((path) => pathname.startsWith(path))
-      if (isPublicPath) {
-        return true
-      }
-
       const isOnChat = nextUrl.pathname.startsWith('/');
       const isOnRegister = nextUrl.pathname.startsWith('/register');
       const isOnLogin = nextUrl.pathname.startsWith('/login');

@@ -2,7 +2,7 @@
 param context object
 
 @description('Admin username (cannot be postgres)')
-param adminUsername string = 'chatadmin'
+param adminUsername string = 'postgres'
 
 @secure()
 @description('Admin password')
@@ -13,8 +13,9 @@ param adminPassword string
   '13'
   '14'
   '15'
+  '16'
 ])
-param serverVersion string = '15'
+param serverVersion string = '16'
 
 param storageGB int    = 32
 param skuName   string = 'Standard_B1ms'

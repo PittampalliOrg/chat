@@ -1,21 +1,11 @@
-// Import the set of Radius resource types
-// (Applications.Core, Applications.Dapr, etc.)
 extension radius
 
-@description('The environment ID to deploy the application and its resourcs into. Passed in automatically by the rad CLI.')
+param image string = 'vpittamp.azurecr.io/chat-frontend:0.1.1'
 param environment string
-
-@description('FQDN served by the gateway')
-param fqdn string = 'chat.pittampalli.com'
-
-// @description('Base‑64‑encoded TLS cert (PEM)')
-// @secure()
-// param tlscrt string
-
-// @description('Base‑64‑encoded TLS private key (PEM)')
-// @secure()
-// param tlskey string
-
+@description('Specifies the OIDC issuer URL')
+param oidcIssuer string = 'https://eastus.oic.prod-aks.azure.com/0c4da9c5-40ea-4e7d-9c7a-e7308d4f8e38/a9bf2b89-5594-4bfb-a159-03516d161dbb/'
+// param tenantId string = '0c4da9c5-40ea-4e7d-9c7a-e7308d4f8e38'
+// param subscriptionId string = 'fa5b32b6-1d6d-4110-bea2-8ac0e3126a38'
 
 resource application 'Applications.Core/applications@2023-10-01-preview' = {
   name: 'chat'
@@ -29,76 +19,33 @@ resource frontend 'Applications.Core/containers@2023-10-01-preview' = {
   properties: {
     application: application.id
     container: {
-      image: 'vpittamp.azurecr.io/chat-frontend:0.0.8'
+      image: image
       ports: {
         web: {
           containerPort: 3000
         }
       }
       env: {
-        POSTGRES_URL: { value: 'postgres://postgres:postgres@postgresql:5432/postgres' }
-        AZURE_API_KEY: { value: '' }
-        ANTHROPIC_API_KEY: {
-          value: ''
+        AUTH_TRUST_HOST: {
+          value: 'true'
         }
-        OPENAI_API_KEY: {
-          value: ''
+        NEXTAUTH_SECRET: {
+          value: 'v0dZ03G4ECmMYMA4/Ht32mBeV1XR4znOTDffnyKxF5o='
         }
-        NEXTAUTH_SECRET: { value: '' }
-        AUTH_TRUST_HOST: { value: 'true' }
-        AZURE_RESOURCE_NAME: { value: 'daprazureopenai' }
       }
     }
-    
     connections: {
-      statestore: {
-        source: statestore.id
-      }
       postgresql: {
         source: postgresql.id
       }
     }
-    extensions: [
-      {
-        kind: 'daprSidecar'
-        appId: 'frontend'
-      }
-    ]
   }
 }
 
-resource statestore 'Applications.Dapr/stateStores@2023-10-01-preview' = {
-  name: 'statestore'
-  properties: {
-    environment: environment
-    application: application.id
-  }
-}
-
-resource postgresql 'Applications.Core/containers@2023-10-01-preview' = {
+resource postgresql 'Microsoft.DBforMySQL/flexibleServers@2024-10-01-preview' = {
   name: 'postgresql'
   properties: {
-    application: application.id
-    container: {
-      image: 'postgres:latest'
-      ports: {
-        db: {
-          containerPort: 5432
-        }
-      }
-      env: {
-        POSTGRES_USER: { value: 'postgres' }
-        POSTGRES_PASSWORD: { value: 'postgres' }
-        POSTGRES_DB: { value: 'postgres' }
-      }
-      volumes: {
-        migrations: {
-          kind: 'ephemeral'
-          managedStore: 'disk'
-          mountPath: '/docker-entrypoint-initdb.d'
-        }
-      }
-    }
+    dataEncryption:
   }
 }
 
@@ -109,17 +56,55 @@ resource gateway 'Applications.Core/gateways@2023-10-01-preview' = {
     hostname: { prefix: '401k' }
     routes: [
       {
-        path: '/'
+        path: '/chat'
         destination: 'http://${frontend.name}:3000'
       }
+      // {
+      //   path: '/demo'
+      //   destination: 'http://${demo.name}:3000'
+      // }
     ]
   }
 }
 
-resource secretstore 'Applications.Dapr/secretStores@2023-10-01-preview' = {
-  name: 'secretstore'
-  properties: {
-    environment: environment
-    application: application.id
-  }
-}
+// param demoimage string = 'ghcr.io/radius-project/samples/demo:latest'
+
+// resource demo 'Applications.Core/containers@2023-10-01-preview' = {
+//   name: 'demo'
+//   properties: {
+//     application: application.id
+//     container: {
+//       image: demoimage
+//       ports: {
+//         web: {
+//           containerPort: 3000
+//         }
+//       }
+//       livenessProbe: {
+//         kind: 'httpGet'
+//         containerPort: 3000
+//         path: '/healthz'
+//         initialDelaySeconds: 10
+//       }
+//     }
+//     extensions: [
+//       {
+//         kind: 'daprSidecar'
+//         appId: 'demo'
+//       }
+//     ]
+//     // connections: {
+//     //   statestore: {
+//     //     source: statestore.id
+//     //   }
+//     // }
+//   }
+// }
+
+// resource statestore 'Applications.Dapr/stateStores@2023-10-01-preview' = {
+//   name: 'statestore'
+//   properties: {
+//     application: application.id
+//     environment: environment.id
+//   }
+// }

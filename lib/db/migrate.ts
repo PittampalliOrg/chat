@@ -1,18 +1,24 @@
-import { config } from 'dotenv';
 import { drizzle } from 'drizzle-orm/postgres-js';
 import { migrate } from 'drizzle-orm/postgres-js/migrator';
 import postgres from 'postgres';
 
-config({
-  path: '.env.local',
-});
+const {
+  CONNECTION_POSTGRESQL_HOST,
+  CONNECTION_POSTGRESQL_PORT,
+  CONNECTION_POSTGRESQL_DATABASE,
+  CONNECTION_POSTGRESQL_USERNAME,
+  CONNECTION_POSTGRESQL_PASSWORD,
+  SSL
+} = process.env;
+
+const url = `postgres://${CONNECTION_POSTGRESQL_USERNAME}:${CONNECTION_POSTGRESQL_PASSWORD}@${CONNECTION_POSTGRESQL_HOST}:${CONNECTION_POSTGRESQL_PORT}/${CONNECTION_POSTGRESQL_DATABASE}`;
+
+const client = postgres(url, {ssl: SSL === 'true' || SSL === '1'});
+const db = drizzle(client);
 
 const runMigrate = async () => {
-  if (false) {
-    throw new Error('POSTGRES_URL is not defined');
-  }
-
-  const connection = postgres("postgres://postgres:postgres@db:5432/postgres", { max: 1 });
+  const { SSL } = process.env;
+  const connection = postgres(url, {ssl: SSL === 'true' || SSL === '1'});
   const db = drizzle(connection);
 
   console.log('⏳ Running migrations...');

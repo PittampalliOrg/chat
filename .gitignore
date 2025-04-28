@@ -43,3 +43,7 @@ yarn-error.log*
 /playwright/*
 .pnpm-store
 dapr/secrets/secrets.json
+iac/local/app.bicepparam
+.env.example
+.env.example
+.env.example
