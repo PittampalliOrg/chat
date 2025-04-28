@@ -1,9 +1,9 @@
 import 'server-only';
 
-import { genSaltSync, hashSync } from 'bcrypt-ts';
 import {
   and,
   asc,
+  count,
   desc,
   eq,
   gt,
@@ -28,13 +28,26 @@ import {
   type Chat,
 } from './schema';
 import type { ArtifactKind } from '@/components/artifact';
+import { generateUUID } from '../utils';
+import { generateHashedPassword } from './utils';
+
+const {
+  CONNECTION_POSTGRESQL_HOST,
+  CONNECTION_POSTGRESQL_PORT,
+  CONNECTION_POSTGRESQL_DATABASE,
+  CONNECTION_POSTGRESQL_USERNAME,
+  CONNECTION_POSTGRESQL_PASSWORD,
+  SSL
+} = process.env;
+
+const url = `postgres://${CONNECTION_POSTGRESQL_USERNAME}:${CONNECTION_POSTGRESQL_PASSWORD}@${CONNECTION_POSTGRESQL_HOST}:${CONNECTION_POSTGRESQL_PORT}/${CONNECTION_POSTGRESQL_DATABASE}`;
 
 // Optionally, if not using email/pass login, you can
 // use the Drizzle adapter for Auth.js / NextAuth
 // https://authjs.dev/reference/adapter/drizzle
 
 // biome-ignore lint: Forbidden non-null assertion.
-const client = postgres(process.env.POSTGRES_URL!);
+const client = postgres(url, {ssl: SSL === 'true' || SSL === '1'});
 const db = drizzle(client);
 
 export async function getUser(email: string): Promise<Array<User>> {
@@ -47,13 +60,27 @@ export async function getUser(email: string): Promise<Array<User>> {
 }
 
 export async function createUser(email: string, password: string) {
-  const salt = genSaltSync(10);
-  const hash = hashSync(password, salt);
+  const hashedPassword = generateHashedPassword(password);
 
   try {
-    return await db.insert(user).values({ email, password: hash });
+    return await db.insert(user).values({ email, password: hashedPassword });
   } catch (error) {
     console.error('Failed to create user in database');
+    throw error;
+  }
+}
+
+export async function createGuestUser() {
+  const email = `guest-${Date.now()}`;
+  const password = generateHashedPassword(generateUUID());
+
+  try {
+    return await db.insert(user).values({ email, password }).returning({
+      id: user.id,
+      email: user.email,
+    });
+  } catch (error) {
+    console.error('Failed to create guest user in database');
     throw error;
   }
 }
@@ -85,7 +112,11 @@ export async function deleteChatById({ id }: { id: string }) {
     await db.delete(vote).where(eq(vote.chatId, id));
     await db.delete(message).where(eq(message.chatId, id));
 
-    return await db.delete(chat).where(eq(chat.id, id));
+    const [chatsDeleted] = await db
+      .delete(chat)
+      .where(eq(chat.id, id))
+      .returning();
+    return chatsDeleted;
   } catch (error) {
     console.error('Failed to delete chat by id from database');
     throw error;
@@ -416,6 +447,37 @@ export async function updateChatVisiblityById({
     return await db.update(chat).set({ visibility }).where(eq(chat.id, chatId));
   } catch (error) {
     console.error('Failed to update chat visibility in database');
+    throw error;
+  }
+}
+
+export async function getMessageCountByUserId({
+  id,
+  differenceInHours,
+}: { id: string; differenceInHours: number }) {
+  try {
+    const twentyFourHoursAgo = new Date(
+      Date.now() - differenceInHours * 60 * 60 * 1000,
+    );
+
+    const [stats] = await db
+      .select({ count: count(message.id) })
+      .from(message)
+      .innerJoin(chat, eq(message.chatId, chat.id))
+      .where(
+        and(
+          eq(chat.userId, id),
+          gte(message.createdAt, twentyFourHoursAgo),
+          eq(message.role, 'user'),
+        ),
+      )
+      .execute();
+
+    return stats?.count ?? 0;
+  } catch (error) {
+    console.error(
+      'Failed to get message count by user id for the last 24 hours from database',
+    );
     throw error;
   }
 }

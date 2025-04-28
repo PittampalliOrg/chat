@@ -1,6 +1,6 @@
 {
   "name": "radius-applications-rp",
-  "issuer": "https://eastus.oic.prod-aks.azure.com/0c4da9c5-40ea-4e7d-9c7a-e7308d4f8e38/2f32bc6f-b9dc-47ac-8639-52bf967bad47/",
+  "issuer": "https://eastus.oic.prod-aks.azure.com/0c4da9c5-40ea-4e7d-9c7a-e7308d4f8e38/a9bf2b89-5594-4bfb-a159-03516d161dbb/",
   "subject": "system:serviceaccount:radius-system:applications-rp",
   "description": "Kubernetes service account federated credential for applications-rp",
   "audiences": [
