@@ -1,7 +1,7 @@
 # compose.yml  – switch stack with:  docker compose --profile dev|prod up -d
 
 networks:
-  production:
+  kind:
     external: true
 
 volumes:
@@ -15,12 +15,17 @@ services:
 # ──────────── DEV ───────────────────────────────────────────────────────────
   frontend-dev:
     profiles: ["dev"]
-    image: plugin                       # mounts your source; runs “pnpm dev”
-    volumes: [".:/workspace"]
-    command: sleep infinity             # (or ["pnpm","dev"])
+    image: radius 
+    volumes:
+      - .:/workspace
+      - /var/run/docker.sock:/var/run/docker-host.sock
+    entrypoint: /usr/local/share/docker-init.sh
+    env_file:
+      - ./.devcontainer/devcontainer.env
+    command: sleep infinity # (or ["pnpm","dev"])
     ports: ["3000:3000", "50002:50002"]
     depends_on: [redis, db]
-    networks: [production]
+    networks: [kind]
 
   frontend-dapr-dev:
     profiles: ["dev"]
@@ -45,19 +50,22 @@ services:
       context: .
       target: runner
       args:
-        NODE_ENV: ${NODE_ENV:-production}
-        DAPR_HTTP_PORT: ${DAPR_HTTP_PORT:-3500}
-        DAPR_GRPC_PORT: ${DAPR_GRPC_PORT:-50002}
-        CONNECTION_STATESTORE_COMPONENTNAME: ${CONNECTION_STATESTORE_COMPONENTNAME:-statestore}
-        CONNECTION_POSTGRESQL_HOST: ${CONNECTION_POSTGRESQL_HOST:-db}
-        CONNECTION_POSTGRESQL_PORT: ${CONNECTION_POSTGRESQL_PORT:-5432}
-        CONNECTION_POSTGRESQL_USERNAME: ${CONNECTION_POSTGRESQL_USERNAME:-postgres}
-        CONNECTION_POSTGRESQL_PASSWORD: ${CONNECTION_POSTGRESQL_PASSWORD:-postgres}
-        CONNECTION_POSTGRESQL_DATABASE: ${CONNECTION_POSTGRESQL_DATABASE:-postgres}
-    image: vpittamp.azurecr.io/chat-frontend:0.1.6
+        NODE_ENV: ${NODE_ENV}
+        DAPR_HTTP_PORT: ${DAPR_HTTP_PORT}
+        DAPR_GRPC_PORT: ${DAPR_GRPC_PORT}
+        CONNECTION_STATESTORE_COMPONENTNAME: ${CONNECTION_STATESTORE_COMPONENTNAME}
+        CONNECTION_POSTGRESQL_HOST: ${CONNECTION_POSTGRESQL_HOST}
+        CONNECTION_POSTGRESQL_PORT: ${CONNECTION_POSTGRESQL_PORT}
+        CONNECTION_POSTGRESQL_USERNAME: ${CONNECTION_POSTGRESQL_USERNAME}
+        CONNECTION_POSTGRESQL_PASSWORD: ${CONNECTION_POSTGRESQL_PASSWORD}
+        CONNECTION_POSTGRESQL_DATABASE: ${CONNECTION_POSTGRESQL_DATABASE}
+        AUTH_SECRET: ${AUTH_SECRET}
+        AUTH_TRUST_HOST: ${AUTH_TRUST_HOST}
+        SSL: ${SSL}
+    image: vpittamp.azurecr.io/chat-frontend:0.1.8
     ports: ["3000:3000", "50002:50002"]
     depends_on: [db, redis]
-    networks: [production]
+    networks: [kind]
 
   frontend-dapr-prod:
     profiles: ["prod"]
@@ -82,7 +90,7 @@ services:
   redis:
     image: redis:alpine
     ports: ["6379:6379"]
-    networks: [production]
+    networks: [kind]
 
   db:
     image: postgres:latest
@@ -94,7 +102,7 @@ services:
     volumes:
       - postgres-data:/var/lib/postgresql/data
       - ./lib/db/migrations:/docker-entrypoint-initdb.d:ro
-    networks: [production]
+    networks: [kind]
 
   dashboard:
     image: daprio/dashboard:latest
@@ -106,6 +114,6 @@ services:
     volumes:
       - ./compose.yml:/compose/compose.yml:ro
       - ./dapr/components:/home/nonroot/.dapr/components
-    ports: ["8080:8080"]
+    ports: ["8082:8080"]
     depends_on: [redis]                 # side-cars are profile-specific
-    networks: [production]
+    networks: [kind]

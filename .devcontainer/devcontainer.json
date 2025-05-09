@@ -7,10 +7,7 @@
 	"onCreateCommand": "bash ./.devcontainer/on-create.sh",
 	"postCreateCommand": "bash ./.devcontainer/post-create.sh",
 "runArgs": [
-  "--privileged",
-  "--init",
-  "--add-host", "host.docker.internal:host-gateway",
-  "--add-host", "kubernetes.docker.internal:host-gateway"
+  "--env-file", ".devcontainer/devcontainer.env"
 ],
 
 	"features": {
@@ -29,7 +26,13 @@
 	},
 	"remoteEnv": {
 		"SYNC_LOCALHOST_KUBECONFIG": "true",
-		"LOCAL_WORKSPACE_FOLDER": "${localWorkspaceFolder}"
+		"LOCAL_WORKSPACE_FOLDER": "${localWorkspaceFolder}",
+		"AZURE_CLIENT_ID": "9e40608f-bcbf-42b0-8948-90f80b544f38",
+		"AZURE_CLIENT_SECRET": "",
+		"AZURE_TENANT_ID": "0c4da9c5-40ea-4e7d-9c7a-e7308d4f8e38",
+		"AZURE_SUBSCRIPTION_ID": "fa5b32b6-1d6d-4110-bea2-8ac0e3126a38",
+		"AZ_LOCATION": "eastus",
+		"AZURE_STORAGE_AUTH_MODE": "login"
 	},
 	"initializeCommand": "cd .devcontainer && bash ensure-mount-sources",
 	"mounts": [
