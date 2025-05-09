@@ -1,0 +1,23 @@
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+nodes:
+- role: control-plane
+  kubeadmConfigPatches:
+  - |
+    apiVersion: kubeadm.k8s.io/v1beta3
+    kind: ClusterConfiguration
+    apiServer:
+      extraArgs:
+        service-account-issuer: "${OIDC_ISSUER}"
+        service-account-signing-key-file: /etc/kubernetes/pki/sa.key
+        service-account-key-file: /etc/kubernetes/pki/sa.pub
+        feature-gates: "ServiceAccountIssuerDiscovery=true,BoundServiceAccountTokenVolume=true"
+    controllerManager:
+      extraArgs:
+        service-account-private-key-file: /etc/kubernetes/pki/sa.key
+  extraMounts:
+  - hostPath: "${SA_DIR}/sa.key"
+    containerPath: /etc/kubernetes/pki/sa.key
+  - hostPath: "${SA_DIR}/sa.pub"
+    containerPath: /etc/kubernetes/pki/sa.pub
+- role: worker

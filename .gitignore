@@ -47,3 +47,6 @@ iac/local/app.bicepparam
 .env.example
 .env.example
 .env.example
+.devcontainer/devcontainer.env
+kind-pki/sa.key
+.gitignore

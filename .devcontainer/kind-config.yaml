@@ -1,0 +1,40 @@
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+
+# deterministic address/port so every tool (kubectl, rad, helm) can reach
+networking:
+  apiServerAddress: "127.0.0.1"   # listen on localhost
+  apiServerPort:    6443          # fixed, not random
+
+nodes:
+# ───────────────────────── control-plane ─────────────────────────
+- role: control-plane
+  kubeadmConfigPatches:
+  - |
+    apiVersion: kubeadm.k8s.io/v1beta4
+    kind: ClusterConfiguration
+    apiServer:
+      extraArgs:
+        # external issuer FIRST so tokens use it
+        service-account-issuer: "${OIDC_ISSUER},https://kubernetes.default.svc.cluster.local"
+        service-account-signing-key-file: /etc/kubernetes/pki/sa.key
+        service-account-key-file:        /etc/kubernetes/pki/sa.pub
+        feature-gates: "ServiceAccountIssuerDiscovery=true,BoundServiceAccountTokenVolume=true"
+    controllerManager:
+      extraArgs:
+        service-account-private-key-file: /etc/kubernetes/pki/sa.key
+  extraMounts:
+  - hostPath: ./kind-pki/sa.key
+    containerPath: /etc/kubernetes/pki/sa.key
+  - hostPath: ./kind-pki/sa.pub
+    containerPath: /etc/kubernetes/pki/sa.pub
+
+# ───────────────────────── worker ─────────────────────────
+- role: worker
+  extraPortMappings:
+  - containerPort: 80
+    hostPort: 8080
+    listenAddress: "0.0.0.0"
+  - containerPort: 443
+    hostPort: 8443
+    listenAddress: "0.0.0.0"

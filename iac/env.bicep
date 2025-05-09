@@ -1,86 +1,20 @@
-param name string = 'pgvnet4'
-param location string = 'eastus'
-@secure()
-param adminPassword string
+// Import the set of Radius resources (Applications.*) into Bicep
+extension radius
 
-var pgServerPrefix = '${name}-postgres-server'
+@description('The ID of your Radius Application. Set automatically by the rad CLI.')
+param application string
 
-resource virtualNetwork 'Microsoft.Network/virtualNetworks@2019-11-01' = {
-  name: '${name}-vnet'
-  location: location
+resource demo 'Applications.Core/containers@2023-10-01-preview' = {
+  name: 'demo'
   properties: {
-    addressSpace: {
-      addressPrefixes: [
-        '10.0.0.0/16'
-      ]
-    }
-  }
-
-  resource databaseSubnet 'subnets' = {
-    name: 'database-subnet'
-    properties: {
-      addressPrefix: '10.0.0.0/24'
-      delegations: [
-        {
-          name: '${name}-subnet-delegation'
-          properties: {
-            serviceName: 'Microsoft.DBforPostgreSQL/flexibleServers'
-          }
+    application: application
+    container: {
+      image: 'ghcr.io/radius-project/samples/demo:latest'
+      ports: {
+        web: {
+          containerPort: 3000
         }
-      ]
-    }
-  }
-
-  resource webappSubnet 'subnets' = {
-    name: 'webapp-subnet'
-    properties: {
-      addressPrefix: '10.0.1.0/24'
-      delegations: [
-        {
-          name: '${name}-subnet-delegation-web'
-          properties: {
-            serviceName: 'Microsoft.Web/serverFarms'
-          }
-        }
-      ]
-    }
-  }
-}
-
-resource privateDnsZone 'Microsoft.Network/privateDnsZones@2020-06-01' = {
-  name: '${pgServerPrefix}.private.postgres.database.azure.com'
-  location: 'global'
-
-  resource vnetLink 'virtualNetworkLinks' = {
-    name: '${pgServerPrefix}-link'
-    location: 'global'
-    properties: {
-      registrationEnabled: false
-      virtualNetwork: {
-        id: virtualNetwork.id
       }
-    }
-  }
-}
-
-
-resource postgresServer 'Microsoft.DBforPostgreSQL/flexibleServers@2022-01-20-preview' = {
-  name: pgServerPrefix
-  location: location
-  sku: {
-    name: 'Standard_B1ms'
-    tier: 'Burstable'
-  }
-  properties: {
-    administratorLogin: 'postgresadmin'
-    administratorLoginPassword: adminPassword
-    storage: {
-      storageSizeGB: 128
-    }
-    version: '14'
-    network: {
-      delegatedSubnetResourceId: virtualNetwork::databaseSubnet.id
-      privateDnsZoneArmResourceId: privateDnsZone.id
     }
   }
 }
