@@ -485,7 +485,7 @@ apply_deployments() {                         # <── NEW
   log "📦  Applying all manifests in '$DEPLOY_DIR'"
   shopt -s nullglob
   local file
-  for file in "$DEPLOY_DIR"/*.yaml.tpl "$DEPLOY_DIR"/*.yml.tpl; do
+  for file in "$DEPLOY_DIR"/*.yaml.tpl "$DEPLOY_DIR"/*.yml.tpl "$DEPLOY_DIR"/*.yaml "$DEPLOY_DIR"/*.yml; do
     [[ -e "$file" ]] || { log "⚠️  No YAMLs found in $DEPLOY_DIR"; break; }
     if [[ "$file" == *.tpl ]]; then
       apply_template "$file"
