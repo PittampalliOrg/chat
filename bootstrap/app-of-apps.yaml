@@ -1,0 +1,24 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: app-of-apps
+  namespace: argocd                                # Argo CD manages itself
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  destination:
+    name: in-cluster   
+    namespace: argocd
+  source:
+    repoURL: https://github.com/PittampalliOrg/chat.git
+    targetRevision: latest   
+    path: apps 
+    directory:
+      recurse: true 
+  syncPolicy:
+    automated:
+      prune:    true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
