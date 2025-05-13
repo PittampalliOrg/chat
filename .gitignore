@@ -4,6 +4,7 @@
 node_modules
 .pnp
 .pnp.js
+.pnpm-store
 
 # testing
 coverage
@@ -41,3 +42,11 @@ yarn-error.log*
 /playwright-report/
 /blob-report/
 /playwright/*
+.devcontainer/azure.sp.env
+
+
+# Ignore DevSpace cache and log folder
+.devspace/
+dapr/secrets/secrets.json
+scripts/kind-headlamp.yaml
+scripts/kind-headlamp.yaml
