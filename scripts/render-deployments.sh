@@ -3,7 +3,7 @@
 set -Eeuo pipefail
 
 DEPLOY_DIR="deployments"
-OUT_DIR="apps/infra-secrets/base"
+OUT_DIR="resources/infra-secrets/base"
 APP_FILE="apps/infra-secrets/application.yaml"
 
 mkdir -p "$OUT_DIR"
@@ -31,7 +31,7 @@ spec:
   source:
     repoURL: https://github.com/${GITHUB_REPOSITORY}.git
     targetRevision: latest
-    path: apps/infra-secrets/base
+    path: resources/infra-secrets/base
   destination:
     name: in-cluster
     namespace: external-secrets
