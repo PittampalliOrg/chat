@@ -4,26 +4,66 @@ kind: Application
 metadata:
   name: tempo
   namespace: argocd
-  annotations: { argocd.argoproj.io/sync-wave: "1" }
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
+
+  destination:
+    name: in-cluster
+    namespace: monitoring
+
   source:
     repoURL: https://grafana.github.io/helm-charts
     chart: tempo
-    targetRevision: 1.*           # monolithic Tempo
+    targetRevision: "1.*"              # monolithic Tempo chart line
     helm:
       values: |
-        mode: standalone
+        mode: standalone               # single-binary, good for Kind
+        storage:
+          type: filesystem
+          filesystem:
+            directory: /var/tempo
         ingester:
           replicas: 1
+
         traces:
           otlp:
             grpc:
-              enabled: true
+              enabled: true            # :4317 (gRPC) — exposed below
+            http:
+              enabled: true            # :4318 (HTTP) — handy for JS/Envoy
+
         service:
           type: NodePort
-          nodePort: 32000         # OTLP/HTTP is also exposed internally
-  destination: { name: in-cluster, namespace: monitoring }
+          ports:
+            - name: otlp-grpc          # ingest
+              port: 4317
+              nodePort: 32000
+            - name: http               # Grafana/query
+              port: 3100
+              nodePort: 32001
+
+        metricsGenerator:
+          enabled: false               # can enable later if you need
+        tracesSampler:
+          enabled: false               # simple 100 % sampling for dev
+
+        # turn off optional bits we’re not using to save resources
+        tempoQueryFrontend:
+          enabled: false
+        tempoQueryScheduler:
+          enabled: false
+        tempoQueryBackend:
+          enabled: false
+        test:
+          enabled: false
+
   syncPolicy:
-    automated: { prune: true, selfHeal: true }
-    syncOptions: ["CreateNamespace=true"]
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
