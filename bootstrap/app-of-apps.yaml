@@ -8,13 +8,12 @@ spec:
   project: default
   destination:
     name: in-cluster
-    namespace: argocd # Argo CD managing itself
+    namespace: argocd
   source:
     repoURL: https://github.com/PittampalliOrg/chat.git
     targetRevision: latest
-    path: apps # only child Apps now; bases live in /resources
-    directory:
-      recurse: true
+    path: apps                # <- only Application CRs live here
+    directory: { recurse: true }
   syncPolicy:
     automated: { prune: true, selfHeal: true }
     syncOptions: ["CreateNamespace=true"]
