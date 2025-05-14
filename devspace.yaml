@@ -40,7 +40,7 @@ pullSecrets:
 dev:
   app:
     # Search for the container that runs this image
-    imageSelector: ' vpittamp.azurecr.io/chat-frontend'
+    imageSelector: 'vpittamp.azurecr.io/chat-frontend:0.2.4'
     # Replace the container image with this dev-optimized image (allows to skip image building during development)
     devImage: ghcr.io/loft-sh/devspace-containers/typescript:20-alpine
     # Sync files between the local filesystem and the development container
