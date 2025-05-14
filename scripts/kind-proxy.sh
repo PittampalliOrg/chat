@@ -1,80 +1,86 @@
+# scripts/kind-proxy.sh
 #!/usr/bin/env bash
-# Purpose: expose both the KIND API (6445) *and* Argo CD NodePort (30080)
-# to the dev-container via a tiny NGINX stream proxy.
+# Purpose: expose the Kind API (6445) and selected NodePorts
+#          to the host & dev‑container via a lightweight NGINX stream proxy.
 
-: "${SCRIPT_PATH:=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)}"
 set -Eeuo pipefail
+: "${SCRIPT_PATH:=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)}"
 
 log() { printf "[%s] %s\n" "$(date +'%H:%M:%S')" "$*"; }
 
 launch_kind_api_proxy() {
-  log "Launching NGINX stream-proxy on host.docker.internal:6445 (API) + 30080 (Argo CD)"
+  log "🔌  Launching Kind stream‑proxy (API + NodePorts)"
 
-  # locate the control-plane container for this cluster
+  # Find the control‑plane container for this cluster
   local CP
   CP=$(docker ps --filter "label=io.x-k8s.kind.cluster=${KIND_CLUSTER_NAME}" \
                  --filter "label=io.x-k8s.kind.role=control-plane" \
                  --format '{{.Names}}')
-  [[ -n "${CP}" ]] || { log "Could not find control-plane container"; return 1; }
+  [[ -n "$CP" ]] || { log "❌  Could not locate Kind control‑plane container"; return 1; }
 
-  # scratch workspace
-  : "${WORK_DIR:=$(mktemp -d)}"
+  local WORK_DIR; WORK_DIR=$(mktemp -d)
 
-  # ── nginx.conf ──────────────────────────────────────────────────────────────
+  #######################################################################
+  # 1. Generate nginx.conf (stream block = TCP passthrough).
+  #######################################################################
   cat >"${WORK_DIR}/nginx-kind.conf" <<EOF
 events {}
 stream {
-  upstream apiserver  { server ${CP}:6443; }
-  upstream argocd_http  { server ${CP}:30080; }
-  upstream argocd_https { server ${CP}:30443; }
-  upstream grafana_ui  { server ${CP}:30001; }
-  upstream loki_http   { server ${CP}:31000; }
-  upstream tempo_http  { server ${CP}:32000; }
+  upstream apiserver     { server ${CP}:6443; }      # K8s API
+  upstream argocd_http   { server ${CP}:30080; }
+  upstream argocd_https  { server ${CP}:30443; }
+  upstream grafana_ui    { server ${CP}:30001; }
+  upstream prom_ui       { server ${CP}:30002; }
+  upstream loki_http     { server ${CP}:31000; }
+  upstream tempo_http    { server ${CP}:32000; }
+  upstream nextjs_dev    { server ${CP}:3000;  }
 
-  server {            # Kubernetes API
-    listen 6443;
-    proxy_pass apiserver;
-  }
-  server {            # Argo CD NodePort (HTTP)
-    listen 30080;
-    proxy_pass argocd_http;
-  }
-   server {            # Grafana UI
-   listen 30001;
-   proxy_pass grafana_ui;
- }
- server {            # Loki
-   listen 31000;
-   proxy_pass loki_http;
- }
- server {            # Tempo
-   listen 32000;
-   proxy_pass tempo_http;
- }
-  server {            # Argo CD NodePort (HTTPS)
-    listen 30443;
-    proxy_pass argocd_https;
-  }
+  server { listen 6443;   proxy_pass apiserver; }    # API
+  server { listen 30080;  proxy_pass argocd_http; }  # Argo CD http
+  server { listen 30443;  proxy_pass argocd_https; } # Argo CD https
+  server { listen 30001;  proxy_pass grafana_ui; }   # Grafana
+  server { listen 30002;  proxy_pass prom_ui; }      # Prometheus
+  server { listen 31000;  proxy_pass loki_http; }    # Loki
+  server { listen 32000;  proxy_pass tempo_http; }   # Tempo
+  server { listen 30100;  proxy_pass nextjs_dev; }   # Next.js (optional)
 }
 EOF
-  # ── Dockerfile ──────────────────────────────────────────────────────────────
+
+  #######################################################################
+  # 2. Build a minimal NGINX image with that config
+  #######################################################################
   cat >"${WORK_DIR}/Dockerfile" <<'EOF'
 FROM nginx:1.25-alpine
 COPY nginx-kind.conf /etc/nginx/nginx.conf
-CMD ["nginx","-g","daemon off;","-c","/etc/nginx/nginx.conf"]
+CMD ["nginx", "-g", "daemon off;"]
 EOF
-  # build & (re)run
-  docker build -q -f "${WORK_DIR}/Dockerfile" -t kind-api-proxy-img "${WORK_DIR}"
-  docker rm -f kind-api-proxy >/dev/null 2>&1 || true
-  docker run -d --name kind-api-proxy --network kind \
-         -p 6445:6443 -p 30080:30080 -p 30443:30443 -p 30100:3000 kind-api-proxy-img
 
-  # wait until the API side is healthy
-  until curl -ks https://host.docker.internal:6445/livez >/dev/null 2>&1; do sleep 2; done
+  docker build -q -t kind-api-proxy-img "${WORK_DIR}"
+  docker rm -f kind-api-proxy >/dev/null 2>&1 || true
+
+  #######################################################################
+  # 3. Run the proxy, publishing ports to the host
+  #######################################################################
+  docker run -d --name kind-api-proxy --network kind \
+    -p 6445:6443 \
+    -p 30080:30080 \
+    -p 30443:30443 \
+    -p 30001:30001 \
+    -p 30002:30002 \
+    -p 31000:31000 \
+    -p 32000:32000 \
+    -p 30100:3000 \
+    kind-api-proxy-img
+
+  # Wait for the API to respond
+  until curl -ks https://host.docker.internal:6445/livez >/dev/null 2>&1; do
+    sleep 2
+  done
+  log "✅  Kind API reachable at https://host.docker.internal:6445"
 }
 
 patch_kubeconfigs() {
-  log "Patching kubeconfigs to use host.docker.internal:6445"
+  log "✏️  Patching kubeconfig to use host.docker.internal:6445"
 
   local KCONF="$HOME/.kube/config"
   kind get kubeconfig --name "${KIND_CLUSTER_NAME}" > "$KCONF"
@@ -82,10 +88,10 @@ patch_kubeconfigs() {
   export KUBECONFIG="$KCONF"
   kubectl config use-context "kind-${KIND_CLUSTER_NAME}"
 
-  # copy for Headlamp
-  local WIN_KCONF="${SCRIPT_PATH}/kind-headlamp.yaml"
-  kind export kubeconfig --name "${KIND_CLUSTER_NAME}" --kubeconfig "$WIN_KCONF"
-  sed -i -E 's#(^[[:space:]]*server:).*#\1 https://localhost:6445#' "$WIN_KCONF"
-  chmod 0644 "$WIN_KCONF"
-  log "📄  Headlamp kubeconfig written to $WIN_KCONF"
+  # Convenience copy for external GUI tools
+  local DL_KCONF="${SCRIPT_PATH}/kind-headlamp.yaml"
+  kind export kubeconfig --name "${KIND_CLUSTER_NAME}" --kubeconfig "$DL_KCONF"
+  sed -i -E 's#(^[[:space:]]*server:).*#\1 https://localhost:6445#' "$DL_KCONF"
+  chmod 0644 "$DL_KCONF"
+  log "📄  Headlamp‑compatible kubeconfig written to $DL_KCONF"
 }
