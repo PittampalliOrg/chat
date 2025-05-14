@@ -348,7 +348,7 @@ render_infra_secrets() {
   else
     log "❌  scripts/render-deployments.sh not found – aborting"; exit 1
   fi
-  git add apps/infra-secrets
+  git add apps/infra-secrets resources/infra-secrets
   git commit -m "chore: render infra-secrets manifests [ci skip]" || true
   git push origin HEAD
 }

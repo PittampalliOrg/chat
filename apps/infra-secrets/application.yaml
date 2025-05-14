@@ -3,16 +3,15 @@ kind: Application
 metadata:
   name: infra-secrets
   namespace: argocd
+  annotations: { argocd.argoproj.io/sync-wave: "0" }
   finalizers: [resources-finalizer.argocd.argoproj.io]
 spec:
   project: default
   source:
     repoURL: https://github.com/PittampalliOrg/chat.git
     targetRevision: latest
-    path: apps/infra-secrets/base
-  destination:
-    name: in-cluster
-    namespace: external-secrets
+    path: resources/infra-secrets/base
+  destination: { name: in-cluster, namespace: external-secrets }
   syncPolicy:
     automated: { prune: true, selfHeal: true }
     syncOptions: ["CreateNamespace=true"]
