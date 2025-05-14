@@ -11,20 +11,28 @@ spec:
     repoURL: https://grafana.github.io/helm-charts
     chart: grafana
     targetRevision: 8.*                # current major
-    helm:
-      values: |
-        service:
-          type: NodePort
-          nodePort: 30001
-        adminPassword: "grafana"       # dev only – store in secret for prod
+helm:
+  values: |
+    service:
+      type: NodePort
+      nodePort: 30001
+    adminPassword: "grafana"
+    datasources:
+      datasources.yaml:
+        apiVersion: 1
         datasources:
-          datasources.yaml:
-            apiVersion: 1
-            datasources:
-              - name: Prometheus
-                type: prometheus
-                url: http://prometheus-server.monitoring.svc.cluster.local
-                isDefault: true
+          - name: Prometheus
+            type: prometheus
+            url: http://prometheus-server.monitoring.svc.cluster.local
+            isDefault: true
+          - name: Loki
+            type: loki
+            url: http://loki-gateway.monitoring.svc.cluster.local
+          - name: Tempo
+            type: tempo
+            url: http://tempo-query.monitoring.svc.cluster.local
+            traceToMetricsDatasource: Prometheus
+
   destination: { name: in-cluster, namespace: monitoring }
   syncPolicy:
     automated: { prune: true, selfHeal: true }

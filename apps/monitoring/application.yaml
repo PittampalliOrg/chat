@@ -11,27 +11,47 @@ spec:
     repoURL: https://grafana.github.io/helm-charts          # chart repo
     chart: k8s-monitoring                                   # Alloy + Beyla + Loki + Tempo + Prom
     targetRevision: 2.*                                     # stick to v2 line
-    helm:
-      values: |
-        cluster:
-          name: local-kind
-        clusterMetrics:
-          enabled: true
-        alloy-metrics:
-          enabled: true
-        beyla:
-          enabled: true
-          extraEnvs:
-            - name: BEYLA_OPEN_PORT
-              value: "3000,5432"
-        destinations:
-          - name: localProm
-            type: prometheus
-            url: http://prometheus-server.monitoring.svc.cluster.local/api/v1/write
-            metrics: { enabled: true }
+helm:
+  values: |
+    cluster:
+      name: local-kind
 
+    # ─── FEATURES ─────────────────────────────────────────
+    clusterMetrics: { enabled: true }      # already on
+    podLogs:        { enabled: true }      # NEW – container/stdout logs
+    traces:         { enabled: true }      # NEW – OTLP/Beyla traces
 
+    # ─── COLLECTORS ──────────────────────────────────────
+    alloy-metrics: { enabled: true }       # already on
+    alloy-logs:
+      enabled: true                        # NEW – tail /var/log/containers
+      securityContext:                     # allow in-node log access
+        privileged: true                   #  recommended by Grafana docs :contentReference[oaicite:1]{index=1}
+    alloy-traces: { enabled: true }        # NEW – OTLP exporter
 
+    beyla:                                 # already tracing Next.js + PG
+      enabled: true
+      extraEnvs:
+        - name: BEYLA_OPEN_PORT
+          value: "3000,5432"
+
+    # ─── DESTINATIONS (where collectors write) ───────────
+    destinations:
+      - name: localProm                    # metrics → Prometheus
+        type: prometheus
+        url:  http://prometheus-server.monitoring.svc.cluster.local/api/v1/write
+        metrics: { enabled: true }
+
+      - name: localLoki                    # logs → Loki
+        type: loki
+        url:  http://loki-gateway.monitoring.svc.cluster.local/loki/api/v1/push
+        logs: { enabled: true }
+
+      - name: localTempo                   # traces → Tempo (OTLP gRPC)
+        type: otlp
+        url:  tempo-distributor.monitoring.svc.cluster.local:4317
+        traces: { enabled: true }
+        
   destination:
     name: in-cluster
     namespace: monitoring

@@ -1,0 +1,28 @@
+# apps/loki/application.yaml
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: loki
+  namespace: argocd
+  annotations: { argocd.argoproj.io/sync-wave: "1" }
+spec:
+  project: default
+  source:
+    repoURL: https://grafana.github.io/helm-charts
+    chart: loki
+    targetRevision: 5.*          # current monolithic chart
+    helm:
+      values: |
+        singleBinary:
+          replicas: 1
+        serviceMonitor:
+          enabled: false
+        gateway:
+          enabled: true
+          service:
+            type: NodePort
+            nodePort: 31000      # published by kind-proxy
+  destination: { name: in-cluster, namespace: monitoring }
+  syncPolicy:
+    automated: { prune: true, selfHeal: true }
+    syncOptions: ["CreateNamespace=true"]
