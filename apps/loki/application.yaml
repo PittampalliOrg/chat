@@ -1,4 +1,3 @@
-# apps/loki/application.yaml
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
@@ -6,37 +5,34 @@ metadata:
   namespace: argocd
   annotations: { argocd.argoproj.io/sync-wave: "1" }
 spec:
+  project: default                     # <-- RESTORED
+  destination:                         # <-- RESTORED
+    name: in-cluster
+    namespace: monitoring
+
   source:
     repoURL: https://grafana.github.io/helm-charts
     chart: loki
     targetRevision: "5.*"
     helm:
       values: |
-        deploymentMode: SingleBinary          # <─ explicit, optional
+        # --- Loki deployment ---------------------------------------------
+        deploymentMode: SingleBinary
         singleBinary:
           replicas: 1
 
         loki:
           auth_enabled: false
           commonConfig:
-            replication_factor: 1             # chart insists on this for 1 replica
-          storage:                            # <─ FIX begins
-            type: filesystem                  # use local PV, no object store needed
+            replication_factor: 1
+          storage:
+            type: filesystem
             filesystem:
-              directory: /var/loki            # default directory
-            bucketNames:                      # ← ← add dummy bucket names
+              directory: /var/loki
+            bucketNames:           # chart expects these keys even for FS
               chunks: chunks
               ruler:  ruler
-              admin:  admin                   # chart only checks that key exists
-          schemaConfig:
-            configs:
-              - from: "2024-01-01"
-                store: boltdb-shipper
-                object_store: filesystem
-                schema: v12
-                index:
-                  prefix: loki_index_
-                  period: 24h
+              admin:  admin
 
         gateway:
           enabled: true
@@ -44,5 +40,17 @@ spec:
             type: NodePort
             nodePort: 31000
 
+        # --- turn OFF self-monitoring & Operator CRDs --------------------
+        monitoring:
+          selfMonitoring:
+            enabled: false                   # <- no GrafanaAgent CRs
+            grafanaAgent:
+              installOperator: false         # <- skip Operator & CRDs
+          lokiCanary:
+            enabled: false
+
         serviceMonitor:
           enabled: false
+  syncPolicy:
+    automated: { prune: true, selfHeal: true }
+    syncOptions: ["CreateNamespace=true"]
