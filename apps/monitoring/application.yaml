@@ -13,40 +13,43 @@ spec:
     targetRevision: 2.*                                     # stick to v2 line
     helm:
       values: |
+        # monitoring/values.yaml  ─── drop this into apps/monitoring/application.yaml → helm.values
         cluster:
-          name: local-kind
+          name: local-kind              # tag every metric/trace/log
 
-        # ───── Features you want ─────
+        # ── FEATURES ─────────────────────────────────────────────────────────────
         clusterMetrics:
-          enabled: true
+          enabled: true                 # <-– triggers kube-state-metrics, node exporter, etc.
 
-        # ───── Destinations ─────
-        destinations:
-          - name: localProm
-            type: prometheus
-            url:  http://prometheus-server.monitoring.svc.cluster.local/api/v1/write
-            metrics: { enabled: true }   # <-- tells the chart this dest accepts metrics
+        # ── COLLECTORS ───────────────────────────────────────────────────────────
+        alloy-metrics:
+          enabled: true                 # <-– REQUIRED for clusterMetrics feature
 
-        # ───── Storage back-ends ─────
-        prometheus:
-          enabled: true                  # deploys Prometheus server & service
-
-        grafana:
-          enabled: true
-          service:
-            type: NodePort
-            nodePort: 30001
-
-        alloy:
-          hostPID: true
-          securityContext:
-            privileged: true
-
-        beyla:
+        beyla:                          # zero-code HTTP tracing via eBPF
           enabled: true
           extraEnvs:
             - name: BEYLA_OPEN_PORT
-              value: "3000,5432"
+              value: "3000,5432"        # trace Next.js + Postgres traffic
+
+        # ── DESTINATIONS (where data is stored) ─────────────────────────────────
+        prometheus:
+          enabled: true                 # deploy a Prometheus server inside this chart
+
+        destinations:                   # tell the chart our Prom instance accepts metrics
+          - name: localProm
+            type: prometheus
+            url: http://prometheus-server.monitoring.svc.cluster.local/api/v1/write
+            metrics:
+              enabled: true
+
+        grafana:                         # optional UI
+          enabled: true
+          service:
+            type: NodePort
+            nodePort: 30001              # you already proxy this in kind-proxy
+
+        # everything else (Loki, Tempo, etc.) can be added later
+
 
   destination:
     name: in-cluster
