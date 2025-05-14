@@ -8,8 +8,8 @@ spec:
   project: default
   source:
     repoURL: https://github.com/PittampalliOrg/chat.git
-    targetRevision: latest # HEAD is preferred over “latest” :contentReference[oaicite:1]{index=1}
-    path: resources/infra-secrets/base
+    targetRevision: latest
+    path: apps/infra-secrets/base
   destination:
     name: in-cluster
     namespace: external-secrets
