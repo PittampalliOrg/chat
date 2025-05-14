@@ -690,7 +690,7 @@ install_workload_identity_webhook
 ensure_radius_app_registration
 run_rad_identity
 refresh_app_id
-install_radius
+# install_radius
 ensure_cluster_oidc_matches_storage
 
 resolve_keyvault

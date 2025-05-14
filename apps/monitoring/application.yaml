@@ -24,19 +24,11 @@ spec:
           extraEnvs:
             - name: BEYLA_OPEN_PORT
               value: "3000,5432"
-        prometheus:
-          enabled: true 
-        destinations: 
+        destinations:
           - name: localProm
             type: prometheus
             url: http://prometheus-server.monitoring.svc.cluster.local/api/v1/write
-            metrics:
-              enabled: true
-        grafana:  
-          enabled: true
-          service:
-            type: NodePort
-            nodePort: 30001 
+            metrics: { enabled: true }
 
 
 
