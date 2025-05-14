@@ -15,13 +15,23 @@ spec:
       values: |
         singleBinary:
           replicas: 1
-        serviceMonitor:
-          enabled: false
+
+        loki: 
+          auth_enabled: false
+          commonConfig:
+            replication_factor: 1
+          storage:
+            type: filesystem 
+
         gateway:
           enabled: true
           service:
             type: NodePort
-            nodePort: 31000      # published by kind-proxy
+            nodePort: 31000
+
+        serviceMonitor:
+          enabled: false
+
   destination: { name: in-cluster, namespace: monitoring }
   syncPolicy:
     automated: { prune: true, selfHeal: true }
