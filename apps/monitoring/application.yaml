@@ -14,38 +14,29 @@ spec:
     helm:
       values: |
         cluster:
-          name: local-kind        # label for all data
-
-        # ─── Features you want ────────────────────────────────────────────────
+          name: local-kind
         clusterMetrics:
-          enabled: true           # kube-state-metrics, node-exporter, etc.
-
-        # ─── Collectors (must match the feature) ──────────────────────────────
+          enabled: true
         alloy-metrics:
-          enabled: true           # REQUIRED for clusterMetrics feature
-
-        beyla:                    # optional eBPF HTTP tracing
+          enabled: true
+        beyla:
           enabled: true
           extraEnvs:
             - name: BEYLA_OPEN_PORT
               value: "3000,5432"
-
-        # ─── Storage back-ends (destinations) ────────────────────────────────
         prometheus:
-          enabled: true           # spin up in-cluster Prometheus
-
-        destinations:             # tell the chart where to ship metrics
+          enabled: true 
+        destinations: 
           - name: localProm
             type: prometheus
             url: http://prometheus-server.monitoring.svc.cluster.local/api/v1/write
             metrics:
               enabled: true
-
-        grafana:                  # UI
+        grafana:  
           enabled: true
           service:
             type: NodePort
-            nodePort: 30001       # you’ll browse to this
+            nodePort: 30001 
 
 
 
