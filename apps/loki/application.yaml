@@ -6,22 +6,37 @@ metadata:
   namespace: argocd
   annotations: { argocd.argoproj.io/sync-wave: "1" }
 spec:
-  project: default
   source:
     repoURL: https://grafana.github.io/helm-charts
     chart: loki
-    targetRevision: 5.*          # current monolithic chart
+    targetRevision: "5.*"
     helm:
       values: |
+        deploymentMode: SingleBinary          # <─ explicit, optional
         singleBinary:
           replicas: 1
 
-        loki: 
+        loki:
           auth_enabled: false
           commonConfig:
-            replication_factor: 1
-          storage:
-            type: filesystem 
+            replication_factor: 1             # chart insists on this for 1 replica
+          storage:                            # <─ FIX begins
+            type: filesystem                  # use local PV, no object store needed
+            filesystem:
+              directory: /var/loki            # default directory
+            bucketNames:                      # ← ← add dummy bucket names
+              chunks: chunks
+              ruler:  ruler
+              admin:  admin                   # chart only checks that key exists
+          schemaConfig:
+            configs:
+              - from: "2024-01-01"
+                store: boltdb-shipper
+                object_store: filesystem
+                schema: v12
+                index:
+                  prefix: loki_index_
+                  period: 24h
 
         gateway:
           enabled: true
@@ -31,8 +46,3 @@ spec:
 
         serviceMonitor:
           enabled: false
-
-  destination: { name: in-cluster, namespace: monitoring }
-  syncPolicy:
-    automated: { prune: true, selfHeal: true }
-    syncOptions: ["CreateNamespace=true"]
