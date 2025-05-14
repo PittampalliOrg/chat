@@ -1,4 +1,3 @@
-# apps/postgres/application.yaml
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
@@ -8,12 +7,12 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/vpittamp/nextjs-k8s.git
-    targetRevision: HEAD
-    path: apps/postgres/base
+    repoURL: https://github.com/PittampalliOrg/chat.git
+    targetRevision: latest
+    path: resources/postgres/base
   destination:
     name: in-cluster
-    namespace: nextjs          # reuse the same ns as Next.js/Redis
+    namespace: nextjs # keep data-plane components together
   syncPolicy:
     automated: { prune: true, selfHeal: true }
     syncOptions: ["CreateNamespace=true"]

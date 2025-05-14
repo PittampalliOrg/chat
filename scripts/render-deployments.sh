@@ -30,7 +30,7 @@ spec:
   project: default
   source:
     repoURL: https://github.com/${GITHUB_REPOSITORY}.git
-    targetRevision: HEAD
+    targetRevision: latest
     path: apps/infra-secrets/base
   destination:
     name: in-cluster
