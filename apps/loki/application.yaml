@@ -5,19 +5,13 @@ metadata:
   namespace: argocd
   annotations: { argocd.argoproj.io/sync-wave: "1" }
 spec:
-  project: default                     # <-- RESTORED
-  destination:                         # <-- RESTORED
-    name: in-cluster
-    namespace: monitoring
-
+  project: default
   source:
     repoURL: https://grafana.github.io/helm-charts
     chart: loki
-    targetRevision: "5.*"
+    targetRevision: 5.*
     helm:
       values: |
-        # --- Loki deployment ---------------------------------------------
-        deploymentMode: SingleBinary
         singleBinary:
           replicas: 1
 
@@ -33,6 +27,8 @@ spec:
               chunks: chunks
               ruler:  ruler
               admin:  admin
+        test:            
+            enabled: false
 
         gateway:
           enabled: true
@@ -40,17 +36,19 @@ spec:
             type: NodePort
             nodePort: 31000
 
-        # --- turn OFF self-monitoring & Operator CRDs --------------------
         monitoring:
           selfMonitoring:
-            enabled: false                   # <- no GrafanaAgent CRs
+            enabled: false 
             grafanaAgent:
-              installOperator: false         # <- skip Operator & CRDs
+              installOperator: false
           lokiCanary:
             enabled: false
 
         serviceMonitor:
           enabled: false
+  destination:
+    name: in-cluster
+    namespace: monitoring
   syncPolicy:
     automated: { prune: true, selfHeal: true }
     syncOptions: ["CreateNamespace=true"]
