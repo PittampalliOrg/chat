@@ -1,67 +1,32 @@
-// app/(auth)/auth.ts
-// This is the version from the previous successful fix for this file.
-// Ensure your MyAppDbUser and MyAppDbGuestUser interfaces accurately reflect your DB query returns.
-
 import { compare } from 'bcrypt-ts';
-import NextAuth, { type DefaultSession, type User as NextAuthUser, type Session as NextAuthSession } from 'next-auth';
+import NextAuth, { type DefaultSession } from 'next-auth';
 import Credentials from 'next-auth/providers/credentials';
-import {
-  createGuestUser,
-  getUser,
-} from '@/lib/db/queries';
+import { createGuestUser, getUser } from '@/lib/db/queries';
 import { authConfig } from './auth.config';
 import { DUMMY_PASSWORD } from '@/lib/constants';
+import type { DefaultJWT } from 'next-auth/jwt';
 
 export type UserType = 'guest' | 'regular';
 
-interface MyAppDbUser {
-  id: string;
-  email: string | null; 
-  password?: string | null;
-  name?: string | null;
-  image?: string | null;
-  emailVerified?: Date | null; 
-}
-
-interface MyAppDbGuestUser {
-  id: string;
-  email: string; 
-  name?: string | null;
-  image?: string | null;
-  emailVerified?: Date | null;
-}
-
 declare module 'next-auth' {
-  interface User {
-    id?: string; 
-    type?: UserType;
-    name?: string | null;
-    email?: string | null | undefined; 
-    image?: string | null;
-    emailVerified?: Date | null;
+  interface Session extends DefaultSession {
+    user: {
+      id: string;
+      type: UserType;
+    } & DefaultSession['user'];
   }
 
-  interface Session {
-    user?: { 
-      id: string; 
-      type: UserType;
-      name: string | null;
-      email: string; 
-      image?: string | null;
-      emailVerified: Date | null; 
-    };
-    expires: DefaultSession['expires'];
+  interface User {
+    id?: string;
+    email?: string | null;
+    type: UserType;
   }
 }
 
 declare module 'next-auth/jwt' {
-  interface JWT {
-    id?: string; 
-    type?: UserType;
-    name?: string | null;
-    email?: string | null | undefined; 
-    picture?: string | null; 
-    emailVerified?: Date | null;
+  interface JWT extends DefaultJWT {
+    id: string;
+    type: UserType;
   }
 }
 
@@ -71,108 +36,57 @@ export const {
   signIn,
   signOut,
 } = NextAuth({
-  debug: true,
-  trustHost: true,
   ...authConfig,
-  session: { strategy: 'jwt' },
   providers: [
     Credentials({
       credentials: {},
-      async authorize(credentials: any): Promise<NextAuthUser | null> {
-        const { email, password } = credentials;
-        if (!email || !password) return null;
+      async authorize({ email, password }: any) {
+        const users = await getUser(email);
 
-        const usersFromDb = await getUser(email as string) as MyAppDbUser[];
-        if (usersFromDb.length === 0) {
-          await compare(password as string, DUMMY_PASSWORD);
+        if (users.length === 0) {
+          await compare(password, DUMMY_PASSWORD);
           return null;
         }
-        const userFromDb = usersFromDb[0];
 
-        if (!userFromDb.password) {
-          await compare(password as string, DUMMY_PASSWORD);
+        const [user] = users;
+
+        if (!user.password) {
+          await compare(password, DUMMY_PASSWORD);
           return null;
         }
-        const passwordsMatch = await compare(password as string, userFromDb.password);
+
+        const passwordsMatch = await compare(password, user.password);
+
         if (!passwordsMatch) return null;
-        
-        if (!userFromDb.id ) {
-            console.error("DB user missing critical id", userFromDb);
-            return null; 
-        }
 
-        return {
-          id: userFromDb.id,
-          email: userFromDb.email, 
-          name: userFromDb.name ?? null,
-          image: userFromDb.image ?? null,
-          type: 'regular',
-          emailVerified: userFromDb.emailVerified ?? null,
-        };
+        return { ...user, type: 'regular' };
       },
     }),
     Credentials({
       id: 'guest',
       credentials: {},
-      async authorize(): Promise<NextAuthUser | null> {
-        try {
-          const [guestUserFromDb] = await createGuestUser() as MyAppDbGuestUser[];
-          if (!guestUserFromDb || !guestUserFromDb.id || !guestUserFromDb.email) {
-            console.error("Guest user creation failed to return required fields", guestUserFromDb);
-            return null;
-          }
-          return {
-            id: guestUserFromDb.id,
-            email: guestUserFromDb.email, 
-            name: guestUserFromDb.name ?? `Guest`,
-            image: guestUserFromDb.image ?? null,
-            type: 'guest',
-            emailVerified: guestUserFromDb.emailVerified ?? null,
-          };
-        } catch (error) {
-          console.error('Error in guest authorize:', error);
-          return null;
-        }
+      async authorize() {
+        const [guestUser] = await createGuestUser();
+        return { ...guestUser, type: 'guest' };
       },
     }),
   ],
   callbacks: {
-    async jwt({ token, user }) { 
+    async jwt({ token, user }) {
       if (user) {
-        token.id = user.id; 
-        token.type = user.type; 
-        token.name = user.name; 
-        token.email = user.email; 
-        token.picture = user.image;
-        token.emailVerified = user.emailVerified;
+        token.id = user.id as string;
+        token.type = user.type;
       }
+
       return token;
     },
     async session({ session, token }) {
-      let sessionUserObject: NextAuthSession['user'] = undefined; 
-
-      if (token.id && typeof token.email === 'string' && token.type) {
-        sessionUserObject = {
-          id: token.id,
-          type: token.type,
-          name: token.name ?? null,
-          email: token.email,
-          image: token.picture ?? null,
-          emailVerified: (token.emailVerified instanceof Date || token.emailVerified === null) 
-                           ? token.emailVerified 
-                           : null,
-        };
-      } else {
-        console.warn(
-          '[Auth Session Callback] Token missing critical id, string email, or type. User object for session will be undefined.',
-          { tokenId: token.id, tokenEmail: token.email, tokenType: token.type }
-        );
+      if (session.user) {
+        session.user.id = token.id;
+        session.user.type = token.type;
       }
-      
-      return {
-        user: sessionUserObject, 
-        expires: session.expires, 
-      };
+
+      return session;
     },
   },
 });
