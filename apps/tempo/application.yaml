@@ -1,0 +1,29 @@
+# apps/tempo/application.yaml
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: tempo
+  namespace: argocd
+  annotations: { argocd.argoproj.io/sync-wave: "1" }
+spec:
+  project: default
+  source:
+    repoURL: https://grafana.github.io/helm-charts
+    chart: tempo
+    targetRevision: 1.*           # monolithic Tempo
+    helm:
+      values: |
+        mode: standalone
+        ingester:
+          replicas: 1
+        traces:
+          otlp:
+            grpc:
+              enabled: true
+        service:
+          type: NodePort
+          nodePort: 32000         # OTLP/HTTP is also exposed internally
+  destination: { name: in-cluster, namespace: monitoring }
+  syncPolicy:
+    automated: { prune: true, selfHeal: true }
+    syncOptions: ["CreateNamespace=true"]
