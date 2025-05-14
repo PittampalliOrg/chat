@@ -5,40 +5,39 @@
 	],
 	"service": "frontend-dev",
 	"onCreateCommand": "bash ./.devcontainer/on-create.sh",
-	"postCreateCommand":  "echo 'Dev container built – waiting for VS Code to attach…'",
-	"postStartCommand":   "bash -ic 'scripts/wi-kind-setup.sh'",
+	"postCreateCommand": "echo 'Dev container built – waiting for VS Code to attach…'",
+	"postStartCommand": "bash -ic 'scripts/wi-kind-setup.sh'",
 	"workspaceFolder": "/workspace",
 	// "runArgs": [
 	// 	"--env-file=./.devcontainer/wi.env",
 	// 	"--env-file=./.devcontainer/devcontainer.env",
 	// 	"--env-file=./.devcontainer/azure.sp.env"
 	// ],
-  "features": {
-//     "ghcr.io/devcontainers/features/docker-outside-of-docker": {},
-//     "ghcr.io/devcontainers/features/azure-cli:1": {},
-//     "ghcr.io/devcontainers/features/kubectl-helm-minikube:1": {
-//       "version": "latest",
-//       "helm": "latest",
-//       "minikube": "none"
-//     },
-//     "ghcr.io/devcontainers-extra/features/kind": {},
-    "ghcr.io/devcontainers-extra/features/apt-packages": {
-      "packages": "curl,iputils-ping,iproute2,netcat-openbsd,bind9-host,dnsutils,jq"
-    },
-
-//     "ghcr.io/devcontainers/features/node:1": {},
-//     "ghcr.io/devcontainers/features/github-cli": {},
-//     "ghcr.io/devcontainers/features/go:1": {
-//       "version": "latest",
-//       "golangciLintVersion": "latest"
-//     },
-//     "ghcr.io/stuartleeks/dev-container-features/shell-history:0": {},
-//     "ghcr.io/stuartleeks/dev-container-features/azure-cli-persistence:0": {},
-//     "ghcr.io/devcontainer-community/devcontainer-features/smallstep.com:1": {},
-      "ghcr.io/devcontainers-extra/features/argo-cd": {
-    "version": "2.13.4"
-  }
-  },
+	"features": {
+		//     "ghcr.io/devcontainers/features/docker-outside-of-docker": {},
+		//     "ghcr.io/devcontainers/features/azure-cli:1": {},
+		//     "ghcr.io/devcontainers/features/kubectl-helm-minikube:1": {
+		//       "version": "latest",
+		//       "helm": "latest",
+		//       "minikube": "none"
+		//     },
+		//     "ghcr.io/devcontainers-extra/features/kind": {},
+		"ghcr.io/devcontainers-extra/features/apt-packages": {
+			"packages": "curl,iputils-ping,iproute2,netcat-openbsd,bind9-host,dnsutils,jq"
+		},
+		//     "ghcr.io/devcontainers/features/node:1": {},
+		//     "ghcr.io/devcontainers/features/github-cli": {},
+		//     "ghcr.io/devcontainers/features/go:1": {
+		//       "version": "latest",
+		//       "golangciLintVersion": "latest"
+		//     },
+		//     "ghcr.io/stuartleeks/dev-container-features/shell-history:0": {},
+		//     "ghcr.io/stuartleeks/dev-container-features/azure-cli-persistence:0": {},
+		//     "ghcr.io/devcontainer-community/devcontainer-features/smallstep.com:1": {},
+		"ghcr.io/devcontainers-extra/features/argo-cd": {
+			"version": "2.13.4"
+		}
+	},
 	"customizations": {
 		"vscode": {
 			"settings": {},
@@ -86,6 +85,18 @@
 		},
 		"30080": {
 			"label": "argo-cd",
+			"onAutoForward": "silent"
+		},
+		"30001": {
+			"label": "grafana",
+			"onAutoForward": "openBrowser"
+		},
+		"31000": {
+			"label": "loki",
+			"onAutoForward": "silent"
+		},
+		"32000": {
+			"label": "tempo",
 			"onAutoForward": "silent"
 		}
 	},

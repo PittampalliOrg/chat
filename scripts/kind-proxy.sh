@@ -27,6 +27,9 @@ stream {
   upstream apiserver  { server ${CP}:6443; }
   upstream argocd_http  { server ${CP}:30080; }
   upstream argocd_https { server ${CP}:30443; }
+  upstream grafana_ui  { server ${CP}:30001; }
+  upstream loki_http   { server ${CP}:31000; }
+  upstream tempo_http  { server ${CP}:32000; }
 
   server {            # Kubernetes API
     listen 6443;
@@ -36,6 +39,18 @@ stream {
     listen 30080;
     proxy_pass argocd_http;
   }
+   server {            # Grafana UI
+   listen 30001;
+   proxy_pass grafana_ui;
+ }
+ server {            # Loki
+   listen 31000;
+   proxy_pass loki_http;
+ }
+ server {            # Tempo
+   listen 32000;
+   proxy_pass tempo_http;
+ }
   server {            # Argo CD NodePort (HTTPS)
     listen 30443;
     proxy_pass argocd_https;
