@@ -13,42 +13,40 @@ spec:
     targetRevision: 2.*                                     # stick to v2 line
     helm:
       values: |
-        # monitoring/values.yaml  ─── drop this into apps/monitoring/application.yaml → helm.values
         cluster:
-          name: local-kind              # tag every metric/trace/log
+          name: local-kind        # label for all data
 
-        # ── FEATURES ─────────────────────────────────────────────────────────────
+        # ─── Features you want ────────────────────────────────────────────────
         clusterMetrics:
-          enabled: true                 # <-– triggers kube-state-metrics, node exporter, etc.
+          enabled: true           # kube-state-metrics, node-exporter, etc.
 
-        # ── COLLECTORS ───────────────────────────────────────────────────────────
+        # ─── Collectors (must match the feature) ──────────────────────────────
         alloy-metrics:
-          enabled: true                 # <-– REQUIRED for clusterMetrics feature
+          enabled: true           # REQUIRED for clusterMetrics feature
 
-        beyla:                          # zero-code HTTP tracing via eBPF
+        beyla:                    # optional eBPF HTTP tracing
           enabled: true
           extraEnvs:
             - name: BEYLA_OPEN_PORT
-              value: "3000,5432"        # trace Next.js + Postgres traffic
+              value: "3000,5432"
 
-        # ── DESTINATIONS (where data is stored) ─────────────────────────────────
+        # ─── Storage back-ends (destinations) ────────────────────────────────
         prometheus:
-          enabled: true                 # deploy a Prometheus server inside this chart
+          enabled: true           # spin up in-cluster Prometheus
 
-        destinations:                   # tell the chart our Prom instance accepts metrics
+        destinations:             # tell the chart where to ship metrics
           - name: localProm
             type: prometheus
             url: http://prometheus-server.monitoring.svc.cluster.local/api/v1/write
             metrics:
               enabled: true
 
-        grafana:                         # optional UI
+        grafana:                  # UI
           enabled: true
           service:
             type: NodePort
-            nodePort: 30001              # you already proxy this in kind-proxy
+            nodePort: 30001       # you’ll browse to this
 
-        # everything else (Loki, Tempo, etc.) can be added later
 
 
   destination:
