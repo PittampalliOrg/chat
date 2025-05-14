@@ -12,37 +12,42 @@ spec:
     chart: k8s-monitoring                                   # Alloy + Beyla + Loki + Tempo + Prom
     targetRevision: 2.*                                     # stick to v2 line
     helm:
-      values: |                                             # <-- override only what we need
+      values: |
         cluster:
           name: local-kind
+
+        # ───── Features you want ─────
         clusterMetrics:
-          enabled: true  
+          enabled: true
+
+        # ───── Destinations ─────
+        destinations:
+          - name: localProm
+            type: prometheus
+            url:  http://prometheus-server.monitoring.svc.cluster.local/api/v1/write
+            metrics: { enabled: true }   # <-- tells the chart this dest accepts metrics
+
+        # ───── Storage back-ends ─────
+        prometheus:
+          enabled: true                  # deploys Prometheus server & service
+
+        grafana:
+          enabled: true
+          service:
+            type: NodePort
+            nodePort: 30001
+
         alloy:
           hostPID: true
           securityContext:
             privileged: true
+
         beyla:
           enabled: true
           extraEnvs:
             - name: BEYLA_OPEN_PORT
               value: "3000,5432"
-        grafana:
-          admin:
-            existingSecret: grafana-admin
-          enabled: true
-          service:
-            type: NodePort
-            nodePort: 30001 
-        loki:
-          gateway:
-            service:
-              type: NodePort
-              nodePort: 31000
-        tempo:
-          tempo:
-            service:
-              type: NodePort
-              nodePort: 32000
+
   destination:
     name: in-cluster
     namespace: monitoring
