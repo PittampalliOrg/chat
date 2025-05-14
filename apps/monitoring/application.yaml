@@ -1,0 +1,49 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: monitoring
+  namespace: argocd
+  annotations: { argocd.argoproj.io/sync-wave: "0" }
+  finalizers: [resources-finalizer.argocd.argoproj.io]
+spec:
+  project: default
+  source:
+    repoURL: https://grafana.github.io/helm-charts          # chart repo
+    chart: k8s-monitoring                                   # Alloy + Beyla + Loki + Tempo + Prom
+    targetRevision: 2.*                                     # stick to v2 line
+    helm:
+      values: |                                             # <-- override only what we need
+        cluster:
+          name: local-kind
+        alloy:
+          hostPID: true
+          securityContext:
+            privileged: true
+        beyla:
+          enabled: true
+          extraEnvs:
+            - name: BEYLA_OPEN_PORT
+              value: "3000,5432"
+        grafana:
+          admin:
+            existingSecret: grafana-admin
+          enabled: true
+          service:
+            type: NodePort
+            nodePort: 30001 
+        loki:
+          gateway:
+            service:
+              type: NodePort
+              nodePort: 31000
+        tempo:
+          tempo:
+            service:
+              type: NodePort
+              nodePort: 32000
+  destination:
+    name: in-cluster
+    namespace: monitoring
+  syncPolicy:
+    automated: { prune: true, selfHeal: true }
+    syncOptions: ["CreateNamespace=true"]

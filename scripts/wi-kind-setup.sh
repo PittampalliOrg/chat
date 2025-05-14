@@ -184,8 +184,13 @@ create_kind_cluster() {
   cat <<EOF | kind create cluster --name "$KIND_CLUSTER_NAME" --image "kindest/node:${KIND_IMAGE_VERSION}" --config=-
 kind: Cluster
 apiVersion: kind.x-k8s.io/v1alpha4
-nodes:
-- role: control-plane
+ nodes:
+ - role: control-plane
+   extraMounts:
+     - hostPath: /lib/modules
+       containerPath: /lib/modules
+     - hostPath: /sys
+       containerPath: /sys
   extraPortMappings:
     - containerPort: 80
       hostPort: 80
