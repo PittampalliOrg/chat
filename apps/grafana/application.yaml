@@ -11,7 +11,7 @@ spec:
   # where to install
   destination:
     name: in-cluster
-    namespace: monitoring      # <-- lives with Loki / Tempo / Prom
+    namespace: monitoring
 
   # what to install
   source:
