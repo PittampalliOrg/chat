@@ -1,14 +1,14 @@
 #!/usr/bin/env bash
-# Render every *.yaml.tpl under $DEPLOY_DIR → apps/infra-secrets/base
+# Render every *.yaml.tpl under $DEPLOY_DIR → resources/infra-secrets/base
 set -Eeuo pipefail
 
 DEPLOY_DIR="deployments"
-OUT_DIR="resources/infra-secrets/base"
+OUT_DIR="resources/infra-secrets/base"           # ⟵ new location
 APP_FILE="apps/infra-secrets/application.yaml"
 
 mkdir -p "$OUT_DIR"
 
-# These vars are already exported by wi-kind-setup.sh
+# Vars exported by wi-kind-setup.sh
 export APP_ID TENANT_ID ESO_NS REGISTRY_NAME REGISTRY_NS VAULT_URL VAULT_ID SA_NAME
 
 for tpl in "$DEPLOY_DIR"/*.yaml.tpl; do
@@ -16,7 +16,7 @@ for tpl in "$DEPLOY_DIR"/*.yaml.tpl; do
 done
 
 # derive "<owner>/<repo>"
-GITHUB_REPOSITORY=$(git config --get remote.origin.url | \
+GITHUB_REPOSITORY=$(git config --get remote.origin.url |
                     sed -E 's#.+[:/](.+/[^/]+)\.git#\1#')
 
 cat >"$APP_FILE" <<EOF

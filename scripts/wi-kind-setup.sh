@@ -342,16 +342,22 @@ install_external_secrets_operator() {
 
 render_infra_secrets() {
   log "✏️  Rendering ESO / ACR templates into Git repo"
-  GITHUB_REPOSITORY=$(git config --get remote.origin.url | sed -E 's#.*/(.*)\.git#\1#')
+
+  GITHUB_REPOSITORY=$(git config --get remote.origin.url |
+                      sed -E 's#.*/(.*)\.git#\1#')
+
   if [[ -f "${SCRIPT_PATH}/render-deployments.sh" ]]; then
     source "${SCRIPT_PATH}/render-deployments.sh"
   else
     log "❌  scripts/render-deployments.sh not found – aborting"; exit 1
   fi
+
+  # ── new: commit both the Application CR and rendered manifests ─────────────
   git add apps/infra-secrets resources/infra-secrets
   git commit -m "chore: render infra-secrets manifests [ci skip]" || true
   git push origin HEAD
 }
+
 
 create_eso_service_account() {
   local current_app_id sp_object_id existing_assignment
