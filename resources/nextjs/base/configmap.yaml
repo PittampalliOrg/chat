@@ -9,6 +9,7 @@ data:
   NEXTAUTH_URL:          "http://chat.localtest.me:31080"
   NEXT_PUBLIC_BASE_URL:  "http://chat.localtest.me:31080"
   NEXT_PUBLIC_SITE_URL:  "http://chat.localtest.me:31080"
+  NODE_ENV:              "development"
 
   # runtime plumbing
   REDIS_URL:             "redis://redis-service.redis.svc.cluster.local:6379"
