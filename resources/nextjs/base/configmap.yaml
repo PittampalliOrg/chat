@@ -1,17 +1,31 @@
-# apps/nextjs/base/configmap.yaml
 apiVersion: v1
 kind: ConfigMap
 metadata:
   name: myapp-config
   namespace: nextjs
 data:
-  # public / non-secret
+  # ── public URLs ───────────────────────────────────────────────
   NEXTAUTH_URL:          "http://chat.localtest.me:31080"
   NEXT_PUBLIC_BASE_URL:  "http://chat.localtest.me:31080"
   NEXT_PUBLIC_SITE_URL:  "http://chat.localtest.me:31080"
-  NODE_ENV:              "development"
 
-  # runtime plumbing
+  # ── telemetry (browser) ───────────────────────────────────────
+  NEXT_PUBLIC_OTEL_TRACES_ENDPOINT: "/api/telemetry/traces"
+
+  # ── telemetry (node & API routes) ─────────────────────────────
+  TEMPO_ENDPOINT:         "http://tempo.monitoring.svc.cluster.local:4318/v1/traces"
+  LOKI_ENDPOINT:          "http://loki-gateway.monitoring.svc.cluster.local/loki/api/v1/push"
+  PROMETHEUS_ENDPOINT:    "http://prometheus-server.monitoring.svc.cluster.local/api/v1/write"
+
+  # OTLP spec variables (picked-up automatically by the SDK)
+  OTEL_EXPORTER_OTLP_PROTOCOL:          "http/protobuf"
+  OTEL_EXPORTER_OTLP_TRACES_ENDPOINT:   "http://tempo.monitoring.svc.cluster.local:4318"
+  OTEL_EXPORTER_OTLP_METRICS_ENDPOINT:  "http://monitoring-alloy-metrics.monitoring.svc.cluster.local:4317"
+  OTEL_EXPORTER_OTLP_LOGS_ENDPOINT:     "http://loki-gateway.monitoring.svc.cluster.local/loki"
+  OTEL_SERVICE_NAME:                    "nextjs"
+
+  # ── misc runtime plumbing ─────────────────────────────────────
+  NODE_ENV:              "development"
   REDIS_URL:             "redis://redis-service.redis.svc.cluster.local:6379"
   REDIS_AVAILABLE:       "True"
-  TRUST_PROXY:           "1"   
+  TRUST_PROXY:           "1"
