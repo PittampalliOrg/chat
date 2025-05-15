@@ -678,6 +678,97 @@ refresh_app_id() {
   APP_ID="$(az ad app list --display-name "$APP_NAME" --query '[0].appId' -o tsv)"
   log "🔄  Refreshed APP_ID → $APP_ID"
 }
+
+install_headlamp() {
+  log "🔧  Applying upstream Headlamp manifest"
+  kubectl apply -f https://raw.githubusercontent.com/kinvolk/headlamp/main/kubernetes-headlamp.yaml
+  log "🔧  Creating cluster‑admin ServiceAccount for Headlamp"
+  kubectl apply -f - <<EOF
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: headlamp-admin
+  namespace: kube-system
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: headlamp-admin-binding
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cluster-admin
+subjects:
+  - kind: ServiceAccount
+    name: headlamp-admin
+    namespace: kube-system
+EOF
+  log "⏳  Waiting for Headlamp pod…"
+  kubectl -n kube-system wait --for=condition=ready pod -l k8s-app=headlamp --timeout=90s
+  local pod_ip; pod_ip=$(kubectl -n kube-system get pod -l k8s-app=headlamp -o jsonpath='{.items[0].status.podIP}')
+  log "ℹ️  Headlamp pod IP: $pod_ip"
+  log "🔧  iptables DNAT in Kind node"
+  docker exec "${KIND_CLUSTER_NAME}-control-plane" sh -c "iptables -t nat -D PREROUTING -p tcp --dport ${HEADLAMP_NODE_PORT} -j DNAT --to-destination ${pod_ip}:4466" 2>/dev/null || true
+  docker exec "${KIND_CLUSTER_NAME}-control-plane" sh -c "iptables -t nat -A PREROUTING -p tcp --dport ${HEADLAMP_NODE_PORT} -j DNAT --to-destination ${pod_ip}:4466"
+  log "🔧  Auto‑login plugin ConfigMap"
+  kubectl -n kube-system apply -f - <<'EOF'
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: headlamp-autologin-config
+  namespace: kube-system
+  labels:
+    headlamp.dev/plugin: 'true'
+data:
+  plugin.js: |
+    /* Headlamp Auto‑Login Plugin */
+    import { registerAuthenticator } from "@kinvolk/headlamp-plugin/lib";
+
+    class AutoLoginAuthenticator {
+      name = "Auto‑Login";
+      token = null;
+
+      async authenticate() {
+        if (this.token) return { token: this.token };
+        try {
+          const resp = await fetch('/api/v1/namespaces/kube-system/serviceaccounts/headlamp-admin/token', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              apiVersion: 'authentication.k8s.io/v1',
+              kind: 'TokenRequest',
+              spec: { expirationSeconds: 3600 }
+            })
+          });
+          if (!resp.ok) throw new Error(await resp.text());
+          const data = await resp.json();
+          this.token = data.status.token;
+          return { token: this.token };
+        } catch (err) {
+          console.error('Auto‑Login failed', err);
+          return null;
+        }
+      }
+
+      requiresCredentials() { return !this.token; }
+      close() { this.token = null; }
+    }
+
+    export default () => registerAuthenticator(new AutoLoginAuthenticator());
+EOF
+
+  log "🔧  Patching Headlamp Deployment to mount plugin"
+  kubectl -n kube-system patch deployment headlamp --type json -p "[
+    {\"op\":\"add\",\"path\":\"/spec/template/spec/volumes/-\",\"value\":{\"name\":\"plugin-vol\",\"configMap\":{\"name\":\"headlamp-autologin-config\"}}},
+    {\"op\":\"add\",\"path\":\"/spec/template/spec/containers/0/volumeMounts/-\",\"value\":{\"name\":\"plugin-vol\",\"mountPath\":\"/headlamp/plugins/autologin\"}}
+  ]"
+  kubectl -n kube-system rollout restart deployment/headlamp
+  kubectl -n kube-system wait --for=condition=available deployment/headlamp --timeout=90s
+  local token; token=$(kubectl -n kube-system create token headlamp-admin --duration=8760h)
+  echo "$token" > /workspace/headlamp-token.txt
+  log "🌐  Headlamp UI → http://localhost:${HEADLAMP_NODE_PORT}"
+}
+
 ###############################################################################
 # Execution order
 ###############################################################################
@@ -709,6 +800,9 @@ login_argocd_cli
 # Port‑forwarding is no longer needed – interact over NodePort instead
 print_argocd_admin_password
 apply_app_of_apps
+install_headlamp
 
 log "🎉  wi-kind-setup complete – cluster ‘$KIND_CLUSTER_NAME’, storage ‘$AZURE_STORAGE_ACCOUNT’, Key Vault ‘$KEYVAULT_NAME’"
 log "🔗  Starting port-forward on localhost:${ARGO_HTTP_PORT}"
+
+
