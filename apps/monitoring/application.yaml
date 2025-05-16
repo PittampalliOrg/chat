@@ -25,7 +25,15 @@ spec:
         traces:       { enabled: true }
 
         alloy-metrics: { enabled: true }
-        alloy-logs:    { enabled: true }
+        alloy-logs:
+          extraArgs:
+            - --server.http.listen-addr=0.0.0.0:12345   # enables the UI
+          config: |
+            loki.write:
+              endpoint: http://loki-gateway.monitoring.svc.cluster.local:3100/loki/api/v1/push
+            exporters.otlphttp:
+              endpoint: http://tempo.monitoring.svc.cluster.local:4318
+
         alloy-traces:  { enabled: true }
 
         beyla:
