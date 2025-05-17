@@ -1,24 +1,35 @@
-'use client';
+"use client";
 
-import type { Attachment, UIMessage } from 'ai';
-import { useChat } from '@ai-sdk/react';
-import { useEffect, useState } from 'react';
-import useSWR, { useSWRConfig } from 'swr';
-import { ChatHeader } from '@/components/chat-header';
-import type { Vote } from '@/lib/db/schema';
-import { fetcher, generateUUID } from '@/lib/utils';
-import { Artifact } from './artifact';
-import { MultimodalInput } from './multimodal-input';
-import { Messages } from './messages';
-import type { VisibilityType } from './visibility-selector';
-import { useArtifactSelector } from '@/hooks/use-artifact';
-import { unstable_serialize } from 'swr/infinite';
-import { getChatHistoryPaginationKey } from './sidebar-history';
-import { toast } from './toast';
-import type { Session } from 'next-auth';
-import { useSearchParams } from 'next/navigation';
-import { useChatVisibility } from '@/hooks/use-chat-visibility';
-import { useAutoResume } from '@/hooks/use-auto-resume';
+import type { Attachment, UIMessage } from "ai";
+import { useChat } from "@ai-sdk/react";
+import { useEffect, useState } from "react";
+import useSWR, { useSWRConfig } from "swr";
+import { ChatHeader } from "@/components/chat-header";
+import type { Vote } from "@/lib/db/schema";
+import { fetcher, generateUUID } from "@/lib/utils";
+import { Artifact } from "./artifact";
+import { MultimodalInput } from "./multimodal-input";
+import { Messages } from "./messages";
+import type { VisibilityType } from "./visibility-selector";
+import { useArtifactSelector } from "@/hooks/use-artifact";
+import { unstable_serialize } from "swr/infinite";
+import { getChatHistoryPaginationKey } from "./sidebar-history";
+import { toast } from "./toast";
+import type { Session } from "next-auth";
+import { useSearchParams } from "next/navigation";
+import { useChatVisibility } from "@/hooks/use-chat-visibility";
+import { useAutoResume } from "@/hooks/use-auto-resume";
+
+/**
+ * Simple wrapper so we can toggle verbose logging via the browser console:
+ *   localStorage.debug === "true" → logs are enabled.
+ */
+function log(...args: any[]) {
+  if (typeof window !== "undefined" && localStorage.getItem("debug") === "true") {
+    // eslint-disable-next-line no-console
+    console.log("[Chat]", ...args);
+  }
+}
 
 export function Chat({
   id,
@@ -44,6 +55,17 @@ export function Chat({
     initialVisibilityType,
   });
 
+  //───────────────────────────────────────────────────────────────────────────┐
+  // Determine absolute API base – crucial when the app is served behind an   │
+  // Ingress path or a different host (e.g. chat.example.com inside k8s).     │
+  //───────────────────────────────────────────────────────────────────────────┘
+  const apiBase =
+    typeof window !== "undefined"
+      ? window.location.origin
+      : process.env.NEXT_PUBLIC_BASE_URL ?? "";
+
+  log("component mounted", { id, apiBase });
+
   const {
     messages,
     setMessages,
@@ -58,6 +80,7 @@ export function Chat({
     data,
   } = useChat({
     id,
+    api: `${apiBase}/api/chat`,
     initialMessages,
     experimental_throttle: 100,
     sendExtraMessageFields: true,
@@ -69,30 +92,35 @@ export function Chat({
       selectedVisibilityType: visibilityType,
     }),
     onFinish: () => {
+      log("onFinish – messages saved");
       mutate(unstable_serialize(getChatHistoryPaginationKey));
     },
     onError: (error) => {
-      toast({
-        type: 'error',
-        description: error.message,
-      });
+      log("onError", error);
+      toast({ type: "error", description: error.message });
     },
   });
 
+  //─────────────── Add realtime client‑side diagnostics ─────────────────────
+  useEffect(() => {
+    log("status", status);
+  }, [status]);
+
+  useEffect(() => {
+    log("message count", messages.length);
+  }, [messages.length]);
+
   const searchParams = useSearchParams();
-  const query = searchParams.get('query');
+  const query = searchParams.get("query");
 
   const [hasAppendedQuery, setHasAppendedQuery] = useState(false);
 
   useEffect(() => {
     if (query && !hasAppendedQuery) {
-      append({
-        role: 'user',
-        content: query,
-      });
-
+      log("auto‑append query param", query);
+      append({ role: "user", content: query });
       setHasAppendedQuery(true);
-      window.history.replaceState({}, '', `/chat/${id}`);
+      window.history.replaceState({}, "", `/chat/${id}`);
     }
   }, [query, append, hasAppendedQuery, id]);
 

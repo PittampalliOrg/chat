@@ -22,7 +22,7 @@ pipelines:
 # We recommend to skip image building during development (devspace dev) as much as possible
 images:
   app:
-    image: 'vpittamp.azurecr.io/chat-frontend'
+    image: vpittamp.azurecr.io/chat-frontend:0.2.93
     dockerfile: ./Dockerfile
 
 # This is a list of `deployments` that DevSpace can create for this project
@@ -31,27 +31,73 @@ deployments:
     # This deployment uses `kubectl` but you can also define `helm` deployments
     kubectl:
       manifests:
-        - apps/nextjs/**
-pullSecrets:
-  createPullSecret:
-    registry: vpittamp.azurecr.io 
+        - ./resources/nextjs/base/**
+        # - ./resources/infra-secrets/base/**
+        - ./resources/postgres/base/**
+        - ./resources/redis/base/**
 
 # This is a list of `dev` containers that are based on the containers created by your deployments
 dev:
   app:
     # Search for the container that runs this image
-    imageSelector: 'vpittamp.azurecr.io/chat-frontend:0.2.4'
+    imageSelector: vpittamp.azurecr.io/chat-frontend:0.2.93
     # Replace the container image with this dev-optimized image (allows to skip image building during development)
-    devImage: ghcr.io/loft-sh/devspace-containers/typescript:20-alpine
+    devImage: vpittamp.azurecr.io/kind:2
+    
     # Sync files between the local filesystem and the development container
     sync:
-      - path: ./
-        uploadExcludePaths:
-          - node_modules
-        downloadExcludePaths: [node_modules]
+      - path: .:/workspace
+        excludePaths:
+          - .devcontainer/
+          - .devspace/
+          - .git/
+          - .vscode/
+          - node_modules/
+          - .next/
+          - .pnpm-store/
+          - .github/
+          - .postgresql/
+          - apps/
+          - bootstrap/
+          - dapr/
+          - deployments/
+          - iac/
+          - kind-pki/
+          - resources/ 
+          - scripts/
+      - path: ./package.json:/workspace/package.json
+        file: true
+      - path: ./middleware.ts:/workspace/middleware.ts
+        file: true
+      - path: ./instrumentation.client.ts:/workspace/instrumentation.client.ts
+        file: true
+      - path: ./devspace_start.sh:/workspace/devspace_start.sh
+        file: true
+      - path: ./instrumentation.node.ts:/workspace/instrumentation.node.ts
+        file: true
+      - path: ./middleware.ts:/workspace/middleware.ts
+        file: true
+      - path: ./tailwind.config.ts:/workspace/tailwind.config.ts
+        file: true
+      - path: ./components.json:/workspace/components.json
+        file: true
+      - path: ./drizzle.config.ts:/workspace/drizzle.config.ts
+        file: true
+      - path: ./instrumentation.ts:/workspace/instrumentation.ts
+        file: true
+      - path: ./next-env.d.ts:/workspace/next-env.d.ts
+        file: true
+      - path: ./pnpm-lock.yaml:/workspace/pnpm-lock.yaml
+        file: true
+      - path: ./.env:/workspace/.env
+        file: true
+      - path: ./.devspace_start.sh:/workspace/.devspace_start.sh
+        file: true
+
+        
     # Open a terminal and use the following command to start it
     terminal:
-      command: ./devspace_start.sh
+      command: ./workspace/devspace_start.sh
     # Inject a lightweight SSH server into the container (so your IDE can connect to the remote dev env)
     ssh:
       enabled: true
@@ -63,11 +109,12 @@ dev:
       - gitCredentials: true
     # Forward the following ports to be able access your application via localhost
     ports:
-      - port: "9229"
-      - port: "3001:3000"
+      - port: "3000:3000"      # <─ replaces the two-field form
+        bindAddress: 0.0.0.0   # keep this if you need it
+      - port: "9229"           # debugger, same local & remote
     # Open the following URLs once they return an HTTP status code other than 502 or 503
     open:
-      - url: http://localhost:3000
+      - url: http://localhost:3000/
 
 # Use the `commands` section to define repeatable dev workflows for this project 
 commands:

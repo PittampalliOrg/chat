@@ -8,9 +8,12 @@ if [ -f "yarn.lock" ]; then
 else 
    if [ -f "package.json" ]; then
       echo "Installing NPM Dependencies"
-      npm install
+      cd workspace
+      pnpm install
    fi
 fi
+
+# pnpm run dev
 
 COLOR_BLUE="\033[0;94m"
 COLOR_GREEN="\033[0;92m"

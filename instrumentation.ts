@@ -1,5 +1,12 @@
-import { registerOTel } from '@vercel/otel';
+export async function register() {
+  if (process.env.NEXT_RUNTIME === 'nodejs') {
+    await import('./instrumentation.node')
+  }
+}
 
-export function register() {
-  registerOTel({ serviceName: 'ai-chatbot' });
+export async function registerClient() {
+  if (typeof window !== 'undefined') {
+    const { register } = await import('./instrumentation.client')
+    register()
+  }
 }
