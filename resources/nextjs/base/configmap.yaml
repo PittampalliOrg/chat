@@ -5,9 +5,9 @@ metadata:
   namespace: nextjs
 data:
   # ── public URLs ───────────────────────────────────────────────
-  NEXTAUTH_URL:          "http://chat.localtest.me:31080"
-  NEXT_PUBLIC_BASE_URL:  "http://chat.localtest.me:31080"
-  NEXT_PUBLIC_SITE_URL:  "http://chat.localtest.me:31080"
+  NEXTAUTH_URL:          "http://localhost:3000"
+  NEXT_PUBLIC_BASE_URL:  "http://localhost:3000"
+  NEXT_PUBLIC_SITE_URL:  "http://localhost:3000"
 
   # ── telemetry (browser) ───────────────────────────────────────
   NEXT_PUBLIC_OTEL_TRACES_ENDPOINT: "/api/telemetry/traces"
@@ -26,6 +26,6 @@ data:
 
   # ── misc runtime plumbing ─────────────────────────────────────
   NODE_ENV:              "development"
-  REDIS_URL:             "redis://redis-service.redis.svc.cluster.local:6379"
-  REDIS_AVAILABLE:       "True"
+  REDIS_URL:             "redis://redis-service:6379"
+  REDIS_AVAILABLE:       "true"
   TRUST_PROXY:           "1"

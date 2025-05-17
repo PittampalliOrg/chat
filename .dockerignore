@@ -1,0 +1,11 @@
+.git
+node_modules
+.pnpm-store
+.next
+apps
+bootstrap
+dapr
+deployments
+iac
+kind-pki
+resources

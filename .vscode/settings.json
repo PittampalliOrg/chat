@@ -11,7 +11,23 @@
   },
   "typescript.tsdk": "node_modules/typescript/lib",
   "eslint.workingDirectories": [
-    { "pattern": "app/*" },
-    { "pattern": "packages/*" }
+    {
+      "pattern": "app/*"
+    },
+    {
+      "pattern": "packages/*"
+    }
+  ],
+  "sqltools.connections": [
+    {
+      "previewLimit": 50,
+      "server": "host.docker.internal",
+      "port": 62479,
+      "driver": "PostgreSQL",
+      "name": "postgres",
+      "database": "postgres",
+      "username": "postgres",
+      "password": "postgres"
+    }
   ]
 }
