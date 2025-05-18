@@ -32,19 +32,21 @@ spec:
         traces:
           otlp:
             grpc:
-              enabled: true            # :4317 (gRPC) — exposed below
+              enabled: true 
             http:
-              enabled: true            # :4318 (HTTP) — handy for JS/Envoy
-
-        service:
-          type: NodePort
-          ports:
-            - name: otlp-grpc          # ingest
-              port: 4317
-              nodePort: 32000
-            - name: http               # Grafana/query
-              port: 3100
-              nodePort: 32001
+              enabled: true  
+                  service:
+                    type: NodePort
+                    ports:
+                      - name: otlp-grpc        # ingest
+                        port: 4317
+                        nodePort: 32000
+                      - name: otlp-http        # ingest (HTTP/protobuf)
+                        port: 4318
+                        nodePort: 32002
+                      - name: http             # query UI / Grafana datasource
+                        port: 3100
+                        nodePort: 32001
 
         metricsGenerator:
           enabled: false               # can enable later if you need
