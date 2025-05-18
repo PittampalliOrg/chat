@@ -1,3 +1,4 @@
+# apps/monitoring/application.yaml
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
@@ -5,9 +6,9 @@ metadata:
   namespace: argocd
   annotations: { argocd.argoproj.io/sync-wave: "0" }
   finalizers: [resources-finalizer.argocd.argoproj.io]
-
 spec:
   project: default
+
   destination:
     name: in-cluster
     namespace: monitoring
@@ -18,27 +19,67 @@ spec:
     targetRevision: 2.*
     helm:
       values: |
+        #
+        # ───────────────────────────────
+        # cluster-wide identity
+        # ───────────────────────────────
+        #
         cluster:
           name: local-kind
 
-        # ── feature toggles ─────────────────────────────
-        clusterMetrics:      { enabled: true }   # ← put back the object form
-        podLogs:             { enabled: true }
-        traces:              { enabled: true }
+        #
+        # ───────────────────────────────
+        # REQUIRED • destinations block
+        # ───────────────────────────────
+        #
+        destinations:
+          - name: localProm
+            type: prometheus
+            url:  http://prometheus-server.monitoring.svc.cluster.local/api/v1/write
+            metrics: { enabled: true }
 
-        # ── Alloy agents ───────────────────────────────
-        alloy-metrics: true
+          - name: localLoki
+            type: loki
+            url:  http://loki-gateway.monitoring.svc.cluster.local/loki/api/v1/push
+            logs: { enabled: true }
+
+          - name: localTempo
+            type: otlphttp           # <─ accepted value
+            url:  http://tempo.monitoring.svc.cluster.local:4318
+            traces: { enabled: true }
+
+        #
+        # ───────────────────────────────
+        # enable core pipelines
+        # ───────────────────────────────
+        #
+        clusterMetrics: { enabled: true }
+        podLogs:       { enabled: true }
+        traces:        { enabled: true }
+
+        #
+        # ───────────────────────────────
+        # Alloy pipeline pieces
+        # ───────────────────────────────
+        #
+        alloy-metrics: { enabled: true }
+
         alloy-logs:
           extraArgs:
-            - --server.http.listen-addr=0.0.0.0:12345
+            - --server.http.listen-addr=0.0.0.0:12345   # exposes tiny Alloy UI
           config: |
             loki.write:
               endpoint: http://loki-gateway.monitoring.svc.cluster.local:3100/loki/api/v1/push
             exporters.otlphttp:
               endpoint: http://tempo.monitoring.svc.cluster.local:4318
-        alloy-traces: true
 
-        # ── Beyla auto-instrumentation ─────────────────
+        alloy-traces: { enabled: true }
+
+        #
+        # ───────────────────────────────
+        # eBPF auto-instrumentation
+        # ───────────────────────────────
+        #
         beyla:
           enabled: true
           extraEnvs:
@@ -49,19 +90,15 @@ spec:
               type: prometheus
               url:  http://prometheus-server.monitoring.svc.cluster.local/api/v1/write
               metrics: { enabled: true }
-
             - name: localLoki
               type: loki
               url:  http://loki-gateway.monitoring.svc.cluster.local/loki/api/v1/push
               logs: { enabled: true }
-
             - name: localTempo
-              type: otlp
+              type: otlphttp
               url:  http://tempo.monitoring.svc.cluster.local:4318
               traces: { enabled: true }
 
   syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true
+    automated: { prune: true, selfHeal: true }
     syncOptions: ["CreateNamespace=true"]
