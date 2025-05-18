@@ -9,77 +9,76 @@ metadata:
 spec:
   project: default
 
+  # ─────────────────────────── where to install ────────────────────────────
   destination:
     name: in-cluster
     namespace: monitoring
 
+  # ─────────────────────────── what to install  ────────────────────────────
   source:
     repoURL: https://grafana.github.io/helm-charts
     chart: k8s-monitoring
     targetRevision: 2.*
     helm:
       values: |
-        #
-        # ───────────────────────────────
-        # cluster-wide identity
-        # ───────────────────────────────
-        #
+        #######################################################################
+        # 1. Basic cluster identity
+        #######################################################################
         cluster:
           name: local-kind
 
-        #
-        # ───────────────────────────────
-        # REQUIRED • destinations block
-        # ───────────────────────────────
-        #
+        #######################################################################
+        # 2. Global feature switches  (schema expects an object with `enabled`)
+        #######################################################################
+        clusterMetrics:
+          enabled: true
+        podLogs:
+          enabled: true
+        traces:
+          enabled: true
+
+        #######################################################################
+        # 3. Outbound destinations
+        #    (only prometheus | loki | otlp | pyroscope are allowed)
+        #######################################################################
         destinations:
           - name: localProm
             type: prometheus
-            url:  http://prometheus-server.monitoring.svc.cluster.local/api/v1/write
+            url: http://prometheus-server.monitoring.svc.cluster.local/api/v1/write
             metrics: { enabled: true }
 
           - name: localLoki
             type: loki
-            url:  http://loki-gateway.monitoring.svc.cluster.local/loki/api/v1/push
+            url: http://loki-gateway.monitoring.svc.cluster.local/loki/api/v1/push
             logs: { enabled: true }
 
           - name: localTempo
-            type: otlphttp           # <─ accepted value
-            url:  http://tempo.monitoring.svc.cluster.local:4318
+            type: otlp
+            url: http://tempo.monitoring.svc.cluster.local:4318
             traces: { enabled: true }
 
-        #
-        # ───────────────────────────────
-        # enable core pipelines
-        # ───────────────────────────────
-        #
-        clusterMetrics: { enabled: true }
-        podLogs:       { enabled: true }
-        traces:        { enabled: true }
-
-        #
-        # ───────────────────────────────
-        # Alloy pipeline pieces
-        # ───────────────────────────────
-        #
-        alloy-metrics: { enabled: true }
+        #######################################################################
+        # 4. Alloy collectors
+        #######################################################################
+        alloy-metrics:
+          enabled: true
 
         alloy-logs:
+          enabled: true
           extraArgs:
-            - --server.http.listen-addr=0.0.0.0:12345   # exposes tiny Alloy UI
+            - --server.http.listen-addr=0.0.0.0:12345   # tiny web-UI on :12345
           config: |
             loki.write:
               endpoint: http://loki-gateway.monitoring.svc.cluster.local:3100/loki/api/v1/push
             exporters.otlphttp:
               endpoint: http://tempo.monitoring.svc.cluster.local:4318
 
-        alloy-traces: { enabled: true }
+        alloy-traces:
+          enabled: true
 
-        #
-        # ───────────────────────────────
-        # eBPF auto-instrumentation
-        # ───────────────────────────────
-        #
+        #######################################################################
+        # 5. Beyla auto-instrumentation (eBPF)
+        #######################################################################
         beyla:
           enabled: true
           extraEnvs:
@@ -88,17 +87,21 @@ spec:
           destinations:
             - name: localProm
               type: prometheus
-              url:  http://prometheus-server.monitoring.svc.cluster.local/api/v1/write
+              url: http://prometheus-server.monitoring.svc.cluster.local/api/v1/write
               metrics: { enabled: true }
             - name: localLoki
               type: loki
-              url:  http://loki-gateway.monitoring.svc.cluster.local/loki/api/v1/push
+              url: http://loki-gateway.monitoring.svc.cluster.local/loki/api/v1/push
               logs: { enabled: true }
             - name: localTempo
-              type: otlphttp
-              url:  http://tempo.monitoring.svc.cluster.local:4318
+              type: otlp
+              url: http://tempo.monitoring.svc.cluster.local:4318
               traces: { enabled: true }
 
+  # ─────────────────────────── sync behaviour ──────────────────────────────
   syncPolicy:
-    automated: { prune: true, selfHeal: true }
-    syncOptions: ["CreateNamespace=true"]
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
