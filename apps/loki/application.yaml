@@ -5,8 +5,8 @@ metadata:
   namespace: argocd
   annotations:
     argocd.argoproj.io/sync-wave: "1"
+# apps/loki/application.yaml  – only the Helm values section shown
 spec:
-  project: default
   source:
     repoURL: https://grafana.github.io/helm-charts
     chart: loki
@@ -14,13 +14,12 @@ spec:
     helm:
       values: |
         singleBinary:
-          replicas: 1
-
+          replicas: 1  
         loki:
           auth_enabled: false
           commonConfig:
             replication_factor: 1
-          schemaConfig:
+          schema_config: 
             configs:
               - from: "2024-04-01"
                 store: tsdb
@@ -33,21 +32,9 @@ spec:
             type: filesystem
             filesystem:
               directory: /var/loki
-            bucketNames:
-              chunks: chunks
-              ruler: ruler
-              admin: admin
-          pattern_ingester:
-            enabled: true
-          limits_config:
-            allow_structured_metadata: true
-            volume_enabled: true
-          ruler:
-            enable_api: true
-
-        test:
-          enabled: false
-
+        limits_config:
+          allow_structured_metadata: true
+          volume_enabled: true    
         gateway:
           enabled: true
           service:
