@@ -18,15 +18,8 @@ spec:
     targetRevision: 2.*
     helm:
       values: |
-        #######################################################################
-        # 1. Basic cluster identity
-        #######################################################################
         cluster:
           name: local-kind
-
-        #######################################################################
-        # 2. Global feature switches
-        #######################################################################
         clusterMetrics:
           enabled: true
         podLogs:
@@ -34,10 +27,6 @@ spec:
         traces:
           enabled: true
 
-        #######################################################################
-        # 3. Outbound destinations
-        #    (only prometheus | loki | otlp | pyroscope are allowed)
-        #######################################################################
         destinations:
           - name: localProm
             type: prometheus
@@ -54,10 +43,6 @@ spec:
             url: grpc://tempo.monitoring.svc.cluster.local:4317
             traces:
               enabled: true
-
-        #######################################################################
-        # 4. Alloy collectors
-        #######################################################################
         alloy-metrics:
           enabled: true
 
@@ -68,10 +53,6 @@ spec:
 
         alloy-traces:
           enabled: true
-
-        #######################################################################
-        # 5. Beyla auto-instrumentation (eBPF)
-        #######################################################################
         beyla:
           enabled: true
           extraEnvs:
