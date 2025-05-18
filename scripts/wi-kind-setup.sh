@@ -793,7 +793,7 @@ render_infra_secrets
 
 install_argocd
 enable_admin_api_key
-patch_argocd_service_nodeport          # <─ 🔑 **new** step
+patch_argocd_service_nodeport 
 enable_argocd_insecure
 wait_for_argocd
 login_argocd_cli 

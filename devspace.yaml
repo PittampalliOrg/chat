@@ -22,7 +22,7 @@ pipelines:
 # We recommend to skip image building during development (devspace dev) as much as possible
 images:
   app:
-    image: vpittamp.azurecr.io/chat-frontend:0.2.93
+    image: vpittamp.azurecr.io/chat-frontend
     dockerfile: ./Dockerfile
 
 # This is a list of `deployments` that DevSpace can create for this project
@@ -40,7 +40,7 @@ deployments:
 dev:
   app:
     # Search for the container that runs this image
-    imageSelector: vpittamp.azurecr.io/chat-frontend:0.2.93
+    imageSelector: vpittamp.azurecr.io/chat-frontend
     # Replace the container image with this dev-optimized image (allows to skip image building during development)
     devImage: vpittamp.azurecr.io/kind:2
     
@@ -94,7 +94,6 @@ dev:
       - path: ./.devspace_start.sh:/workspace/.devspace_start.sh
         file: true
 
-        
     # Open a terminal and use the following command to start it
     terminal:
       command: ./workspace/devspace_start.sh
@@ -114,8 +113,13 @@ dev:
       - port: "9229"           # debugger, same local & remote
     # Open the following URLs once they return an HTTP status code other than 502 or 503
     open:
-      - url: http://localhost:3000/
-
+      - url: http://localhost:3000
+vars: 
+  NEXTAUTH_URL:          "http://localhost:3000"
+  NEXT_PUBLIC_BASE_URL:  "http://localhost:3000"
+  NEXT_PUBLIC_SITE_URL:  "http://localhost:3000"
+  NEXT_PUBLIC_OTEL_TRACES_ENDPOINT: "http://localhost:3000/api/telemetry/traces"
+  NEXT_PUBLIC_OTEL_LOGS_ENDPOINT:   "http://localhost:3000/api/telemetry/logs"
 # Use the `commands` section to define repeatable dev workflows for this project 
 commands:
   migrate-db:

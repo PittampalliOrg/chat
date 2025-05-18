@@ -15,5 +15,5 @@ spec:
     path: apps                # <- only Application CRs live here
     directory: { recurse: true }
   syncPolicy:
-    automated: { prune: true, selfHeal: true }
+    # automated: { prune: true, selfHeal: true }
     syncOptions: ["CreateNamespace=true"]
