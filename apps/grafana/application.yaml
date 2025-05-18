@@ -21,14 +21,42 @@ spec:
     helm:
       values: |
         service:
-          type: ClusterIP
+          type: ClusterIP 
         ingress:
           enabled: true
           ingressClassName: nginx
+          hosts:
+            - grafana.localtest.me 
           annotations:
             nginx.ingress.kubernetes.io/rewrite-target: /
-          hosts:
-            - grafana.localtest.me
+
+        adminUser: admin
+        adminPassword: grafana
+
+        datasources:
+          datasources.yaml: |
+            apiVersion: 1
+            datasources:
+              - name: Prometheus
+                type: prometheus
+                access: proxy
+                url: http://prometheus-server.monitoring.svc.cluster.local
+                isDefault: true
+              - name: Loki
+                type: loki
+                access: proxy
+                url: http://loki-gateway.monitoring.svc.cluster.local
+              - name: Tempo
+                type: tempo
+                access: proxy
+                url: http://tempo.monitoring.svc.cluster.local:3100
+                jsonData:
+                  tracesToMetricsEnabled: true
+                  traceToMetricsDatasourceUid: prometheus
+        sidecar:
+          datasources:
+            enabled: false 
+
 
   syncPolicy:
     automated: { prune: true, selfHeal: true }
