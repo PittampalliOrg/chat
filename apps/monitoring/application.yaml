@@ -41,18 +41,22 @@ spec:
           extraEnvs:
             - name: BEYLA_OPEN_PORT
               value: "3000,5432"
+                destinations:
+                  - name: localProm
+                    type: prometheus
+                    url:  http://prometheus-server.monitoring.svc.cluster.local/api/v1/write
+                    metrics: { enabled: true }
 
-        destinations:
-          - name: localProm
-            type: prometheus
-            url:  http://prometheus-server.monitoring.svc.cluster.local/api/v1/write
-            metrics: { enabled: true }
-          - name: localLoki
-            type: loki
-            url:  http://loki-gateway.monitoring.svc.cluster.local/loki/api/v1/push
-            logs: { enabled: true }
-            url:  tempo.monitoring.svc.cluster.local:4317
-            traces: { enabled: true }
+                  - name: localLoki
+                    type: loki
+                    url:  http://loki-gateway.monitoring.svc.cluster.local/loki/api/v1/push
+                    logs: { enabled: true }
+
+                  - name: localTempo
+                    type: otlphttp             # or tempo if you prefer the alias
+                    url:  http://tempo.monitoring.svc.cluster.local:4318
+                    traces: { enabled: true }
+
 
   syncPolicy:
     automated: { prune: true, selfHeal: true }

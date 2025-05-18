@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: alloy-ui
+  namespace: monitoring
+spec:
+  selector:
+    app.kubernetes.io/name: monitoring-alloy-logs   # pod label from the chart
+  ports:
+    - name: http
+      port: 12345
+      targetPort: 12345
+      protocol: TCP
+  type: ClusterIP

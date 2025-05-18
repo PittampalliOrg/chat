@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: alloy-ui
+  namespace: argocd
+  annotations: { argocd.argoproj.io/sync-wave: "2" }
+spec:
+  project: default
+  dependsOn:            # wait for the monitoring Helm release
+    - monitoring
+  source:
+    repoURL: https://github.com/PittampalliOrg/chat.git
+    targetRevision: latest
+    path: resources/alloy-ui/base
+  destination:
+    name: in-cluster
+    namespace: monitoring
+  syncPolicy:
+    automated: { prune: true, selfHeal: true }
+    syncOptions: ["CreateNamespace=true"]
