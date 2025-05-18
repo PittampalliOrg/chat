@@ -1,20 +1,17 @@
-# apps/monitoring/application.yaml
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: monitoring
   namespace: argocd
-  annotations: { argocd.argoproj.io/sync-wave: "0" }
-  finalizers: [resources-finalizer.argocd.argoproj.io]
+  annotations:
+    argocd.argoproj.io/sync-wave: "0"
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
-
-  # ─────────────────────────── where to install ────────────────────────────
   destination:
     name: in-cluster
     namespace: monitoring
-
-  # ─────────────────────────── what to install  ────────────────────────────
   source:
     repoURL: https://grafana.github.io/helm-charts
     chart: k8s-monitoring
@@ -28,7 +25,7 @@ spec:
           name: local-kind
 
         #######################################################################
-        # 2. Global feature switches  (schema expects an object with `enabled`)
+        # 2. Global feature switches
         #######################################################################
         clusterMetrics:
           enabled: true
@@ -45,17 +42,18 @@ spec:
           - name: localProm
             type: prometheus
             url: http://prometheus-server.monitoring.svc.cluster.local/api/v1/write
-            metrics: { enabled: true }
-
+            metrics:
+              enabled: true
           - name: localLoki
             type: loki
             url: http://loki-gateway.monitoring.svc.cluster.local/loki/api/v1/push
-            logs: { enabled: true }
-
+            logs:
+              enabled: true
           - name: localTempo
             type: otlp
             url: http://tempo.monitoring.svc.cluster.local:4318
-            traces: { enabled: true }
+            traces:
+              enabled: true
 
         #######################################################################
         # 4. Alloy collectors
@@ -66,7 +64,7 @@ spec:
         alloy-logs:
           enabled: true
           extraArgs:
-            - --server.http.listen-addr=0.0.0.0:12345   # tiny web-UI on :12345
+            - --server.http.listen-addr=0.0.0.0:12345
           config: |
             loki.write:
               endpoint: http://loki-gateway.monitoring.svc.cluster.local:3100/loki/api/v1/push
@@ -88,17 +86,19 @@ spec:
             - name: localProm
               type: prometheus
               url: http://prometheus-server.monitoring.svc.cluster.local/api/v1/write
-              metrics: { enabled: true }
+              metrics:
+                enabled: true
             - name: localLoki
               type: loki
               url: http://loki-gateway.monitoring.svc.cluster.local/loki/api/v1/push
-              logs: { enabled: true }
+              logs:
+                enabled: true
             - name: localTempo
               type: otlp
               url: http://tempo.monitoring.svc.cluster.local:4318
-              traces: { enabled: true }
+              traces:
+                enabled: true
 
-  # ─────────────────────────── sync behaviour ──────────────────────────────
   syncPolicy:
     automated:
       prune: true
