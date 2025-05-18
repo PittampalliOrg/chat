@@ -1,4 +1,3 @@
-# apps/tempo/application.yaml
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
@@ -10,56 +9,50 @@ metadata:
     - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
-
   destination:
     name: in-cluster
     namespace: monitoring
-
   source:
     repoURL: https://grafana.github.io/helm-charts
     chart: tempo
-    targetRevision: "1.*"              # monolithic Tempo chart line
+    targetRevision: "1.*"
     helm:
       values: |
-        mode: standalone               # single-binary, good for Kind
+        mode: standalone
         storage:
           type: filesystem
           filesystem:
             directory: /var/tempo
-        ingester:
-          replicas: 1
 
         traces:
           otlp:
             grpc:
-              enabled: true 
+              enabled: true
             http:
-              enabled: true  
-                  service:
-                    type: NodePort
-                    ports:
-                      - name: otlp-grpc        # ingest
-                        port: 4317
-                        nodePort: 32000
-                      - name: otlp-http        # ingest (HTTP/protobuf)
-                        port: 4318
-                        nodePort: 32002
-                      - name: http             # query UI / Grafana datasource
-                        port: 3100
-                        nodePort: 32001
+              enabled: true
+          service:
+            type: ClusterIP
+            ports:
+              - name: otlp-grpc
+                port: 4317
+              - name: otlp-http
+                port: 4318
+              - name: http
+                port: 3100
 
         metricsGenerator:
-          enabled: false               # can enable later if you need
+          enabled: false
         tracesSampler:
-          enabled: false               # simple 100 % sampling for dev
+          enabled: false
 
-        # turn off optional bits we’re not using to save resources
+        # Disable distributed query components for standalone mode
         tempoQueryFrontend:
           enabled: false
         tempoQueryScheduler:
           enabled: false
         tempoQueryBackend:
           enabled: false
+
         test:
           enabled: false
 
