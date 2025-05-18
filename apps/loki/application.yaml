@@ -18,15 +18,9 @@ spec:
     targetRevision: 5.*          # keep tracking the 5-series chart
     helm:
       values: |
-        #############################################
-        #  Loki single-binary deployment parameters #
-        #############################################
         singleBinary:
           replicas: 1
 
-        #############################################
-        #  Loki server configuration                #
-        #############################################
         loki:
           auth_enabled: false
 
@@ -52,20 +46,12 @@ spec:
               ruler: ruler
               admin: admin
 
-          # keep the pattern-based ingestion helper
           pattern_ingester:
             enabled: true
 
-          ###########################################
-          #  Limits – allow structured metadata     #
-          ###########################################
           limits_config:
-            structured_metadata: true
+            allow_structured_metadata: true
             volume_enabled: true
-
-          ###########################################
-          #  Resource requests / limits             #
-          ###########################################
           resources:
             requests:
               cpu: 300m
@@ -74,22 +60,11 @@ spec:
               cpu: 1
               memory: 1Gi
 
-          ###########################################
-          #  Persistent volume                      #
-          ###########################################
           persistence:
             enabled: true
             size: 10Gi
-
-          ###########################################
-          #  Ruler                                  #
-          ###########################################
           ruler:
             enable_api: true
-
-        #############################################
-        #  Helm test & monitoring bits              #
-        #############################################
         test:
           enabled: false
 
