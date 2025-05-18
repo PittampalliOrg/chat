@@ -31,7 +31,7 @@ data:
   REDIS_AVAILABLE:       "true"
   TRUST_PROXY:           "1"
 
-
-  OTEL_EXPORTER_OTLP_ENDPOINT:        "http://alloy-otlp.monitoring.svc.cluster.local:4318"
+  OTEL_EXPORTER_OTLP_ENDPOINT:        "http://tempo.monitoring.svc.cluster.local:4318"
+  # OTEL_EXPORTER_OTLP_ENDPOINT:        "http://alloy-otlp.monitoring.svc.cluster.local:4318"
   OTEL_SERVICE_NAME:                   "nextjs"
   OTEL_RESOURCE_ATTRIBUTES:            "k8s.cluster.name=local-kind,service.namespace=nextjs"
