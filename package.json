@@ -3,7 +3,7 @@
   "version": "3.0.22",
   "private": true,
   "scripts": {
-    "dev": "NEXT_IGNORE_ENV_FILES=false NEXT_OTEL_VERBOSE=1 next dev --turbo",
+    "dev": "NEXT_IGNORE_ENV_FILES=true NEXT_OTEL_VERBOSE=1 next dev --turbo",
     "build": "next build",
     "migrate": "tsx lib/db/migrate",
     "start": "next start",

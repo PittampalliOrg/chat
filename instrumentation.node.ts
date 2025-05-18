@@ -1,76 +1,121 @@
-import { getNodeAutoInstrumentations } from '@opentelemetry/auto-instrumentations-node';
-import { OTLPTraceExporter } from '@opentelemetry/exporter-trace-otlp-http';
-import { OTLPMetricExporter } from '@opentelemetry/exporter-metrics-otlp-proto';
-import { PeriodicExportingMetricReader } from '@opentelemetry/sdk-metrics';
-import { OTLPLogExporter } from '@opentelemetry/exporter-logs-otlp-http';
-import { Resource } from '@opentelemetry/resources';
-import { SEMRESATTRS_SERVICE_NAME, ATTR_SERVICE_VERSION } from '@opentelemetry/semantic-conventions';
-import { PgInstrumentation } from '@opentelemetry/instrumentation-pg';
-import { UndiciInstrumentation } from '@opentelemetry/instrumentation-undici';
-import { WinstonInstrumentation } from '@opentelemetry/instrumentation-winston';
-import { logger } from "@/lib/logger"
-import { NodeSDK } from '@opentelemetry/sdk-node';
-import { BatchLogRecordProcessor, ConsoleLogRecordExporter } from '@opentelemetry/sdk-logs';
-import { ConsoleSpanExporter, SimpleSpanProcessor } from '@opentelemetry/sdk-trace-base';
+import { getNodeAutoInstrumentations } from "@opentelemetry/auto-instrumentations-node"
+import { OTLPTraceExporter } from "@opentelemetry/exporter-trace-otlp-http"
+import { OTLPMetricExporter } from "@opentelemetry/exporter-metrics-otlp-proto"
+import { PeriodicExportingMetricReader } from "@opentelemetry/sdk-metrics"
+import { OTLPLogExporter } from "@opentelemetry/exporter-logs-otlp-http"
+import { Resource } from "@opentelemetry/resources"
+import { SEMRESATTRS_SERVICE_NAME } from "@opentelemetry/semantic-conventions"
+import { PgInstrumentation } from "@opentelemetry/instrumentation-pg"
+import { UndiciInstrumentation } from "@opentelemetry/instrumentation-undici"
+import { WinstonInstrumentation } from "@opentelemetry/instrumentation-winston"
+import { NodeSDK } from "@opentelemetry/sdk-node"
+import { BatchLogRecordProcessor, ConsoleLogRecordExporter } from "@opentelemetry/sdk-logs"
+import { ConsoleSpanExporter, SimpleSpanProcessor } from "@opentelemetry/sdk-trace-base"
 
-console.log('App started');
+// Use the global object to store our SDK instance
+// This prevents multiple initializations even if the module is loaded multiple times
+declare global {
+  var __OTEL_SDK__: {
+    isInitialized: boolean
+    sdk: NodeSDK | null
+  }
+}
 
-process.env.OTEL_LOG_LEVEL = 'debug';
-console.log('OTEL_LOG_LEVEL set to debug');
+// Initialize the global state if it doesn't exist
+if (!global.__OTEL_SDK__) {
+  global.__OTEL_SDK__ = {
+    isInitialized: false,
+    sdk: null,
+  }
+}
 
-const { diag, DiagConsoleLogger, DiagLogLevel } = require('@opentelemetry/api');
-diag.setLogger(new DiagConsoleLogger(), DiagLogLevel.DEBUG);
+// Initialize the SDK only once
+const initializeSDK = () => {
+  if (global.__OTEL_SDK__.isInitialized || global.__OTEL_SDK__.sdk) {
+    console.log("OpenTelemetry SDK already initialized, skipping")
+    return
+  }
 
-const consoleSpanExp = new ConsoleSpanExporter();        
-const consoleLogExp  = new ConsoleLogRecordExporter();   
+  console.log("Initializing OpenTelemetry SDK")
 
-const traceExporter = new OTLPTraceExporter({
-  url: process.env.OTEL_EXPORTER_OTLP_TRACES_ENDPOINT, // from ConfigMap
-})
+  try {
+    // Set up logging level
+    if (process.env.OTEL_LOG_LEVEL) {
+      console.log(`OTEL_LOG_LEVEL set to ${process.env.OTEL_LOG_LEVEL}`)
+    } else {
+      process.env.OTEL_LOG_LEVEL = "info"
+    }
 
-const metricExporter = new OTLPMetricExporter({
-  url: process.env.OTEL_EXPORTER_OTLP_METRICS_ENDPOINT,
-})
-const metricReader = new PeriodicExportingMetricReader({ exporter: metricExporter })
+    const consoleSpanExp = new ConsoleSpanExporter()
+    const consoleLogExp = new ConsoleLogRecordExporter()
 
-const logExporter = new OTLPLogExporter({
-  url: process.env.OTEL_EXPORTER_OTLP_LOGS_ENDPOINT,
-})
+    const traceExporter = new OTLPTraceExporter({
+      url: process.env.OTEL_EXPORTER_OTLP_TRACES_ENDPOINT,
+    })
 
-// --- Create NodeSDK ---
-const sdk = new NodeSDK({
-  resource: new Resource({
-    [SEMRESATTRS_SERVICE_NAME]: 'frontend',
-  }),
-  traceExporter,
-  metricReader,
-  logRecordProcessors: [
-    new BatchLogRecordProcessor(logExporter),
-    new BatchLogRecordProcessor(consoleLogExp),
-  ],
-  instrumentations: [
-    getNodeAutoInstrumentations({
-      '@opentelemetry/instrumentation-fs': { enabled: false },
-    }),
-    new PgInstrumentation({
-      enhancedDatabaseReporting: true,
-      addSqlCommenterCommentToQueries: true,
-    }),
-    new UndiciInstrumentation(),
-    new WinstonInstrumentation(),
-  ],
-});
+    const metricExporter = new OTLPMetricExporter({
+      url: process.env.OTEL_EXPORTER_OTLP_METRICS_ENDPOINT,
+    })
 
-sdk.start();
-// @ts-ignore: Accessing private _tracerProvider for span processor workaround
-sdk._tracerProvider?.addSpanProcessor(new SimpleSpanProcessor(consoleSpanExp));
+    const metricReader = new PeriodicExportingMetricReader({
+      exporter: metricExporter,
+    })
 
-logger.info('Next.js server instrumentation started');
+    const logExporter = new OTLPLogExporter({
+      url: process.env.OTEL_EXPORTER_OTLP_LOGS_ENDPOINT,
+    })
 
-// Gracefully shut down the SDK on process exit
-process.on('SIGTERM', () => {
-  sdk.shutdown()
-    .then(() => console.log('SDK shut down successfully'))
-    .catch((error) => console.error('Error shutting down SDK', error))
-    .finally(() => process.exit(0));
-});
+    // Create the SDK with all components
+    const sdk = new NodeSDK({
+      resource: new Resource({
+        [SEMRESATTRS_SERVICE_NAME]: "frontend",
+      }),
+      traceExporter,
+      metricReader,
+      logRecordProcessors: [new BatchLogRecordProcessor(logExporter), new BatchLogRecordProcessor(consoleLogExp)],
+      instrumentations: [
+        getNodeAutoInstrumentations({
+          "@opentelemetry/instrumentation-fs": { enabled: false },
+          "@opentelemetry/instrumentation-fastify": { enabled: false },
+        }),
+        new PgInstrumentation({
+          enhancedDatabaseReporting: true,
+          addSqlCommenterCommentToQueries: true,
+        }),
+        new UndiciInstrumentation(),
+        new WinstonInstrumentation(),
+      ],
+    })
+
+    // Add console span exporter
+    if (sdk["_tracerProvider"]) {
+      sdk["_tracerProvider"].addSpanProcessor(new SimpleSpanProcessor(consoleSpanExp))
+    }
+
+    // Start the SDK
+    sdk.start()
+    console.log("Next.js server instrumentation started")
+
+    // Store the SDK in the global object
+    global.__OTEL_SDK__.sdk = sdk
+    global.__OTEL_SDK__.isInitialized = true
+
+    // Gracefully shut down the SDK on process exit
+    process.on("SIGTERM", () => {
+      if (global.__OTEL_SDK__.sdk) {
+        global.__OTEL_SDK__.sdk
+          .shutdown()
+          .then(() => console.log("SDK shut down successfully"))
+          .catch((error) => console.error("Error shutting down SDK", error))
+          .finally(() => process.exit(0))
+      }
+    })
+  } catch (e) {
+    console.error("Error initializing OpenTelemetry SDK:", e)
+  }
+}
+
+// Only run the initialization if not already initialized
+if (!global.__OTEL_SDK__.isInitialized) {
+  initializeSDK()
+}

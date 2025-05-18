@@ -89,4 +89,4 @@ EXPOSE 3000
 
 ENV PORT=3000
 ENV HOSTNAME="0.0.0.0"
-CMD ["node", "-e", "console.log('Test log output'); setInterval(() => {}, 1000);"]
+CMD ["node", "server.js"]
