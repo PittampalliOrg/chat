@@ -5,33 +5,34 @@ metadata:
   namespace: nextjs
 data:
   # ── public URLs ───────────────────────────────────────────────
-  NEXTAUTH_URL:          "http://chat.localtest.me:31080"
-  NEXT_PUBLIC_BASE_URL:  "http://chat.localtest.me:31080"
-  NEXT_PUBLIC_SITE_URL:  "http://chat.localtest.me:31080"
+  NEXTAUTH_URL: "http://chat.localtest.me:31080"
+  NEXT_PUBLIC_BASE_URL: "http://chat.localtest.me:31080"
+  NEXT_PUBLIC_SITE_URL: "http://chat.localtest.me:31080"
   NEXT_PUBLIC_OTEL_LOGS_ENDPOINT: "http://loki-gateway.monitoring.svc.cluster.local/loki/api/v1/push"
 
   # ── telemetry (browser) ───────────────────────────────────────
   NEXT_PUBLIC_OTEL_TRACES_ENDPOINT: "/api/telemetry/traces"
 
   # ── telemetry (node & API routes) ─────────────────────────────
-  TEMPO_ENDPOINT:         "http://tempo.monitoring.svc.cluster.local:4318/v1/traces"
-  LOKI_ENDPOINT:          "http://loki-gateway.monitoring.svc.cluster.local/loki/api/v1/push"
-  PROMETHEUS_ENDPOINT:    "http://prometheus-server.monitoring.svc.cluster.local/api/v1/write"
+  TEMPO_ENDPOINT: "http://tempo.monitoring.svc.cluster.local:4318/v1/traces"
+  LOKI_ENDPOINT: "http://loki-gateway.monitoring.svc.cluster.local/loki/api/v1/push"
+  PROMETHEUS_ENDPOINT: "http://prometheus-server.monitoring.svc.cluster.local/api/v1/write"
 
   # OTLP spec variables (picked-up automatically by the SDK)
+  OTEL_EXPORTER_OTLP_TRACES_ENDPOINT: "http://tempo.monitoring.svc.cluster.local:4318/v1/traces"
+  # OTEL_EXPORTER_OTLP_ENDPOINT:        "http://tempo.monitoring.svc.cluster.local:4318"
   # OTEL_EXPORTER_OTLP_LOGS_ENDPOINT: "http://loki-gateway.monitoring.svc.cluster.local/loki/api/v1/push"
   # OTEL_EXPORTER_OTLP_METRICS_ENDPOINT:  "http://monitoring-alloy-metrics.monitoring.svc.cluster.local:4317"
   # OTEL_EXPORTER_OTLP_PROTOCOL:  "http/protobuf"
-  # OTEL_EXPORTER_OTLP_TRACES_ENDPOINT: "http://tempo.monitoring.svc.cluster.local:4318"
   # OTEL_SERVICE_NAME:  "nextjs"
 
   # ── misc runtime plumbing ─────────────────────────────────────
-  NODE_ENV:              "development"
-  REDIS_URL:             "redis://redis-service:6379"
-  REDIS_AVAILABLE:       "true"
-  TRUST_PROXY:           "1"
+  NODE_ENV: "development"
+  REDIS_URL: "redis://redis-service:6379"
+  REDIS_AVAILABLE: "true"
+  TRUST_PROXY: "1"
 
-  OTEL_EXPORTER_OTLP_ENDPOINT:        "http://tempo.monitoring.svc.cluster.local:4318"
-  # OTEL_EXPORTER_OTLP_ENDPOINT:        "http://alloy-otlp.monitoring.svc.cluster.local:4318"
-  OTEL_SERVICE_NAME:                   "nextjs"
-  OTEL_RESOURCE_ATTRIBUTES:            "k8s.cluster.name=local-kind,service.namespace=nextjs"
+  # OTEL_EXPORTER_OTLP_ENDPOINT: "http://tempo.monitoring.svc.cluster.local:4318"
+  OTEL_SERVICE_NAME: "nextjs"
+  OTEL_RESOURCE_ATTRIBUTES: "k8s.cluster.name=local-kind,service.namespace=nextjs"
+  OTEL_LOG_LEVEL: "debug"
