@@ -791,15 +791,15 @@ ensure_acr_pull_role
 export APP_ID 
 render_infra_secrets
 
-# install_argocd
-# enable_admin_api_key
-# patch_argocd_service_nodeport          # <─ 🔑 **new** step
-# enable_argocd_insecure
-# wait_for_argocd
-# login_argocd_cli 
-# # Port‑forwarding is no longer needed – interact over NodePort instead
-# print_argocd_admin_password
-# apply_app_of_apps
+install_argocd
+enable_admin_api_key
+patch_argocd_service_nodeport          # <─ 🔑 **new** step
+enable_argocd_insecure
+wait_for_argocd
+login_argocd_cli 
+# Port‑forwarding is no longer needed – interact over NodePort instead
+print_argocd_admin_password
+apply_app_of_apps
 # install_headlamp
 
 log "🎉  wi-kind-setup complete – cluster ‘$KIND_CLUSTER_NAME’, storage ‘$AZURE_STORAGE_ACCOUNT’, Key Vault ‘$KEYVAULT_NAME’"

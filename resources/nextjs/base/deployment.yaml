@@ -18,7 +18,7 @@ spec:
         - name: vpittamp-acr-dockercfg # secret produced by ESO
       containers:
       - name: nextjs
-        image: vpittamp.azurecr.io/chat-frontend:0.2.93
+        image: vpittamp.azurecr.io/chat-frontend:0.2.94
         envFrom:
         - secretRef:
             name: app-env # <── renamed-secret values
