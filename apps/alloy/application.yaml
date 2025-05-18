@@ -31,6 +31,7 @@ ingress:
     - alloy.localtest.me
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/proxy-body-size: 10m
 
 configMap:
   create: true

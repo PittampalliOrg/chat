@@ -51,7 +51,7 @@ spec:
               enabled: true
           - name: localTempo
             type: otlp
-            url: http://tempo.monitoring.svc.cluster.local:4318
+            url: grpc://tempo.monitoring.svc.cluster.local:4317
             traces:
               enabled: true
 

@@ -19,42 +19,17 @@ spec:
     helm:
       values: |
         mode: standalone
-        storage:
-          type: filesystem
-          filesystem:
-            directory: /var/tempo
+        service:
+          type: ClusterIP
+          ports:
+            - { name: http        , port: 3100 }
+            - { name: otlp-grpc   , port: 4317 }
+            - { name: otlp-http   , port: 4318 }
 
         traces:
           otlp:
-            grpc:
-              enabled: true
-            http:
-              enabled: true
-          service:
-            type: ClusterIP
-            ports:
-              - name: otlp-grpc
-                port: 4317
-              - name: otlp-http
-                port: 4318
-              - name: http
-                port: 3100
-
-        metricsGenerator:
-          enabled: false
-        tracesSampler:
-          enabled: false
-
-        # Disable distributed query components for standalone mode
-        tempoQueryFrontend:
-          enabled: false
-        tempoQueryScheduler:
-          enabled: false
-        tempoQueryBackend:
-          enabled: false
-
-        test:
-          enabled: false
+            grpc:  { enabled: true  }   # 4317
+            http:  { enabled: true  }   # 4318
 
   syncPolicy:
     automated:
