@@ -18,43 +18,72 @@ spec:
     targetRevision: 2.*
     helm:
       values: |
+        ############################################
+        # Destinations (REQUIRED since chart v2.x) #
+        ############################################
+        destinations:
+          - name: localProm
+            type: prometheus
+            metrics:
+              remoteWrite:
+                - url: http://prometheus-server.monitoring.svc.cluster.local/api/v1/write
+          - name: localLoki
+            type: loki
+            logs:
+              url: http://loki-gateway.monitoring.svc.cluster.local/loki/api/v1/push
+          - name: localTempo
+            type: tempo
+            traces:
+              endpoint: http://tempo.monitoring.svc.cluster.local:4318
+
+        ###############################
+        # Core feature-flags & links  #
+        ###############################
         cluster:
           name: local-kind
-        clusterMetrics: { enabled: true }
-        podLogs:      { enabled: true }
-        traces:       { enabled: true }
 
-        alloy-metrics: { enabled: true }
+        clusterMetrics:
+          enabled: true
+          destination: localProm
+
+        podLogs:
+          enabled: true
+          destination: localLoki
+
+        traces:
+          enabled: true
+          destination: localTempo
+
+        ################
+        # Alloy agents #
+        ################
+        alloy-metrics:
+          enabled: true
+          destination: localProm
 
         alloy-logs:
+          enabled: true
+          destination: localLoki
           extraArgs:
-            - --server.http.listen-addr=0.0.0.0:12345   # enables the UI
-          extraConfig: |-
+            - --server.http.listen-addr=0.0.0.0:12345   # expose Alloy UI
+          config: |
             loki.write:
               endpoint: http://loki-gateway.monitoring.svc.cluster.local:3100/loki/api/v1/push
             exporters.otlphttp:
               endpoint: http://tempo.monitoring.svc.cluster.local:4318
 
-        alloy-traces: { enabled: true }
+        alloy-traces:
+          enabled: true
+          destination: localTempo
 
+        ############
+        # Beyla    #
+        ############
         beyla:
           enabled: true
           extraEnvs:
             - name: BEYLA_OPEN_PORT
               value: "3000,5432"
-          destinations:
-            - name: localProm
-              type: prometheus
-              url:  http://prometheus-server.monitoring.svc.cluster.local/api/v1/write
-              metrics: { enabled: true }
-            - name: localLoki
-              type: loki
-              url:  http://loki-gateway.monitoring.svc.cluster.local/loki/api/v1/push
-              logs: { enabled: true }
-            - name: localTempo
-              type: otlphttp          # or tempo if you prefer the alias
-              url:  http://tempo.monitoring.svc.cluster.local:4318
-              traces: { enabled: true }
 
   syncPolicy:
     automated: { prune: true, selfHeal: true }
