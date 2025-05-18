@@ -42,7 +42,9 @@ export function register() {
   const traceExporter = new OTLPTraceExporter({
     url: process.env.NEXT_PUBLIC_OTEL_TRACES_ENDPOINT || "/api/telemetry/traces",
   });
-  const logExporter = new OTLPLogExporter();
+  const logExporter = new OTLPLogExporter({
+  url: process.env.NEXT_PUBLIC_OTEL_LOGS_ENDPOINT
+});
 
 const consoleSpanExp  = new ConsoleSpanExporter();        // « NEW »
 const consoleLogExp   = new ConsoleLogRecordExporter(); 

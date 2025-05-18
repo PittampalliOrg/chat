@@ -8,6 +8,7 @@ data:
   NEXTAUTH_URL:          "http://chat.localtest.me:31080"
   NEXT_PUBLIC_BASE_URL:  "http://chat.localtest.me:31080"
   NEXT_PUBLIC_SITE_URL:  "http://chat.localtest.me:31080"
+  NEXT_PUBLIC_OTEL_LOGS_ENDPOINT: "http://loki-gateway.monitoring.svc.cluster.local/loki/api/v1/push"
 
   # ── telemetry (browser) ───────────────────────────────────────
   NEXT_PUBLIC_OTEL_TRACES_ENDPOINT: "/api/telemetry/traces"
@@ -18,11 +19,11 @@ data:
   PROMETHEUS_ENDPOINT:    "http://prometheus-server.monitoring.svc.cluster.local/api/v1/write"
 
   # OTLP spec variables (picked-up automatically by the SDK)
-  OTEL_EXPORTER_OTLP_PROTOCOL:          "http/protobuf"
-  OTEL_EXPORTER_OTLP_TRACES_ENDPOINT:   "http://tempo.monitoring.svc.cluster.local:4318"
+  OTEL_EXPORTER_OTLP_LOGS_ENDPOINT: "http://loki-gateway.monitoring.svc.cluster.local/loki/api/v1/push"
   OTEL_EXPORTER_OTLP_METRICS_ENDPOINT:  "http://monitoring-alloy-metrics.monitoring.svc.cluster.local:4317"
-  OTEL_EXPORTER_OTLP_LOGS_ENDPOINT:     "http://loki-gateway.monitoring.svc.cluster.local/loki"
-  OTEL_SERVICE_NAME:                    "nextjs"
+  OTEL_EXPORTER_OTLP_PROTOCOL:  "http/protobuf"
+  OTEL_EXPORTER_OTLP_TRACES_ENDPOINT: "http://tempo.monitoring.svc.cluster.local:4318"
+  OTEL_SERVICE_NAME:  "nextjs"
 
   # ── misc runtime plumbing ─────────────────────────────────────
   NODE_ENV:              "development"
