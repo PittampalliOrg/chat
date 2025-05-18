@@ -13,6 +13,12 @@ import { NodeSDK } from '@opentelemetry/sdk-node';
 import { BatchLogRecordProcessor, ConsoleLogRecordExporter } from '@opentelemetry/sdk-logs';
 import { ConsoleSpanExporter, SimpleSpanProcessor } from '@opentelemetry/sdk-trace-base';
 
+process.env.OTEL_LOG_LEVEL = 'debug';
+console.log('OTEL_LOG_LEVEL set to debug');
+
+const { diag, DiagConsoleLogger, DiagLogLevel } = require('@opentelemetry/api');
+diag.setLogger(new DiagConsoleLogger(), DiagLogLevel.DEBUG);
+
 const consoleSpanExp = new ConsoleSpanExporter();        
 const consoleLogExp  = new ConsoleLogRecordExporter();   
 
