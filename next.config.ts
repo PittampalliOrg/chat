@@ -1,9 +1,9 @@
 import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
-    cacheHandler:
+  cacheHandler:
     process.env.NODE_ENV === "production" ? "./cache-handler.mjs" : undefined,
-  cacheMaxMemorySize: 0, // disable default in-memory caching
+  cacheMaxMemorySize: 0,
   output: 'standalone',
   experimental: {
     ppr: true,
