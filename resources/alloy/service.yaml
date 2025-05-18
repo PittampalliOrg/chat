@@ -5,7 +5,7 @@ metadata:
   namespace: monitoring
 spec:
   selector:
-    app.kubernetes.io/name: monitoring-alloy-logs   # pod label from the chart
+    app.kubernetes.io/name: monitoring-alloy-logs
   ports:
     - name: http
       port: 12345

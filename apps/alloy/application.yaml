@@ -20,19 +20,64 @@ spec:
     targetRevision: "0.*"                 # pin a major version
     helm:
       values: |
-        ui:
-          enabled: true                   # turn on the little web UI
-        service:
-          type: ClusterIP                 # expose inside cluster
-        # optional: make it reachable from your browser
-        ingress:
-          enabled: true
-          ingressClassName: nginx
-          hosts:
-            - alloy.localtest.me
-          annotations:
-            nginx.ingress.kubernetes.io/rewrite-target: /
-  # --------------------------------------
+ui:
+  enabled: true
+service:
+  type: ClusterIP
+ingress:
+  enabled: true
+  ingressClassName: nginx
+  hosts:
+    - alloy.localtest.me
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+
+configMap:
+  create: true
+  content: |-
+    # Receive OTLP data (logs, metrics, traces) via HTTP and gRPC
+    otelcol.receiver.otlp "default" {
+      http {}
+      grpc {}
+      output {
+        logs    = [otelcol.processor.batch.default.input]
+        metrics = [otelcol.processor.batch.default.input]
+        traces  = [otelcol.processor.batch.default.input]
+      }
+    }
+
+    # Batch processor for all telemetry
+    otelcol.processor.batch "default" {
+      output {
+        logs    = [otelcol.exporter.loki.default.input]
+        metrics = [prometheus.remote_write.default.receiver]
+        traces  = [otelcol.exporter.otlp.default.input]
+      }
+    }
+
+    # Export logs to Loki
+    otelcol.exporter.loki "default" {
+      forward_to = [loki.write.default.receiver]
+    }
+    loki.write "default" {
+      endpoint {
+        url = "http://loki-gateway.monitoring.svc.cluster.local/loki/api/v1/push"
+      }
+    }
+
+    # Export metrics to Prometheus (remote_write)
+    prometheus.remote_write "default" {
+      endpoint {
+        url = "http://prometheus-server.monitoring.svc.cluster.local/api/v1/write"
+      }
+    }
+
+    # Export traces to Tempo
+    otelcol.exporter.otlp "default" {
+      client {
+        endpoint = "tempo.monitoring.svc.cluster.local:4317"
+      }
+    }
 
   syncPolicy:
     automated: { prune: true, selfHeal: true }
