@@ -8,16 +8,16 @@ metadata:
   finalizers: [resources-finalizer.argocd.argoproj.io]
 spec:
   project: default
-  destination:  
+  destination:
     name: in-cluster
-    namespace: monitoring 
+    namespace: monitoring
 
   source:
     repoURL: https://grafana.github.io/helm-charts
     chart: k8s-monitoring
     targetRevision: 2.*
     helm:
-      values: | 
+      values: |
         cluster:
           name: local-kind
         clusterMetrics: { enabled: true }
@@ -25,16 +25,17 @@ spec:
         traces:       { enabled: true }
 
         alloy-metrics: { enabled: true }
+
         alloy-logs:
           extraArgs:
             - --server.http.listen-addr=0.0.0.0:12345   # enables the UI
-          config: |
+          extraConfig: |-
             loki.write:
               endpoint: http://loki-gateway.monitoring.svc.cluster.local:3100/loki/api/v1/push
             exporters.otlphttp:
               endpoint: http://tempo.monitoring.svc.cluster.local:4318
 
-        alloy-traces:  { enabled: true }
+        alloy-traces: { enabled: true }
 
         beyla:
           enabled: true
@@ -46,17 +47,14 @@ spec:
               type: prometheus
               url:  http://prometheus-server.monitoring.svc.cluster.local/api/v1/write
               metrics: { enabled: true }
-
             - name: localLoki
               type: loki
               url:  http://loki-gateway.monitoring.svc.cluster.local/loki/api/v1/push
               logs: { enabled: true }
-
             - name: localTempo
-              type: otlphttp             # or tempo if you prefer the alias
+              type: otlphttp          # or tempo if you prefer the alias
               url:  http://tempo.monitoring.svc.cluster.local:4318
               traces: { enabled: true }
-
 
   syncPolicy:
     automated: { prune: true, selfHeal: true }
