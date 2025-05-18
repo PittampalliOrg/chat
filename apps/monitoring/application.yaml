@@ -1,4 +1,3 @@
-# apps/monitoring/application.yaml
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
@@ -23,15 +22,15 @@ spec:
           name: local-kind
 
         # ── feature toggles ─────────────────────────────
-        clusterMetrics: true
-        podLogs:        true
-        traces:         true
+        clusterMetrics:      { enabled: true }   # ← put back the object form
+        podLogs:             { enabled: true }
+        traces:              { enabled: true }
 
         # ── Alloy agents ───────────────────────────────
         alloy-metrics: true
         alloy-logs:
           extraArgs:
-            - --server.http.listen-addr=0.0.0.0:12345   # Alloy UI
+            - --server.http.listen-addr=0.0.0.0:12345
           config: |
             loki.write:
               endpoint: http://loki-gateway.monitoring.svc.cluster.local:3100/loki/api/v1/push
@@ -56,8 +55,8 @@ spec:
               url:  http://loki-gateway.monitoring.svc.cluster.local/loki/api/v1/push
               logs: { enabled: true }
 
-            - name: localTempo              # <--- fixed line
-              type: otlp                    # legal value
+            - name: localTempo
+              type: otlp
               url:  http://tempo.monitoring.svc.cluster.local:4318
               traces: { enabled: true }
 
