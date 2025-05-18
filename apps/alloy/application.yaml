@@ -1,3 +1,4 @@
+# apps/alloy-ui/application.yaml
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
@@ -6,15 +7,33 @@ metadata:
   annotations: { argocd.argoproj.io/sync-wave: "2" }
 spec:
   project: default
-  dependsOn:            # wait for the monitoring Helm release
-    - monitoring
-  source:
-    repoURL: https://github.com/PittampalliOrg/chat.git
-    targetRevision: latest
-    path: resources/alloy-ui/base
+  dependsOn:
+    - monitoring                         # wait until Alloy agents exist
   destination:
     name: in-cluster
     namespace: monitoring
+
+  # --- this is the bit that was wrong ---
+  source:
+    repoURL: https://grafana.github.io/helm-charts
+    chart: alloy                          # <-- official chart
+    targetRevision: "0.*"                 # pin a major version
+    helm:
+      values: |
+        ui:
+          enabled: true                   # turn on the little web UI
+        service:
+          type: ClusterIP                 # expose inside cluster
+        # optional: make it reachable from your browser
+        ingress:
+          enabled: true
+          ingressClassName: nginx
+          hosts:
+            - alloy.localtest.me
+          annotations:
+            nginx.ingress.kubernetes.io/rewrite-target: /
+  # --------------------------------------
+
   syncPolicy:
     automated: { prune: true, selfHeal: true }
     syncOptions: ["CreateNamespace=true"]
