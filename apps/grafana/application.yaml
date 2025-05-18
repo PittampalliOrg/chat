@@ -18,45 +18,55 @@ spec:
     repoURL: https://grafana.github.io/helm-charts
     chart: grafana
     targetRevision: "8.*"
-    helm:
-      values: |
-        service:
-          type: ClusterIP 
-        ingress:
-          enabled: true
-          ingressClassName: nginx
-          hosts:
-            - grafana.localtest.me 
-          annotations:
-            nginx.ingress.kubernetes.io/rewrite-target: /
+  helm:
+    values: |
+      #################################
+      # grafana via ingress-nginx     #
+      #################################
+      service:
+        type: ClusterIP
 
-        adminUser: admin
-        adminPassword: grafana
+      ingress:
+        enabled: true
+        ingressClassName: nginx
+        hosts:
+          - grafana.localtest.me
+        annotations:
+          nginx.ingress.kubernetes.io/rewrite-target: /
 
-        datasources:
-          datasources.yaml: |
-            apiVersion: 1
-            datasources:
-              - name: Prometheus
-                type: prometheus
-                access: proxy
-                url: http://prometheus-server.monitoring.svc.cluster.local
-                isDefault: true
-              - name: Loki
-                type: loki
-                access: proxy
-                url: http://loki-gateway.monitoring.svc.cluster.local
-              - name: Tempo
-                type: tempo
-                access: proxy
-                url: http://tempo.monitoring.svc.cluster.local:3100
-                jsonData:
-                  tracesToMetricsEnabled: true
-                  traceToMetricsDatasourceUid: prometheus
-        sidecar:
+      #################################
+      # hard-coded admin credentials  #
+      #################################
+      adminUser:  admin
+      adminPassword: grafana      # <- change in prod
+
+      #################################
+      # built-in provisioning         #
+      #################################
+      datasources:
+        datasources.yaml: |
+          apiVersion: 1
           datasources:
-            enabled: false 
+            - name: Prometheus
+              type: prometheus
+              access: proxy
+              url: http://prometheus-server.monitoring.svc.cluster.local
+              isDefault: true
+            - name: Loki
+              type: loki
+              access: proxy
+              url: http://loki-gateway.monitoring.svc.cluster.local
+            - name: Tempo
+              type: tempo
+              access: proxy
+              url: http://tempo.monitoring.svc.cluster.local:3100
+              jsonData:
+                tracesToMetricsEnabled: true
+                traceToMetricsDatasourceUid: prometheus
 
+      sidecar:
+        datasources:
+          enabled: false   # use file provisioning instead
 
   syncPolicy:
     automated: { prune: true, selfHeal: true }
