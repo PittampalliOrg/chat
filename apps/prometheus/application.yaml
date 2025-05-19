@@ -1,0 +1,23 @@
+# apps/prometheus/application.yaml (new)
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: prometheus
+  namespace: argocd
+  annotations: { argocd.argoproj.io/sync-wave: "0" }
+spec:
+  project: default
+  source:
+    repoURL: https://prometheus-community.github.io/helm-charts
+    chart: prometheus
+    targetRevision: 25.*                 # or kube-prometheus-stack if you prefer
+    helm:
+      values: |
+        server:
+          service:
+            type: NodePort
+            nodePort: 30002
+  destination: { name: in-cluster, namespace: monitoring }
+  syncPolicy:
+    automated: { prune: true, selfHeal: true }
+    syncOptions: ["CreateNamespace=true"]

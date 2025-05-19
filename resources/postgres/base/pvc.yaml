@@ -1,0 +1,13 @@
+# apps/postgres/base/pvc.yaml
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pg-data
+  namespace: nextjs
+spec:
+  storageClassName: ""            # must match PV
+  volumeName: pg-local-pv-v2      # bind to the NEW PV
+  accessModes: [ReadWriteOnce]
+  resources:
+    requests:
+      storage: 5Gi
