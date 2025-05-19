@@ -1,6 +1,8 @@
 import { NextResponse, type NextRequest } from 'next/server';
 import { getToken } from 'next-auth/jwt';
 import { guestRegex, isDevelopmentEnvironment } from './lib/constants';
+import { trace } from '@opentelemetry/api';
+import { after } from 'next/server';
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
@@ -44,7 +46,21 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL('/', request.url));
   }
 
-  return NextResponse.next();
+  const tracer      = trace.getTracer('nextjs-middleware');
+  const activeSpan  = trace.getActiveSpan(); 
+  const span        = activeSpan ?? tracer.startSpan(`middleware ${pathname}`);
+  const created     = activeSpan === undefined;
+
+  const res = NextResponse.next();
+  res.headers.set(
+    'server-timing',
+    `traceparent;desc="00-${span.spanContext().traceId}-${span.spanContext().spanId}-01"`
+  );
+
+  if (created) {
+    after(() => span.end());
+  }
+  return res;
 }
 
 export const config = {

@@ -1,0 +1,83 @@
+# apps/grafana/application.yaml
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: grafana
+  namespace: argocd
+  annotations: { argocd.argoproj.io/sync-wave: "1" }
+  finalizers: [resources-finalizer.argocd.argoproj.io]
+spec:
+  project: default
+
+  destination:
+    name: in-cluster
+    namespace: monitoring
+
+  source:
+    repoURL: https://grafana.github.io/helm-charts
+    chart: grafana
+    targetRevision: "8.*"
+    helm:
+      values: |
+        #################################
+        # grafana via ingress-nginx     #
+        #################################
+        service:
+          type: ClusterIP
+
+        ingress:
+          enabled: true
+          ingressClassName: nginx
+          hosts:
+            - grafana.localtest.me
+          annotations:
+            nginx.ingress.kubernetes.io/rewrite-target: /
+
+        #################################
+        # persistence (keeps admin pwd) #
+        #################################
+        persistence:
+          enabled: true
+          type: pvc
+          size: 10Gi
+          accessModes: ["ReadWriteOnce"]
+
+        #################################
+        # hard-coded admin credentials  #
+        #################################
+        adminUser: admin
+        adminPassword: grafana 
+
+        #################################
+        # file-based provisioning        #
+        #################################
+        datasources:
+          datasources.yaml:
+            apiVersion: 1
+            datasources:
+              - name: Mimir
+                uid: mimir
+                type: prometheus        # Grafana treats Mimir as Prometheus
+                access: proxy
+                url: http://mimir-gateway.monitoring.svc.cluster.local/prometheus
+                isDefault: true
+              - name: Loki
+                type: loki
+                access: proxy
+                url: http://loki-gateway.monitoring.svc.cluster.local
+              - name: Tempo
+                type: tempo
+                access: proxy
+                url: http://tempo.monitoring.svc.cluster.local:3100
+                jsonData:
+                  tracesToMetricsEnabled: true
+                  traceToMetricsDatasourceUid: prometheus
+
+        sidecar:
+          datasources:
+            enabled: false
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions: ["CreateNamespace=true"]

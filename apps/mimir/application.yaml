@@ -1,0 +1,28 @@
+# apps/mimir/application.yaml
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: mimir
+  namespace: argocd
+  annotations: { argocd.argoproj.io/sync-wave: "0" }
+spec:
+  project: default
+  destination: { name: in-cluster, namespace: monitoring }
+  source:
+    repoURL: https://grafana.github.io/helm-charts
+    chart: mimir-distributed            # Helm chart for Mimir/GEM
+    targetRevision: "5.*"               # latest major
+    helm:
+      values: |
+        # single-node, on-cluster minio + filesystem storage (dev only)
+        global:
+          mimir:
+            extraObjectStores:
+              - name: filesystem
+                storageClass: hostpath
+        gateway:
+          service:
+            type: ClusterIP            # exposes /prometheus and /api/v1/push on port 80
+        ingester:
+          replicas: 1
+        alertmanager.enabled: false     # we keep the one from k8s-monitoring

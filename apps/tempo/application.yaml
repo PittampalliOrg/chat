@@ -1,0 +1,39 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: tempo
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  destination:
+    name: in-cluster
+    namespace: monitoring
+  source:
+    repoURL: https://grafana.github.io/helm-charts
+    chart: tempo
+    targetRevision: "1.*"
+    helm:
+      values: |
+        mode: standalone
+        service:
+          type: ClusterIP
+          ports:
+            - { name: http        , port: 3100 }
+            - { name: otlp-grpc   , port: 4317 }
+            - { name: otlp-http   , port: 4318 }
+
+        traces:
+          otlp:
+            grpc:  { enabled: true  }   # 4317
+            http:  { enabled: true  }   # 4318
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
