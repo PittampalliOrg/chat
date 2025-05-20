@@ -24,7 +24,6 @@ case "$phase" in
   argocd)    install_argocd && enable_admin_api_key \
                && patch_argocd_service_nodeport && wait_for_argocd \
                && login_argocd_cli && print_argocd_admin_password ;;
-  workflows) install_argo_workflows ;;
   bootstrap) apply_app_of_apps ;;
   
 

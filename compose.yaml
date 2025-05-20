@@ -16,7 +16,7 @@ services:
 # ──────────── DEV ───────────────────────────────────────────────────────────
   frontend-dev:
     # profiles: ["dev"]
-    image: kubernetes 
+    image: kind:3 
     volumes:
       - .:/workspace
       # - /var/run/docker.sock:/var/run/docker-host.sock
