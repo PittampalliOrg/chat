@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Workflow
 metadata:
-  generateName: dagger-in-argo-
+  name: dagger-in-argo
   namespace: argo          # run where the controller watches
   annotations: {argocd.argoproj.io/sync-wave: "1"}
 spec:
