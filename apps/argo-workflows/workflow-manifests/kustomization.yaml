@@ -1,2 +1,4 @@
 resources:
   - dagger-workflow.yaml
+  - dagger-workflow-template.yaml
+  - example-workflow.yaml

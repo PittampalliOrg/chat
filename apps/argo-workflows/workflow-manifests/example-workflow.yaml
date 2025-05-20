@@ -1,0 +1,36 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  generateName: example-dagger-workflow-
+  namespace: argo
+  annotations:
+    argocd.argoproj.io/hook: PostSync
+    argocd.argoproj.io/hook-delete-policy: BeforeHookCreation,HookSucceeded
+spec:
+  entrypoint: workflow
+  arguments:
+    parameters:
+      - name: repo
+        value: "https://github.com/kpenfound/greetings-api.git"
+  templates:
+    - name: workflow
+      dag:
+        tasks:
+          - name: dagger-test
+            templateRef:
+              name: dagger-template
+              template: dagger-workflow-base
+            arguments:
+              parameters:
+                - name: dagger-module
+                  value: "github.com/kpenfound/dagger-modules/golang@v0.2.0"
+                - name: dagger-function
+                  value: "test --source=."
+                - name: source-repo
+                  value: "{{workflow.parameters.repo}}"
+              artifacts:
+                - name: project-source
+                  git:
+                    repo: "{{workflow.parameters.repo}}"
+                    revision: "main"
+                  path: /work
