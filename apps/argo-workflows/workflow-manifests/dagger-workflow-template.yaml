@@ -1,14 +1,9 @@
 apiVersion: argoproj.io/v1alpha1
-kind: Workflow
+kind: WorkflowTemplate
 metadata:
-  generateName: dagger-in-argo-          # let Argo make a fresh name each time
+  name: dagger-template
   namespace: argo
-  annotations:
-    argocd.argoproj.io/hook: PostSync
-    argocd.argoproj.io/hook-delete-policy: BeforeHookCreation,HookSucceeded
 spec:
-  entrypoint: dagger-workflow
-  # Add security context at the pod level
   securityContext:
     fsGroup: 1000
   volumes:
@@ -19,7 +14,7 @@ spec:
     - name: tmp-volume
       emptyDir: {}
   templates:
-    - name: dagger-workflow
+    - name: dagger-workflow-base
       sidecars:
         - name: dagger-engine
           image: registry.dagger.io/engine:v0.18.8
@@ -36,23 +31,28 @@ spec:
             - {mountPath: /var/lib/dagger, name: dagger-storage}
             - {mountPath: /tmp, name: tmp-volume}
       inputs:
+        parameters:
+          - name: dagger-module
+            description: "Dagger module to use"
+          - name: dagger-function
+            description: "Dagger function to call"
+          - name: source-repo
+            description: "Git repository containing source code"
+          - name: source-revision
+            default: "main"
+            description: "Git revision for source code"
         artifacts:
-          - name: project-source
-            path: /work
-            git: {repo: https://github.com/kpenfound/greetings-api.git, revision: main}
           - name: dagger-cli
             path: /usr/local/bin
             mode: 0755
-            http: {url: https://github.com/dagger/dagger/releases/download/v0.18.6/dagger_v0.18.6_linux_amd64.tar.gz}
+            http: {url: "https://github.com/dagger/dagger/releases/download/v0.18.6/dagger_v0.18.6_linux_amd64.tar.gz"}
       container:
         image: alpine:latest
         workingDir: /work
         command: ["sh","-c"]
-        args: ["ls -la /run/dagger && sleep 5 && dagger -m github.com/kpenfound/dagger-modules/golang@v0.2.0 call test --source=."]
+        args: ["ls -la /run/dagger && sleep 5 && dagger -m {{inputs.parameters.dagger-module}} call {{inputs.parameters.dagger-function}} --source=."]
         env:
           - {name: _EXPERIMENTAL_DAGGER_RUNNER_HOST, value: unix:///run/dagger/engine.sock}
-          # - name: DAGGER_CLOUD_TOKEN   # uncomment if you add the Secret
-          #   valueFrom: {secretKeyRef: {name: dagger-cloud, key: token}}
         volumeMounts:
           - {mountPath: /run/dagger, name: dagger-socket}
           - {mountPath: /tmp, name: tmp-volume}
