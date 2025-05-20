@@ -11,6 +11,7 @@
     "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
+    "experimentalDecorators": true,
     "jsx": "preserve",
     "incremental": true,
     "plugins": [
@@ -28,6 +29,6 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     "next.config.js"
-  ],
+, ".dagger/src/next.ts"  ],
   "exclude": ["node_modules"]
 }

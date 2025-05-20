@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: argo-server
+  namespace: argo
+spec:
+  selector:
+    matchLabels:
+      app: argo-server
+  template:
+    metadata:
+      labels:
+        app: argo-server
+    spec:
+      containers:
+        - name: argo-server
+          image: argoproj/argocli:v3.6.5
+          args:
+            - server
+            - --secure=false
+          ports:
+            - containerPort: 2746
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 2746
+              scheme: HTTP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: argo-server
+  namespace: argo
+spec:
+  type: NodePort
+  selector:
+    app: argo-server
+  ports:
+    - name: web
+      port: 2746
+      targetPort: 2746
+      nodePort: 32746

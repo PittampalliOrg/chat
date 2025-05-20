@@ -12,7 +12,7 @@ spec:
   source:
     repoURL: https://github.com/PittampalliOrg/chat.git
     targetRevision: basics
-    path: apps                # <- only Application CRs live here
+    path: apps     
     directory: { recurse: true }
   syncPolicy:
     # automated: { prune: true, selfHeal: true }

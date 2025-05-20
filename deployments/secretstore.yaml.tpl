@@ -6,8 +6,8 @@ spec:
   provider:
     azurekv:
       authType: WorkloadIdentity
-      vaultUrl: https://keyvault-thcmfmoo5oeow.vault.azure.net
+      vaultUrl: ${VAULT_URL}
       serviceAccountRef:
-        name: keyvault
-        namespace: external-secrets
+        name: ${SA_NAME}
+        namespace: ${ESO_NS}
 
