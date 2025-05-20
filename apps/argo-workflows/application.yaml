@@ -1,31 +1,20 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: argo-workflows
+  name: argo-workflows-examples
   namespace: argocd
-  annotations: {argocd.argoproj.io/sync-wave: "0"}   # CRDs first
+  annotations: { argocd.argoproj.io/sync-wave: "1" }   # waits for CRDs
 spec:
   project: default
+  dependsOn:
+    - argo-workflows
   destination:
     name: in-cluster
     namespace: argo
   source:
-    repoURL: https://argoproj.github.io/argo-helm
-    chart: argo-workflows
-    targetRevision: 0.45.*            # v3.6.5 controller/server
-    helm:
-      values: |
-        crds:
-          install: true               # <- install CRDs ⬅️
-        controller:
-          extraArgs: ["--namespaced"] # optional, defaults are fine
-        server:
-          service:
-            type: NodePort
-            nodePort: 32746
-          extraArgs:
-            - --auth-mode=server      # fixes 401
-            - --secure=false
+    repoURL: https://github.com/PittampalliOrg/chat.git
+    targetRevision: basics
+    path: apps/argo-workflows/workflow-manifests   # <-- now exists
   syncPolicy:
-    automated: {prune: true, selfHeal: true}
+    automated: { prune: true, selfHeal: true }
     syncOptions: ["CreateNamespace=true"]
