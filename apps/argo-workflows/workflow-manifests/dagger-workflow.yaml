@@ -1,9 +1,11 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Workflow
 metadata:
-  name: dagger-in-argo
-  namespace: argo          # run where the controller watches
-  annotations: {argocd.argoproj.io/sync-wave: "1"}
+  generateName: dagger-in-argo-          # let Argo make a fresh name each time
+  namespace: argo
+  annotations:
+    argocd.argoproj.io/hook: PostSync
+    argocd.argoproj.io/hook-delete-policy: BeforeHookCreation,HookSucceeded
 spec:
   entrypoint: dagger-workflow
   volumes:
