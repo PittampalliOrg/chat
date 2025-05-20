@@ -1,11 +1,10 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Workflow
 metadata:
+  name: dagger-in-argo # Fixed name for ArgoCD
   generateName: dagger-in-argo- # let Argo make a fresh name each time
   namespace: argo
-  annotations:
-    argocd.argoproj.io/hook: PostSync
-    argocd.argoproj.io/hook-delete-policy: BeforeHookCreation,HookSucceeded
+  annotations: {}
 spec:
   entrypoint: dagger-workflow
   # Add security context at the pod level

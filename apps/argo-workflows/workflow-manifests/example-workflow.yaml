@@ -1,13 +1,20 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Workflow
 metadata:
+  name: example-dagger-workflow # Fixed name for ArgoCD
   generateName: example-dagger-workflow-
   namespace: argo
-  annotations:
-    argocd.argoproj.io/hook: PostSync
-    argocd.argoproj.io/hook-delete-policy: BeforeHookCreation,HookSucceeded
+  annotations: {}
 spec:
   entrypoint: workflow
+  # Add volumes needed for the WorkflowTemplate
+  volumes:
+    - name: dagger-socket
+      emptyDir: {}
+    - name: dagger-storage
+      emptyDir: {}
+    - name: tmp-volume
+      emptyDir: {}
   arguments:
     parameters:
       - name: repo
