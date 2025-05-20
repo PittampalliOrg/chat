@@ -61,3 +61,5 @@ spec:
         volumeMounts:
           - mountPath: /run/dagger
             name: dagger-socket
+  metadata:
+    annotations: {argocd.argoproj.io/sync-wave: "1"}
