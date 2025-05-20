@@ -3,18 +3,19 @@ kind: Application
 metadata:
   name: argo-workflows-examples
   namespace: argocd
-  annotations: { argocd.argoproj.io/sync-wave: "1" }   # waits for CRDs
+  annotations: { argocd.argoproj.io/sync-wave: "1" } # waits for CRDs
 spec:
   project: default
-  dependsOn:
-    - argo-workflows
+  # dependsOn field not supported in this version of ArgoCD
+  # dependsOn:
+  #   - argo-workflows
   destination:
     name: in-cluster
     namespace: argo
   source:
     repoURL: https://github.com/PittampalliOrg/chat.git
     targetRevision: basics
-    path: apps/argo-workflows/workflow-manifests   # <-- now exists
+    path: apps/argo-workflows/workflow-manifests # <-- now exists
   syncPolicy:
     automated: { prune: true, selfHeal: true }
     syncOptions: ["CreateNamespace=true"]

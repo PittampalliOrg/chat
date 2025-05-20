@@ -3,17 +3,18 @@ kind: Application
 metadata:
   name: workflows-dagger
   namespace: argocd
-  annotations: {argocd.argoproj.io/sync-wave: "1"}   # after CRDs (wave 0)
+  annotations: { argocd.argoproj.io/sync-wave: "1" } # after CRDs (wave 0)
 spec:
   project: default
   destination:
     name: in-cluster
-    namespace: argo          # real workflows live here
-  dependsOn:                 # make Argo CD wait
-    - argo-workflows
+    namespace: argo # real workflows live here
+  # dependsOn field not supported in this version of ArgoCD
+  # dependsOn:                 # make Argo CD wait
+  #   - argo-workflows
   source:
     repoURL: https://github.com/PittampalliOrg/chat.git
     targetRevision: basics
-    path: apps/argo-workflows/workflow-manifests   # new folder that *only* holds Workflows
+    path: apps/argo-workflows/workflow-manifests # new folder that *only* holds Workflows
   syncPolicy:
-    automated: {prune: true, selfHeal: true}
+    automated: { prune: true, selfHeal: true }
