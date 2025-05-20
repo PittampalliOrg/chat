@@ -1,0 +1,240 @@
+# compose.yml  – switch stack with:  docker compose --profile dev|prod up -d
+
+networks:
+  kind:
+    external: true
+
+volumes:
+  postgres-data:
+  # prometheus_data:
+
+services:
+##############################################################################
+#  FRONTEND – two variants, each with its own side-car                       #
+##############################################################################
+
+# ──────────── DEV ───────────────────────────────────────────────────────────
+  frontend-dev:
+    # profiles: ["dev"]
+    image: kubernetes 
+    volumes:
+      - .:/workspace
+      # - /var/run/docker.sock:/var/run/docker-host.sock
+    # environment:
+    #   - POSTGRES_URL=${DEV_POSTGRES_URL}
+    #   - AUTH_SECRET=${AUTH_SECRET}
+    #   - XAI_API_KEY=${XAI_API_KEY}
+    #   - BLOB_READ_WRITE_TOKEN="****"
+    #   - REDIS_URL=redis://redis:6379
+    env_file:
+      - ./.devcontainer/wi.env
+      - ./.devcontainer/devcontainer.env
+      - ./.devcontainer/azure.sp.env
+    command: sleep infinity # (or ["pnpm","dev"])
+    ports: ["3000:3000"]
+    depends_on: [redis, db]
+    networks: [kind]
+
+  # frontend-dapr-dev:
+  #   profiles: ["dev"]
+  #   image: daprio/daprd:latest
+  #   network_mode: "service:frontend-dev"
+  #   command:
+  #     ["./daprd",
+  #      "-app-id", "frontend",
+  #      "-app-port", "3000",
+  #      "-dapr-grpc-port", "50002",
+  #      "-components-path", "/components",
+  #      "-log-level", "debug"]
+  #   volumes:
+  #     - "./dapr/components:/components"
+  #     - "./dapr/secrets:/secrets"
+  #   depends_on: [frontend-dev, redis]
+
+# ──────────── PROD ──────────────────────────────────────────────────────────
+  # frontend-prod:
+  #   profiles: ["prod"]
+  #   build:
+  #     context: .
+  #     target: runner
+  #     args:
+  #     - POSTGRES_URL=${DEV_POSTGRES_URL}
+  #     - AUTH_SECRET=${AUTH_SECRET}
+  #     - XAI_API_KEY=${XAI_API_KEY}
+  #     - BLOB_READ_WRITE_TOKEN="****"
+  #     - REDIS_URL=redis://redis:6379
+  #   image: vpittamp.azurecr.io/chat-frontend:0.2.3
+  #   ports: ["3000:3000"]
+  #   # depends_on: [db, redis]
+  #   networks: [kind]
+
+  # frontend-dapr-prod:
+  #   profiles: ["prod"]
+  #   image: daprio/daprd:latest
+  #   network_mode: "service:frontend-prod"
+  #   command:
+  #     ["./daprd",
+  #      "-app-id", "frontend",
+  #      "-app-port", "3000",
+  #      "-dapr-grpc-port", "50002",
+  #      "-components-path", "/components",
+  #      "-log-level", "debug"]
+  #   volumes:
+  #     - "./dapr/components:/components"
+  #     - "./dapr/secrets:/secrets"
+  #   depends_on: [frontend-prod, redis]
+
+##############################################################################
+#  COMMON SERVICES (always started)                                          #
+##############################################################################
+
+  redis:
+    image: redis:alpine
+    ports: ["6379:6379"]
+    networks: [kind]
+
+  db:
+    image: postgres:latest
+    ports: ["5432:5432"]
+    environment:
+      POSTGRES_USER:     postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB:       postgres
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ./lib/db/migrations:/docker-entrypoint-initdb.d:ro
+    networks: [kind]
+
+  # dashboard:
+  #   image: daprio/dashboard:latest
+  #   command:
+  #     ["./dashboard",
+  #      "--listen-address", "0.0.0.0:8080",
+  #      "--resources-path",  "/home/nonroot/.dapr/components",
+  #      "--docker-compose-path", "/compose/compose.yml"]
+  #   volumes:
+  #     - ./compose.yml:/compose/compose.yml:ro
+  #     - ./dapr/components:/home/nonroot/.dapr/components
+  #   ports: ["8082:8080"]
+  #   depends_on: [redis]                 # side-cars are profile-specific
+  #   networks: [kind]
+
+  # alloy:
+  #   image: grafana/alloy:latest
+  #   restart: on-failure
+  #   volumes:
+  #     - ./config/alloy:/etc/alloy
+  #   environment:
+  #     - REMOTE_WRITE_HOST=mimir:9009
+  #     - LOKI_HOST=loki:3100
+  #     - TEMPO_HOST=tempo:4317
+  #     - PYROSCOPE_HOST=pyroscope:4040
+  #   depends_on:
+  #     - mimir
+  #     - loki
+  #     - tempo
+  #     - pyroscope
+  #   command:
+  #     - run
+  #     - /etc/alloy/config.alloy
+  #     - --storage.path=/var/lib/alloy/data
+  #     - --server.http.listen-addr=0.0.0.0:12345
+  #     - --stability.level=experimental
+  #   networks: [kind]
+  #   ports:
+  #     - "12345:12345"
+  #     - "${OTEL_COLLECTOR_PORT_GRPC}:${OTEL_COLLECTOR_PORT_GRPC}"
+  #     - "${OTEL_COLLECTOR_PORT_HTTP}:${OTEL_COLLECTOR_PORT_HTTP}"
+
+  # pyroscope:
+  #   image: grafana/pyroscope:latest
+  #   # no container_name
+  #   environment:
+  #     - JAEGER_AGENT_HOST=tempo
+  #     - JAEGER_SAMPLER_TYPE=const
+  #     - JAEGER_SAMPLER_PARAM=1
+  #   command: [ "-config.file=/etc/pyroscope.yml" ]
+  #   volumes:
+  #     - ./config/pyroscope/pyroscope.yml:/etc/pyroscope.yml
+  #   networks: [kind]
+  #   ports:
+  #     - "4040:4040"
+
+  # init:
+  #   image: grafana/tempo:latest
+  #   user: root
+  #   entrypoint:
+  #     - "chown"
+  #     - "10001:10001"
+  #     - "/var/tempo"
+  #   volumes:
+  #     - ./tempo-data:/var/tempo
+  #   networks: [kind]
+
+  # tempo:
+  #   image: grafana/tempo:latest
+  #   # no container_name
+  #   command: [ "-config.file=/etc/tempo.yaml" ]
+  #   volumes:
+  #     - ./config/shared/tempo.yaml:/etc/tempo.yaml:ro
+  #     - ./tempo-data:/var/tempo
+  #   depends_on:
+  #     - init
+  #   networks: [kind]
+  #   ports:
+  #     - "3200:3200"
+
+  # mimir:
+  #   image: grafana/mimir:latest
+  #   volumes:
+  #     - ./config/mimir/mimir.yaml:/etc/mimir.yaml
+  #     # Add a volume for persistent storage
+  #     # - mimir-data:/data
+  #   command:
+  #     # Use consistent flag format (all with double dashes)
+  #     - --validation.max-length-label-value=4096
+  #     - --config.file=/etc/mimir.yaml
+  #     - --distributor.otel-metric-suffixes-enabled
+  #   networks: [kind]
+  #   ports:
+  #     - "9009:9009"
+  #   restart: unless-stopped
+  #   healthcheck:
+  #     test: ["CMD", "wget", "--no-verbose", "--spider", "http://localhost:9009/ready"]
+  #     interval: 30s
+  #     timeout: 5s
+  #     retries: 3
+  #     start_period: 30s
+
+  # loki:
+  #   image: grafana/loki:latest
+  #   command:
+  #     - -config.file=/etc/loki/local-config.yaml
+  #     - -log.level=debug
+  #     - -pattern-ingester.enabled=true
+  #   volumes:
+  #     - ./config/loki/:/etc/loki/:ro
+  #   networks: [kind]
+  #   ports:
+  #     - "3100:3100"
+
+  # grizzly:
+  #   image: next-js
+  #   environment:
+  #     - GRAFANA_TOKEN=${GRAFANA_TOKEN}
+  #     # - OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318
+  #   volumes:
+  #     - ../grizzly:/workspace:cached
+  #   # command: ["deno", "task", "dev"]
+  #   entrypoint: sleep infinity
+  #   expose:
+  #     - "8000"
+  #   labels:
+  #     - "traefik.enable=true"
+  #     - "traefik.http.routers.grizzly.rule=(Host(`localhost`) && PathPrefix(`/grizzly`))"
+  #     - "traefik.http.routers.grizzly.entrypoints=web"
+  #   networks: [kind]
+  #   ports:
+  #     - "8000:8000"
+  #   depends_on:
+  #     - traefik

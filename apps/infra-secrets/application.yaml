@@ -3,12 +3,12 @@ kind: Application
 metadata:
   name: infra-secrets
   namespace: argocd
-  finalizers: [resources-finalizer.argocd.argoproj.io]
+  finalizers: ["resources-finalizer.argocd.argoproj.io"]
 spec:
   project: default
   source:
-    repoURL: https://github.com/PittampalliOrg/chat.git
-    targetRevision: latest
+    repoURL: https://github.com///github.com/PittampalliOrg/chat
+    targetRevision: HEAD
     path: resources/infra-secrets/base
   destination:
     name: in-cluster
