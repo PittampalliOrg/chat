@@ -11,7 +11,7 @@ export          # propagate all user-set vars into recipes
 # ------------------------------------------------------------------
 #  Target DAG
 # ------------------------------------------------------------------
-.PHONY: all storage kind oidc wi-webhook radius infra workflows argocd \
+.PHONY: all storage kind oidc wi-webhook radius infra argocd \
         deploy bootstrap clean
 
 all : bootstrap                         ## full end-to-end build (default)
@@ -34,16 +34,13 @@ radius    : wi-webhook                  ## 05 – Radius app-registration + SP
 infra     : radius                      ## 06 – KeyVault, ESO, SA + RBAC
 	@$(PHASE_RUNNER) infra
 
-workflows : infra                       ## 07 – Install **Argo Workflows**
-	@$(PHASE_RUNNER) workflows
-
-argocd    : workflows                   ## 08 – Install Argo CD & expose NodePorts
+argocd    : infra                       ## 07 – Install Argo CD & expose NodePorts
 	@$(PHASE_RUNNER) argocd
 
-deploy    : argocd                      ## 09 – Render & apply deployments/
+deploy    : argocd                      ## 08 – Render & apply deployments/
 	@$(PHASE_RUNNER) deploy
 
-bootstrap : deploy                      ## 10 – Apply app-of-apps manifest
+bootstrap : deploy                      ## 09 – Apply app-of-apps manifest
 	@$(PHASE_RUNNER) bootstrap
 
 # ------------------------------------------------------------------
