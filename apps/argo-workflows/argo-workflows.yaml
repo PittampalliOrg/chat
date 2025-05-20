@@ -1,0 +1,18 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: argo-workflows
+  namespace: argocd
+  annotations: { argocd.argoproj.io/sync-wave: "0" }   # Install before other workflow apps
+spec:
+  project: default
+  destination:
+    name: in-cluster
+    namespace: argo
+  source:
+    repoURL: https://github.com/argoproj/argo-workflows.git
+    targetRevision: v3.6.5   # Match your ARGO_WORKFLOWS_VERSION
+    path: manifests/cluster-install/quick-start-minimal
+  syncPolicy:
+    automated: { prune: true, selfHeal: true }
+    syncOptions: ["CreateNamespace=true"]
