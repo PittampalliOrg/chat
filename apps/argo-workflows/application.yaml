@@ -3,18 +3,29 @@ kind: Application
 metadata:
   name: argo-workflows
   namespace: argocd
+  annotations: {argocd.argoproj.io/sync-wave: "0"}   # CRDs first
 spec:
   project: default
-  source:
-    repoURL: https://github.com/PittampalliOrg/chat.git
-    targetRevision: basics
-    path: apps/argo-workflows
   destination:
-    server: https://kubernetes.default.svc
+    name: in-cluster
     namespace: argo
+  source:
+    repoURL: https://argoproj.github.io/argo-helm
+    chart: argo-workflows
+    targetRevision: 0.45.*            # v3.6.5 controller/server
+    helm:
+      values: |
+        crds:
+          install: true               # <- install CRDs ⬅️
+        controller:
+          extraArgs: ["--namespaced"] # optional, defaults are fine
+        server:
+          service:
+            type: NodePort
+            nodePort: 32746
+          extraArgs:
+            - --auth-mode=server      # fixes 401
+            - --secure=false
   syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true
-    syncOptions:
-      - CreateNamespace=true
+    automated: {prune: true, selfHeal: true}
+    syncOptions: ["CreateNamespace=true"]
