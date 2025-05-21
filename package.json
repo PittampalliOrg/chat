@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
-    "dev:telemetry": "NODE_OPTIONS='--require @opentelemetry/auto-instrumentations-node/register' PORT=3005 next dev --turbopack",
-    "dev:node": "NODE_OPTIONS='--require @opentelemetry/auto-instrumentations-node/register' node server.js",
+    "dev:telemetry": "PORT=3005 next dev --turbopack",
+    "dev:node": "node server.js",
     "build": "next build",
     "start": "next start",
     "lint": "next lint && biome lint --write --unsafe",
