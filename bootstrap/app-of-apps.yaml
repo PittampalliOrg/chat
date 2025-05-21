@@ -13,7 +13,11 @@ spec:
     repoURL: https://github.com/PittampalliOrg/chat.git
     targetRevision: basics
     path: apps
-    directory: { recurse: true }
+    directory:
+      recurse: true
   syncPolicy:
-    automated: { prune: true, selfHeal: true }
-    syncOptions: ["CreateNamespace=true"]
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
