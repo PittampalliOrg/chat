@@ -9,13 +9,13 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-  - host: argo.localtest.me
-    http:
-      paths:
-      - path: /(.*)
-        pathType: ImplementationSpecific
-        backend:
-          service:
-            name: argo-workflows-server
-            port:
-              number: 2746
+    - host: argo.localtest.me
+      http:
+        paths:
+          - path: /(.*)
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: argo-workflows-server
+                port:
+                  number: 2746
