@@ -41,7 +41,7 @@ spec:
   project: default
   source:
     repoURL: https://github.com/${GITHUB_REPOSITORY}
-    targetRevision: HEAD
+    targetRevision: basics
     path: resources/infra-secrets/base
   destination:
     name: in-cluster
