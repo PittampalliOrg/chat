@@ -1,0 +1,24 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: argocd-cm
+  namespace: argocd
+  labels:
+    app.kubernetes.io/name: argocd-cm
+    app.kubernetes.io/part-of: argocd
+  # annotations:
+  # merge with existing data using kustomize strategic merge or cue
+
+data:
+  configManagementPlugins: |
+    - name: cdk8s
+      init:
+        command: ["/bin/sh", "-c"]
+        args:
+          - npm ci
+      generate:
+        command: ["/bin/sh", "-c"]
+        args:
+          - npx cdk8s synth
+      discover:
+        fileName: "cdk8s.yaml"
