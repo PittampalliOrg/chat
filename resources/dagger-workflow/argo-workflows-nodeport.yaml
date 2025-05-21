@@ -6,10 +6,10 @@ metadata:
 spec:
   type: NodePort
   ports:
-  - port: 2746
-    targetPort: 2746
-    nodePort: 32746
-    protocol: TCP
+    - port: 2746
+      targetPort: 2746
+      nodePort: 32746
+      protocol: TCP
   selector:
     app.kubernetes.io/instance: argo-workflows
     app.kubernetes.io/name: argo-workflows-server

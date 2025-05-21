@@ -6,9 +6,9 @@ metadata:
 spec:
   type: NodePort
   ports:
-  - port: 2746
-    targetPort: 2746
-    nodePort: 30046
-    protocol: TCP
+    - port: 2746
+      targetPort: 2746
+      nodePort: 30046
+      protocol: TCP
   selector:
     app: argo-workflows-server

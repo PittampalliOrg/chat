@@ -50,6 +50,7 @@ launch_kind_api_proxy() {
   log "📝 Generating NGINX configuration in ${WORK_DIR}/nginx-kind.conf"
   cat >"${WORK_DIR}/nginx-kind.conf" <<EOF
 events {}
+# TCP stream proxy for Kubernetes APIs and non-HTTP services
 stream {
   upstream k8s_api_upstream       { server ${CP_IP}:6443; }
   upstream argocd_http_upstream   { server ${CP_IP}:${ARGO_HTTP_PORT}; }
@@ -61,7 +62,6 @@ stream {
   upstream nextjs_dev_upstream    { server ${CP_IP}:${nextjs_internal_nodeport}; }
   upstream argo_wf_upstream       { server ${CP_IP}:${ARGO_WF_NODE_PORT}; }
 
-
   server { listen ${K8S_API_PROXY_HOST_PORT}; proxy_pass k8s_api_upstream; }
   server { listen ${ARGO_HTTP_PORT};          proxy_pass argocd_http_upstream; }
   server { listen ${ARGO_HTTPS_PORT};         proxy_pass argocd_https_upstream; }
@@ -71,6 +71,41 @@ stream {
   server { listen ${TEMPO_HTTP_PORT};         proxy_pass tempo_http_upstream; }
   server { listen ${NEXTJS_DEV_HOST_PORT};    proxy_pass nextjs_dev_upstream; }
   server { listen ${ARGO_WF_NODE_PORT};       proxy_pass argo_wf_upstream; }
+}
+
+# HTTP proxy with host-based routing
+http {
+  include       /etc/nginx/mime.types;
+  default_type  application/octet-stream;
+  
+  log_format  main  '\$remote_addr - \$remote_user [\$time_local] "\$request" '
+                    '\$status \$body_bytes_sent "\$http_referer" '
+                    '"\$http_user_agent" "\$http_x_forwarded_for"';
+  
+  access_log  /var/log/nginx/access.log  main;
+  sendfile        on;
+  keepalive_timeout  65;
+
+  # Argo Workflows UI via HTTP host-based routing
+  server {
+    listen 80;
+    server_name argo.localtest.me;
+    
+    location / {
+      proxy_pass http://${CP_IP}:${ARGO_WF_NODE_PORT};
+      proxy_set_header Host \$host;
+      proxy_set_header X-Real-IP \$remote_addr;
+      proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
+      proxy_set_header X-Forwarded-Proto \$scheme;
+    }
+  }
+
+  # Default server for unmatched hostnames
+  server {
+    listen 80 default_server;
+    server_name _;
+    return 404 "Host not configured. Check your URL and DNS settings.";
+  }
 }
 EOF
 
@@ -102,6 +137,7 @@ DF_EOF
     -p "0.0.0.0:${TEMPO_HTTP_PORT}:${TEMPO_HTTP_PORT}" \
     -p "0.0.0.0:${NEXTJS_DEV_HOST_PORT}:${NEXTJS_DEV_HOST_PORT}" \
     -p "0.0.0.0:${ARGO_WF_NODE_PORT}:${ARGO_WF_NODE_PORT}" \
+    -p "0.0.0.0:80:80" \
     "${proxy_image_tag}"; then
       log "❌ ERROR: Failed to start NGINX proxy container '$proxy_container_name'."; docker logs "$proxy_container_name" 2>/dev/null || true; return 1
   fi

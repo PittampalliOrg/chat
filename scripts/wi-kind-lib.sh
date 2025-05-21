@@ -86,6 +86,7 @@ export K8S_API_PROXY_HOST_PORT="${K8S_API_PROXY_HOST_PORT:-6445}" # Chosen to av
 # ───── Argo Workflows ───────────────────────────────
 export ARGO_WORKFLOWS_VERSION="${ARGO_WORKFLOWS_VERSION:-v3.6.5}"  # latest GA
 export ARGO_WF_NODE_PORT="${ARGO_WF_NODE_PORT:-32746}"             # host.docker.internal:32746
+export ARGO_WF_DOMAIN="${ARGO_WF_DOMAIN:-argo.localtest.me}"       # Domain for Argo Workflows UI
 
 
 
@@ -794,10 +795,35 @@ install_argo_workflows() {
     fi
   fi
 
-  log "✅  Argo Workflows ready – UI: http://localhost:${ARGO_WF_NODE_PORT}"
+  log "✅  Argo Workflows ready – UI: http://localhost:${ARGO_WF_NODE_PORT} or http://argo.localtest.me"
 }
 
-
+# Setup port-forward for Argo Workflows UI with domain name access
+setup_argo_workflows_ui_access() {
+  log "🌐  Setting up easy access for Argo Workflows UI..."
+  
+  # Check if the port-forward is already running
+  if pgrep -f "kubectl port-forward -n argo svc/argo-workflows-server" > /dev/null; then
+    log "ℹ️  Argo Workflows UI port-forward already running"
+  else
+    log "🔌  Starting port-forward for Argo Workflows UI on port 8080..."
+    kubectl port-forward -n argo svc/argo-workflows-server 8080:2746 &>/dev/null &
+    sleep 2
+  fi
+  
+  # Verify the port-forward is working
+  if ! curl -s http://localhost:8080 > /dev/null; then
+    log "⚠️  Port-forward not working, trying again..."
+    pkill -f "kubectl port-forward -n argo svc/argo-workflows-server"
+    kubectl port-forward -n argo svc/argo-workflows-server 8080:2746 &>/dev/null &
+    sleep 2
+  fi
+  
+  log "✅  Argo Workflows UI now accessible at:"
+  log "   - http://localhost:8080 (direct access)"
+  log "   - http://argo.localtest.me:8080 (name-based access, add to your hosts file if needed)"
+  log "   - http://localhost:${ARGO_WF_NODE_PORT} (NodePort access)"
+}
 
 
 enable_argocd_insecure() {
