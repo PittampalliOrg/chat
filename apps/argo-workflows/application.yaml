@@ -22,6 +22,10 @@ spec:
         
         server:
           enabled: true
+          baseHref: /
+          extraArgs:
+            - "--auth-mode=server"
+          secure: false
         
         singleNamespace: false
   syncPolicy:
