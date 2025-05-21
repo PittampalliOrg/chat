@@ -99,6 +99,20 @@ http {
       proxy_set_header X-Forwarded-Proto \$scheme;
     }
   }
+  
+  # Grafana UI via HTTP host-based routing
+  server {
+    listen 80;
+    server_name grafana.localtest.me;
+    
+    location / {
+      proxy_pass http://${CP_IP}:${GRAFANA_UI_PORT};
+      proxy_set_header Host \$host;
+      proxy_set_header X-Real-IP \$remote_addr;
+      proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
+      proxy_set_header X-Forwarded-Proto \$scheme;
+    }
+  }
 
   # Default server for unmatched hostnames
   server {

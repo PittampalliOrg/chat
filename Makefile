@@ -52,3 +52,6 @@ clean:                                   ## Delete Kind cluster & proxy
 	
 argo-ui:                                 ## Setup easy access to Argo Workflows UI
 	@source $(SCRIPT_DIR)/wi-kind-lib.sh && setup_argo_workflows_ui_access
+
+grafana-ui:                              ## Setup easy access to Grafana UI
+	@source $(SCRIPT_DIR)/wi-kind-lib.sh && setup_grafana_ui_access
