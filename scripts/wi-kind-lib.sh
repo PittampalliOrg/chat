@@ -76,6 +76,7 @@ export APP_NAME="${APP_NAME:-${KIND_CLUSTER_NAME}-radius-app}"       # AAD App d
 export ARGO_HTTP_PORT="${ARGO_HTTP_PORT:-30080}"
 export ARGO_HTTPS_PORT="${ARGO_HTTPS_PORT:-30443}"
 export GRAFANA_UI_PORT="${GRAFANA_UI_PORT:-30001}"
+export GRAFANA_DOMAIN="${GRAFANA_DOMAIN:-grafana.localtest.me}"       # Domain for Grafana UI
 export PROM_UI_PORT="${PROM_UI_PORT:-30002}"
 export LOKI_HTTP_PORT="${LOKI_HTTP_PORT:-31000}"
 export TEMPO_HTTP_PORT="${TEMPO_HTTP_PORT:-32000}"
@@ -823,6 +824,33 @@ setup_argo_workflows_ui_access() {
   log "   - http://localhost:8080 (direct access)"
   log "   - http://argo.localtest.me:8080 (name-based access, add to your hosts file if needed)"
   log "   - http://localhost:${ARGO_WF_NODE_PORT} (NodePort access)"
+}
+
+# Setup port-forward for Grafana UI with domain name access
+setup_grafana_ui_access() {
+  log "🌐  Setting up easy access for Grafana UI..."
+  
+  # Check if the port-forward is already running
+  if pgrep -f "kubectl port-forward -n monitoring svc/grafana" > /dev/null; then
+    log "ℹ️  Grafana UI port-forward already running"
+  else
+    log "🔌  Starting port-forward for Grafana UI on port 3001..."
+    kubectl port-forward -n monitoring svc/grafana 3001:80 &>/dev/null &
+    sleep 2
+  fi
+  
+  # Verify the port-forward is working
+  if ! curl -s http://localhost:3001 > /dev/null; then
+    log "⚠️  Port-forward not working, trying again..."
+    pkill -f "kubectl port-forward -n monitoring svc/grafana"
+    kubectl port-forward -n monitoring svc/grafana 3001:80 &>/dev/null &
+    sleep 2
+  fi
+  
+  log "✅  Grafana UI now accessible at:"
+  log "   - http://localhost:3001 (direct access)"
+  log "   - http://grafana.localtest.me:3001 (name-based access, add to your hosts file if needed)"
+  log "   - http://localhost:${GRAFANA_UI_PORT} (NodePort access)"
 }
 
 
