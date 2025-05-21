@@ -8,7 +8,7 @@ spec:
   project: default
   source:
     repoURL: https://github.com/PittampalliOrg/chat
-    targetRevision: HEAD
+    targetRevision: basics
     path: resources/infra-secrets/base
   destination:
     name: in-cluster
