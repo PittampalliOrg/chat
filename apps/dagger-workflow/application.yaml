@@ -12,7 +12,10 @@ spec:
   source:
     repoURL: https://github.com/PittampalliOrg/chat.git
     targetRevision: basics
-    path: resources/dagger-workflow # New location for workflow manifests
+    path: resources/dagger-workflow
+    directory:
+      include: "*.yaml"
+      exclude: "kustomization.yaml"
   syncPolicy:
     automated: { prune: true, selfHeal: true }
     syncOptions: ["CreateNamespace=true"]

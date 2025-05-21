@@ -1,3 +1,81 @@
+# Combines the RBAC and WorkflowTemplate configurations
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: argo-workflow
+  namespace: argo
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: argo-workflow-role
+  namespace: argo
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - pods
+  - pods/exec
+  - pods/log
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - ""
+  resources:
+  - configmaps
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - ""
+  resources:
+  - persistentvolumeclaims
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - update
+  - watch
+- apiGroups:
+  - argoproj.io
+  resources:
+  - workflows
+  - workflows/finalizers
+  - workflowtasksets
+  - workflowtasksets/finalizers
+  - workflowtemplates
+  - workflowtemplaterefs
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: argo-workflow-binding
+  namespace: argo
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: argo-workflow-role
+subjects:
+- kind: ServiceAccount
+  name: argo-workflow
+  namespace: argo
+---
 apiVersion: argoproj.io/v1alpha1
 kind: WorkflowTemplate
 metadata:
@@ -50,19 +128,3 @@ spec:
               {
                 url: "https://github.com/dagger/dagger/releases/download/v0.18.6/dagger_v0.18.6_linux_amd64.tar.gz",
               }
-      container:
-        image: alpine:latest
-        workingDir: /work
-        command: ["sh", "-c"]
-        args:
-          [
-            "ls -la /run/dagger && sleep 5 && dagger -m {{inputs.parameters.dagger-module}} call {{inputs.parameters.dagger-function}} --source=.",
-          ]
-        env:
-          - {
-              name: _EXPERIMENTAL_DAGGER_RUNNER_HOST,
-              value: unix:///run/dagger/engine.sock,
-            }
-        volumeMounts:
-          - { mountPath: /run/dagger, name: dagger-socket }
-          - { mountPath: /tmp, name: tmp-volume }
