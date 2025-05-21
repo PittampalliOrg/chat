@@ -22,6 +22,20 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
+# Install Git to get commit hash
+RUN apk add --no-cache git
+
+# Extract Git commit hash for deployment ID
+# This will work if building from a Git repository
+# If .git directory is not available, it will use "unknown" as the commit hash
+RUN if [ -d ".git" ]; then \
+      echo "NEXT_PUBLIC_DEPLOYMENT_ID=$(git rev-parse --short HEAD)" > .env.production.local; \
+      echo "DEPLOYMENT_ID=$(git rev-parse --short HEAD)" >> .env.production.local; \
+    else \
+      echo "NEXT_PUBLIC_DEPLOYMENT_ID=unknown" > .env.production.local; \
+      echo "DEPLOYMENT_ID=unknown" >> .env.production.local; \
+    fi
+
 # Declare ARGs in the builder stage
 ARG POSTGRES_URL
 ARG AUTH_SECRET
@@ -70,7 +84,7 @@ ARG REDIS_AVAILABLE
 ARG TIMEZONE_DB_API_KEY
 ARG NODE_OPTIONS
 
-# Set ENV variables for the builder stage
+# Set ENV variables for the runner stage
 ENV POSTGRES_URL=$POSTGRES_URL
 ENV AUTH_SECRET=$AUTH_SECRET
 ENV XAI_API_KEY=$XAI_API_KEY
@@ -79,6 +93,9 @@ ENV REDIS_URL=$REDIS_URL
 ENV TIMEZONE_DB_API_KEY=$TIMEZONE_DB_API_KEY
 ENV REDIS_AVAILABLE=true
 ENV NODE_OPTIONS="--require @opentelemetry/auto-instrumentations-node/register"
+
+# Copy deployment ID from builder stage
+COPY --from=builder /app/.env.production.local ./.env.production.local
 
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
