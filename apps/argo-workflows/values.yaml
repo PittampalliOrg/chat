@@ -1,0 +1,8 @@
+controller:
+  rbac:
+    create: true
+
+server:
+  enabled: true
+
+singleNamespace: false
