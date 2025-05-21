@@ -10,6 +10,7 @@ spec:
   # Add security context at the pod level
   securityContext:
     fsGroup: 1000
+  serviceAccountName: argo-workflow
   volumes:
     - name: dagger-socket
       emptyDir: {}
