@@ -19,14 +19,14 @@ spec:
         controller:
           rbac:
             create: true
-        
+
         server:
           enabled: true
           baseHref: /
           extraArgs:
             - "--auth-mode=server"
           secure: false
-        
+
         singleNamespace: false
   syncPolicy:
     automated: { prune: true, selfHeal: true }
