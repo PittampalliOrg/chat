@@ -49,3 +49,6 @@ bootstrap : deploy                      ## 09 – Apply app-of-apps manifest
 clean:                                   ## Delete Kind cluster & proxy
 	-@kind delete cluster --name "$${KIND_CLUSTER_NAME:-$${RESOURCE_GROUP:-kind}}"
 	-@docker rm -f kind-nginx-proxy-$${KIND_CLUSTER_NAME:-$${RESOURCE_GROUP:-kind}} 2>/dev/null || true
+	
+argo-ui:                                 ## Setup easy access to Argo Workflows UI
+	@source $(SCRIPT_DIR)/wi-kind-lib.sh && setup_argo_workflows_ui_access
