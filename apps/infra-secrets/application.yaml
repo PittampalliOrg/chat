@@ -7,7 +7,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com///github.com/PittampalliOrg/chat
+    repoURL: https://github.com/PittampalliOrg/chat
     targetRevision: HEAD
     path: resources/infra-secrets/base
   destination:

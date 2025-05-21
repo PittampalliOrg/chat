@@ -42,3 +42,11 @@ yarn-error.log*
 /playwright-report/
 /blob-report/
 /playwright/*
+.devspace/logs
+headlamp-token.txt
+*.env
+scripts/jwks.json
+scripts/openid-configuration.json
+scripts/kind-headlamp.yaml
+-
+scripts/kind-headlamp.yaml
