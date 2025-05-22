@@ -12,7 +12,8 @@ spec:
   source:
     repoURL: https://github.com/PittampalliOrg/chat.git
     targetRevision: basics
-    path: apps
+    path: cdk8s
+    plugin: { name: cdk8s } 
     directory:
       recurse: true
   syncPolicy:
