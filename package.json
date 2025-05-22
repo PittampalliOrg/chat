@@ -18,7 +18,8 @@
     "db:pull": "drizzle-kit pull",
     "db:check": "drizzle-kit check",
     "db:up": "drizzle-kit up",
-    "test": "export PLAYWRIGHT=True && pnpm exec playwright test"
+    "test": "export PLAYWRIGHT=True && pnpm exec playwright test",
+    "synth": "cdk8s synth"
   },
   "dependencies": {
     "@ai-sdk/react": "^1.2.11",
@@ -28,6 +29,7 @@
     "@codemirror/state": "^6.5.0",
     "@codemirror/theme-one-dark": "^6.1.2",
     "@codemirror/view": "^6.35.3",
+    "@opencdk8s/cdk8s-argocd-resources": "^0.0.8",
     "@opentelemetry/api": "1.9.0",
     "@opentelemetry/auto-instrumentations-node": "^0.59.0",
     "@opentelemetry/auto-instrumentations-web": "0.47.0",
