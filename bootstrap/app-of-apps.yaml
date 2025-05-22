@@ -14,8 +14,6 @@ spec:
     targetRevision: basics
     path: cdk8s
     plugin: { name: cdk8s } 
-    directory:
-      recurse: true
   syncPolicy:
     automated:
       prune: true
