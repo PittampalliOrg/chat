@@ -29,6 +29,9 @@ importers:
       '@codemirror/view':
         specifier: ^6.35.3
         version: 6.36.4
+      '@opencdk8s/cdk8s-argocd-resources':
+        specifier: ^0.0.8
+        version: 0.0.8(cdk8s@2.69.70(constructs@10.4.2))(constructs@10.4.2)
       '@opentelemetry/api':
         specifier: 1.9.0
         version: 1.9.0
@@ -1200,6 +1203,12 @@ packages:
   '@nolyfill/is-core-module@1.0.39':
     resolution: {integrity: sha512-nn5ozdjYQpUCZlWGuxcJY/KpxkWQs4DcbMCmKojjyrYDEAGy4Ce19NN4v5MduafTwJlbKc99UA8YhSVqq9yPZA==}
     engines: {node: '>=12.4.0'}
+
+  '@opencdk8s/cdk8s-argocd-resources@0.0.8':
+    resolution: {integrity: sha512-2ktKMNzusok6V6tzcs8F0R8g+CBHTPb7RTW+rtwCGQ6TBUR5Brv35Y6QlwoM/h2UuDkeLtlgdggdtcABCMFUzA==}
+    peerDependencies:
+      cdk8s: ^2.2.74
+      constructs: ^10.0.5
 
   '@opentelemetry/api-logs@0.200.0':
     resolution: {integrity: sha512-IKJBQxh91qJ+3ssRly5hYEJ8NDHu9oY/B1PXVSCWf7zytmYO9RNLB0Ox9XQ/fJ8m6gY6Q6NtBWlmXfaXt5Uc4Q==}
@@ -3041,6 +3050,16 @@ packages:
   ccount@2.0.1:
     resolution: {integrity: sha512-eyrF0jiFpY+3drT6383f1qhkbGsLSifNAjA61IUjZjmLCWjItY6LB9ft9YhoDgwfmclB2zhu51Lc7+95b8NRAg==}
 
+  cdk8s@2.69.70:
+    resolution: {integrity: sha512-wJB6jCD0TEUfADWYRy+vHC2etG/SQqZLnGYKpHLYB+YT30pbHLXIVa/t3kPBVhnkqNyDN5p6ZLTpDXXrvylB1A==}
+    engines: {node: '>= 16.20.0'}
+    peerDependencies:
+      constructs: ^10
+    bundledDependencies:
+      - fast-json-patch
+      - follow-redirects
+      - yaml
+
   chalk@4.1.2:
     resolution: {integrity: sha512-oKnbhFyRIXpUuez8iBMmyEa4nbj4IOQyuhc/wy9kY7/WVPcwIO9VA668Pu8RkO7+0G76SLROeyw9CpQ061i4mA==}
     engines: {node: '>=10'}
@@ -3123,6 +3142,9 @@ packages:
 
   concat-map@0.0.1:
     resolution: {integrity: sha512-/Srv4dswyQNBfohGpz9o6Yb3Gz3SrUDqBH5rTuhGR7ahtlbYKnVxw2bCFMRljaA7EXHaXZ8wsHdodFvbkhKmqg==}
+
+  constructs@10.4.2:
+    resolution: {integrity: sha512-wsNxBlAott2qg8Zv87q3eYZYgheb9lchtBfjHzzLHtXbttwSrHPs1NNQbBrmbb1YZvYg2+Vh0Dor76w4mFxJkA==}
 
   content-disposition@1.0.0:
     resolution: {integrity: sha512-Au9nRL8VNUut/XSzbQA38+M78dzP4D+eqg3gfJHMIHHYa3bg067xj1KxMUWj+VULbiZMowKngFFbKczUrNJ1mg==}
@@ -6234,6 +6256,11 @@ snapshots:
 
   '@nolyfill/is-core-module@1.0.39': {}
 
+  '@opencdk8s/cdk8s-argocd-resources@0.0.8(cdk8s@2.69.70(constructs@10.4.2))(constructs@10.4.2)':
+    dependencies:
+      cdk8s: 2.69.70(constructs@10.4.2)
+      constructs: 10.4.2
+
   '@opentelemetry/api-logs@0.200.0':
     dependencies:
       '@opentelemetry/api': 1.9.0
@@ -8345,6 +8372,10 @@ snapshots:
 
   ccount@2.0.1: {}
 
+  cdk8s@2.69.70(constructs@10.4.2):
+    dependencies:
+      constructs: 10.4.2
+
   chalk@4.1.2:
     dependencies:
       ansi-styles: 4.3.0
@@ -8431,6 +8462,8 @@ snapshots:
   commander@4.1.1: {}
 
   concat-map@0.0.1: {}
+
+  constructs@10.4.2: {}
 
   content-disposition@1.0.0:
     dependencies:
