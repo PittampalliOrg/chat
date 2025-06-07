@@ -8,21 +8,26 @@ export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   /*
-   * Playwright starts the dev server and requires a 200 status to
-   * begin the tests, so this ensures that the tests can start
-   */
+    * Playwright starts the dev server and requires a 200 status to
+    * begin the tests, so this ensures that the tests can start
+    */
   if (pathname.startsWith('/ping')) {
     return new Response('pong', { status: 200 });
   }
 
   /*
-   * Bypass authentication checks for MCP connections
-   */
+    * Bypass authentication checks for MCP connections
+    */
   if (pathname.startsWith('/mcp')) {
     return NextResponse.next();
   }
 
   if (pathname.startsWith('/api/auth')) {
+    return NextResponse.next();
+  }
+
+  // Skip auth for health checks
+  if (pathname === '/api/health') {
     return NextResponse.next();
   }
 
@@ -33,10 +38,16 @@ export async function middleware(request: NextRequest) {
   });
 
   if (!token) {
-    const redirectUrl = encodeURIComponent(request.url);
+    // Construct the correct redirect URL using headers
+    const host = request.headers.get('x-forwarded-host') ||
+                  request.headers.get('host') ||
+                  request.nextUrl.host;
+    const proto = request.headers.get('x-forwarded-proto') || 'http';
+    const originalUrl = `${proto}://${host}${pathname}${request.nextUrl.search}`;
+    const redirectUrl = encodeURIComponent(originalUrl);
 
     return NextResponse.redirect(
-      new URL(`/api/auth/guest?redirectUrl=${redirectUrl}`, request.url),
+      new URL(`/api/auth/guest?redirectUrl=${redirectUrl}`, `${proto}://${host}`),
     );
   }
 
@@ -47,7 +58,7 @@ export async function middleware(request: NextRequest) {
   }
 
   const tracer      = trace.getTracer('nextjs-middleware');
-  const activeSpan  = trace.getActiveSpan(); 
+  const activeSpan  = trace.getActiveSpan();
   const span        = activeSpan ?? tracer.startSpan(`middleware ${pathname}`);
   const created     = activeSpan === undefined;
 
@@ -77,6 +88,6 @@ export const config = {
      * - _next/image (image optimization files)
      * - favicon.ico, sitemap.xml, robots.txt (metadata files)
      */
-    '/((?!_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt).*)',
+      '/((?!_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt|api/health).*)',
   ],
 };
