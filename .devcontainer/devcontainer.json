@@ -6,7 +6,7 @@
 	"service": "frontend-dev",
 	// "onCreateCommand": "bash ./.devcontainer/on-create.sh",
 	// "postCreateCommand": "echo 'Dev container built – waiting for VS Code to attach…'",
-	"postStartCommand": "make",
+	// "postStartCommand": "make",
 	"workspaceFolder": "/workspace",
 	// "runArgs": [
 	// 	"--env-file=./.devcontainer/wi.env",
@@ -19,7 +19,7 @@
 		// 	"dockerSocketBindMount": true,
 		// 	"installDockerCompose": true
 		// }
-		    "ghcr.io/devcontainers/features/docker-outside-of-docker": {},
+		    "ghcr.io/devcontainers/features/docker-outside-of-docker": {}
 		//     "ghcr.io/devcontainers/features/azure-cli:1": {},
 		//     "ghcr.io/devcontainers/features/kubectl-helm-minikube:1": {
 		//       "version": "latest",

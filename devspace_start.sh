@@ -2,18 +2,25 @@
 set +e  # Continue on errors
 
 export NODE_ENV=development
+
+# Navigate to workspace directory
+cd /workspace
+
+# Install dependencies
 if [ -f "yarn.lock" ]; then
    echo "Installing Yarn Dependencies"
    yarn
-else 
-   if [ -f "package.json" ]; then
-      echo "Installing NPM Dependencies"
-      cd workspace
-      pnpm install
-   fi
+elif [ -f "pnpm-lock.yaml" ]; then
+   echo "Installing PNPM Dependencies"
+   pnpm install
+elif [ -f "package-lock.json" ]; then
+   echo "Installing NPM Dependencies"
+   npm install
 fi
 
-# pnpm run dev
+# Start Next.js in development mode with Turbopack
+echo "Starting Next.js development server..."
+pnpm run dev
 
 COLOR_BLUE="\033[0;94m"
 COLOR_GREEN="\033[0;92m"
@@ -36,7 +43,9 @@ Welcome to your development container!
 This is how you can work with it:
 - Files will be synchronized between your local machine and this container
 - Some ports will be forwarded, so you can access this container via localhost
-- Run \`${COLOR_GREEN}npm start${COLOR_RESET}\` to start the application
+- Next.js dev server is starting automatically
+- The application will be available at http://localhost:3000
+- Hot reloading is enabled - your changes will reflect immediately
 "
 
 # Set terminal prompt
@@ -46,5 +55,5 @@ if [ -z "$BASH" ]; then export PS1="$ "; fi
 # Include project's bin/ folder in PATH
 export PATH="./bin:$PATH"
 
-# Open shell
-bash --norc
+# Keep the container running
+# The dev server is running in the foreground
