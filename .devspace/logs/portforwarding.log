@@ -5046,3 +5046,1279 @@ Forwarding from 0.0.0.0:3000 -> 3000
 Forwarding from [::1]:3000 -> 3000
 Forwarding from 0.0.0.0:9229 -> 9229
 Forwarding from [::1]:9229 -> 9229
+Forwarding from 0.0.0.0:3000 -> 3000
+Forwarding from [::1]:3000 -> 3000
+Forwarding from 0.0.0.0:9229 -> 9229
+Forwarding from [::1]:9229 -> 9229
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod eef575197bd4df7e552e78b28ffa80a2d92b167c40fb12b1f7d591246023e0ba, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-03ae5812-5452-c144-9053-5071a8a9f45d\": failed to connect to localhost:9229 inside namespace \"eef575197bd4df7e552e78b28ffa80a2d92b167c40fb12b1f7d591246023e0ba\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T12:24:58Z"}
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Forwarding from 127.0.0.1:11713 -> 8022
+Forwarding from [::1]:11713 -> 8022
+Handling connection for 3000
+Forwarding from 0.0.0.0:3000 -> 3000
+Forwarding from [::1]:3000 -> 3000
+Forwarding from 0.0.0.0:9229 -> 9229
+Forwarding from [::1]:9229 -> 9229
+Handling connection for 3000
+{"level":"error","msg":"an error occurred forwarding 3000 -\u003e 3000: error forwarding port 3000 to pod a58056bf231726945d81c27ef1f38ee1118acb038168e537047ee2beaf095483, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-b17f0d6e-3e59-c415-44da-adb1eadcc5ee\": failed to connect to localhost:3000 inside namespace \"a58056bf231726945d81c27ef1f38ee1118acb038168e537047ee2beaf095483\", IPv4: dial tcp4 127.0.0.1:3000: connect: connection refused IPv6 dial tcp6 [::1]:3000: connect: connection refused","time":"2025-06-07T13:12:06Z"}
+Handling connection for 3000
+{"level":"error","msg":"an error occurred forwarding 3000 -\u003e 3000: error forwarding port 3000 to pod a58056bf231726945d81c27ef1f38ee1118acb038168e537047ee2beaf095483, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-b17f0d6e-3e59-c415-44da-adb1eadcc5ee\": failed to connect to localhost:3000 inside namespace \"a58056bf231726945d81c27ef1f38ee1118acb038168e537047ee2beaf095483\", IPv4: dial tcp4 127.0.0.1:3000: connect: connection refused IPv6 dial tcp6 [::1]:3000: connect: connection refused","time":"2025-06-07T13:12:08Z"}
+Handling connection for 3000
+{"level":"error","msg":"an error occurred forwarding 3000 -\u003e 3000: error forwarding port 3000 to pod a58056bf231726945d81c27ef1f38ee1118acb038168e537047ee2beaf095483, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-b17f0d6e-3e59-c415-44da-adb1eadcc5ee\": failed to connect to localhost:3000 inside namespace \"a58056bf231726945d81c27ef1f38ee1118acb038168e537047ee2beaf095483\", IPv4: dial tcp4 127.0.0.1:3000: connect: connection refused IPv6 dial tcp6 [::1]:3000: connect: connection refused","time":"2025-06-07T13:12:09Z"}
+Handling connection for 3000
+Handling connection for 3000
+Forwarding from 127.0.0.1:11713 -> 8022
+Forwarding from [::1]:11713 -> 8022
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 9229
+Handling connection for 9229
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Forwarding from 0.0.0.0:3000 -> 3000
+Forwarding from [::1]:3000 -> 3000
+Forwarding from 0.0.0.0:9229 -> 9229
+Forwarding from [::1]:9229 -> 9229
+Handling connection for 3000
+{"level":"error","msg":"an error occurred forwarding 3000 -\u003e 3000: error forwarding port 3000 to pod a58056bf231726945d81c27ef1f38ee1118acb038168e537047ee2beaf095483, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-b17f0d6e-3e59-c415-44da-adb1eadcc5ee\": failed to connect to localhost:3000 inside namespace \"a58056bf231726945d81c27ef1f38ee1118acb038168e537047ee2beaf095483\", IPv4: dial tcp4 127.0.0.1:3000: connect: connection refused IPv6 dial tcp6 [::1]:3000: connect: connection refused","time":"2025-06-07T13:12:41Z"}
+Forwarding from 0.0.0.0:3000 -> 3000
+Forwarding from [::1]:3000 -> 3000
+Forwarding from 0.0.0.0:9229 -> 9229
+Forwarding from [::1]:9229 -> 9229
+Handling connection for 3000
+{"level":"error","msg":"an error occurred forwarding 3000 -\u003e 3000: error forwarding port 3000 to pod 357e5a459cdfe107924d264a10e2e515c26150162e41ccff0a03d280fc951f6f, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-9c8a0f67-d253-e539-9949-364be9c5aa6c\": failed to connect to localhost:3000 inside namespace \"357e5a459cdfe107924d264a10e2e515c26150162e41ccff0a03d280fc951f6f\", IPv4: dial tcp4 127.0.0.1:3000: connect: connection refused IPv6 dial tcp6 [::1]:3000: connect: connection refused","time":"2025-06-07T13:24:55Z"}
+Handling connection for 3000
+{"level":"error","msg":"an error occurred forwarding 3000 -\u003e 3000: error forwarding port 3000 to pod 357e5a459cdfe107924d264a10e2e515c26150162e41ccff0a03d280fc951f6f, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-9c8a0f67-d253-e539-9949-364be9c5aa6c\": failed to connect to localhost:3000 inside namespace \"357e5a459cdfe107924d264a10e2e515c26150162e41ccff0a03d280fc951f6f\", IPv4: dial tcp4 127.0.0.1:3000: connect: connection refused IPv6 dial tcp6 [::1]:3000: connect: connection refused","time":"2025-06-07T13:24:56Z"}
+Handling connection for 3000
+{"level":"error","msg":"an error occurred forwarding 3000 -\u003e 3000: error forwarding port 3000 to pod 357e5a459cdfe107924d264a10e2e515c26150162e41ccff0a03d280fc951f6f, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-9c8a0f67-d253-e539-9949-364be9c5aa6c\": failed to connect to localhost:3000 inside namespace \"357e5a459cdfe107924d264a10e2e515c26150162e41ccff0a03d280fc951f6f\", IPv4: dial tcp4 127.0.0.1:3000: connect: connection refused IPv6 dial tcp6 [::1]:3000: connect: connection refused","time":"2025-06-07T13:24:57Z"}
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 9229
+Forwarding from 127.0.0.1:11713 -> 8022
+Forwarding from [::1]:11713 -> 8022
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 9229
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Forwarding from 0.0.0.0:3000 -> 3000
+Forwarding from [::1]:3000 -> 3000
+Forwarding from 0.0.0.0:9229 -> 9229
+Forwarding from [::1]:9229 -> 9229
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T13:26:17Z"}
+Handling connection for 3000
+{"level":"error","msg":"an error occurred forwarding 3000 -\u003e 3000: error forwarding port 3000 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:3000 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:3000: connect: connection refused IPv6 dial tcp6 [::1]:3000: connect: connection refused","time":"2025-06-07T13:26:17Z"}
+Handling connection for 3000
+{"level":"error","msg":"an error occurred forwarding 3000 -\u003e 3000: error forwarding port 3000 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:3000 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:3000: connect: connection refused IPv6 dial tcp6 [::1]:3000: connect: connection refused","time":"2025-06-07T13:26:18Z"}
+Handling connection for 3000
+Handling connection for 3000
+Forwarding from 127.0.0.1:11713 -> 8022
+Forwarding from [::1]:11713 -> 8022
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 9229
+Handling connection for 3000
+Handling connection for 9229
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Forwarding from 0.0.0.0:3000 -> 3000
+Forwarding from [::1]:3000 -> 3000
+Forwarding from 0.0.0.0:9229 -> 9229
+Forwarding from [::1]:9229 -> 9229
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T13:26:59Z"}
+Handling connection for 3000
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T13:27:01Z"}
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T13:27:21Z"}
+Handling connection for 3000
+Handling connection for 9229
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Forwarding from 0.0.0.0:3000 -> 3000
+Forwarding from [::1]:3000 -> 3000
+Forwarding from 0.0.0.0:9229 -> 9229
+Forwarding from [::1]:9229 -> 9229
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T13:27:42Z"}
+Handling connection for 3000
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T13:27:45Z"}
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T13:28:04Z"}
+Handling connection for 3000
+Handling connection for 9229
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Forwarding from 0.0.0.0:3000 -> 3000
+Forwarding from [::1]:3000 -> 3000
+Forwarding from 0.0.0.0:9229 -> 9229
+Forwarding from [::1]:9229 -> 9229
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T13:28:25Z"}
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 9229
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T13:28:47Z"}
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 9229
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Forwarding from 0.0.0.0:3000 -> 3000
+Forwarding from [::1]:3000 -> 3000
+Forwarding from 0.0.0.0:9229 -> 9229
+Forwarding from [::1]:9229 -> 9229
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T13:29:08Z"}
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T13:29:14Z"}
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 9229
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T13:29:35Z"}
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Forwarding from 0.0.0.0:3000 -> 3000
+Forwarding from [::1]:3000 -> 3000
+Forwarding from 0.0.0.0:9229 -> 9229
+Forwarding from [::1]:9229 -> 9229
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T13:29:52Z"}
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T13:29:57Z"}
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 9229
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 9229
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Forwarding from 0.0.0.0:3000 -> 3000
+Forwarding from [::1]:3000 -> 3000
+Forwarding from 0.0.0.0:9229 -> 9229
+Forwarding from [::1]:9229 -> 9229
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T13:30:36Z"}
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T13:30:41Z"}
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T13:30:59Z"}
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 9229
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Forwarding from 0.0.0.0:3000 -> 3000
+Forwarding from [::1]:3000 -> 3000
+Forwarding from 0.0.0.0:9229 -> 9229
+Forwarding from [::1]:9229 -> 9229
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T13:31:20Z"}
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 9229
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T13:31:42Z"}
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T13:31:48Z"}
+Forwarding from 0.0.0.0:3000 -> 3000
+Forwarding from [::1]:3000 -> 3000
+Forwarding from 0.0.0.0:9229 -> 9229
+Forwarding from [::1]:9229 -> 9229
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T13:32:03Z"}
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T13:32:10Z"}
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T13:32:25Z"}
+Handling connection for 9229
+Handling connection for 9229
+Handling connection for 9229
+Forwarding from 0.0.0.0:3000 -> 3000
+Forwarding from [::1]:3000 -> 3000
+Forwarding from 0.0.0.0:9229 -> 9229
+Forwarding from [::1]:9229 -> 9229
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T13:33:09Z"}
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T13:33:16Z"}
+Handling connection for 9229
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T13:33:38Z"}
+Forwarding from 0.0.0.0:3000 -> 3000
+Forwarding from [::1]:3000 -> 3000
+Forwarding from 0.0.0.0:9229 -> 9229
+Forwarding from [::1]:9229 -> 9229
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T13:33:53Z"}
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T13:33:59Z"}
+Handling connection for 9229
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T13:34:21Z"}
+Forwarding from 0.0.0.0:3000 -> 3000
+Forwarding from [::1]:3000 -> 3000
+Forwarding from 0.0.0.0:9229 -> 9229
+Forwarding from [::1]:9229 -> 9229
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T13:34:37Z"}
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T13:34:42Z"}
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T13:34:58Z"}
+Handling connection for 9229
+Handling connection for 9229
+Handling connection for 9229
+Forwarding from 0.0.0.0:3000 -> 3000
+Forwarding from [::1]:3000 -> 3000
+Forwarding from 0.0.0.0:9229 -> 9229
+Forwarding from [::1]:9229 -> 9229
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T13:35:42Z"}
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T13:35:49Z"}
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T13:36:04Z"}
+Handling connection for 9229
+Handling connection for 9229
+Handling connection for 9229
+Forwarding from 0.0.0.0:3000 -> 3000
+Forwarding from [::1]:3000 -> 3000
+Forwarding from 0.0.0.0:9229 -> 9229
+Forwarding from [::1]:9229 -> 9229
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T13:36:48Z"}
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T13:36:55Z"}
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T13:37:10Z"}
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 9229
+Handling connection for 9229
+Handling connection for 9229
+Forwarding from 0.0.0.0:3000 -> 3000
+Forwarding from [::1]:3000 -> 3000
+Forwarding from 0.0.0.0:9229 -> 9229
+Forwarding from [::1]:9229 -> 9229
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T13:37:54Z"}
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T13:38:03Z"}
+Handling connection for 9229
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T13:38:24Z"}
+Forwarding from 0.0.0.0:3000 -> 3000
+Handling connection for 3000
+Forwarding from [::1]:3000 -> 3000
+Forwarding from 0.0.0.0:9229 -> 9229
+Forwarding from [::1]:9229 -> 9229
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T13:38:38Z"}
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T13:38:46Z"}
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 9229
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T13:39:07Z"}
+Handling connection for 9229
+Forwarding from 0.0.0.0:3000 -> 3000
+Handling connection for 3000
+Forwarding from [::1]:3000 -> 3000
+Forwarding from 0.0.0.0:9229 -> 9229
+Forwarding from [::1]:9229 -> 9229
+Handling connection for 3000
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T13:39:29Z"}
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T13:39:45Z"}
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T13:39:50Z"}
+Handling connection for 9229
+Handling connection for 9229
+Handling connection for 9229
+Handling connection for 9229
+Forwarding from 0.0.0.0:3000 -> 3000
+Forwarding from [::1]:3000 -> 3000
+Forwarding from 0.0.0.0:9229 -> 9229
+Forwarding from [::1]:9229 -> 9229
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T13:40:51Z"}
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T13:40:57Z"}
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T13:41:13Z"}
+Handling connection for 9229
+Handling connection for 9229
+Handling connection for 9229
+Forwarding from 0.0.0.0:3000 -> 3000
+Forwarding from [::1]:3000 -> 3000
+Forwarding from 0.0.0.0:9229 -> 9229
+Forwarding from [::1]:9229 -> 9229
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T13:41:57Z"}
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T13:42:03Z"}
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T13:42:18Z"}
+Handling connection for 9229
+Handling connection for 9229
+Handling connection for 9229
+Forwarding from 0.0.0.0:3000 -> 3000
+Forwarding from [::1]:3000 -> 3000
+Forwarding from 0.0.0.0:9229 -> 9229
+Forwarding from [::1]:9229 -> 9229
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T13:43:03Z"}
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T13:43:10Z"}
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T13:43:25Z"}
+Handling connection for 9229
+Handling connection for 9229
+Handling connection for 9229
+Forwarding from 0.0.0.0:3000 -> 3000
+Forwarding from [::1]:3000 -> 3000
+Forwarding from 0.0.0.0:9229 -> 9229
+Forwarding from [::1]:9229 -> 9229
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T13:44:09Z"}
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T13:44:16Z"}
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T13:44:30Z"}
+Handling connection for 9229
+Handling connection for 9229
+Handling connection for 9229
+Forwarding from 0.0.0.0:3000 -> 3000
+Forwarding from [::1]:3000 -> 3000
+Forwarding from 0.0.0.0:9229 -> 9229
+Forwarding from [::1]:9229 -> 9229
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T13:45:14Z"}
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T13:45:24Z"}
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T13:45:36Z"}
+Handling connection for 9229
+Handling connection for 9229
+Handling connection for 9229
+Forwarding from 0.0.0.0:3000 -> 3000
+Forwarding from [::1]:3000 -> 3000
+Forwarding from 0.0.0.0:9229 -> 9229
+Forwarding from [::1]:9229 -> 9229
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T13:46:20Z"}
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T13:46:30Z"}
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T13:46:41Z"}
+Handling connection for 9229
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 9229
+Handling connection for 9229
+Forwarding from 0.0.0.0:3000 -> 3000
+Forwarding from [::1]:3000 -> 3000
+Forwarding from 0.0.0.0:9229 -> 9229
+Forwarding from [::1]:9229 -> 9229
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T13:47:25Z"}
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T13:47:37Z"}
+Handling connection for 9229
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T13:47:58Z"}
+Forwarding from 0.0.0.0:3000 -> 3000
+Forwarding from [::1]:3000 -> 3000
+Forwarding from 0.0.0.0:9229 -> 9229
+Forwarding from [::1]:9229 -> 9229
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+{"level":"error","msg":"error copying from remote stream to local connection: readfrom tcp4 127.0.0.1:3000-\u003e127.0.0.1:49164: write tcp4 127.0.0.1:3000-\u003e127.0.0.1:49164: write: broken pipe","time":"2025-06-07T13:48:02Z"}
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T13:48:09Z"}
+Handling connection for 9229
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T13:48:31Z"}
+Handling connection for 9229
+Forwarding from 0.0.0.0:3000 -> 3000
+Forwarding from [::1]:3000 -> 3000
+Forwarding from 0.0.0.0:9229 -> 9229
+Forwarding from [::1]:9229 -> 9229
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T13:48:52Z"}
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T13:49:05Z"}
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 9229
+Handling connection for 9229
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T13:49:37Z"}
+Forwarding from 0.0.0.0:3000 -> 3000
+Forwarding from [::1]:3000 -> 3000
+Forwarding from 0.0.0.0:9229 -> 9229
+Handling connection for 3000
+Forwarding from [::1]:9229 -> 9229
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T13:49:49Z"}
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T13:49:59Z"}
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T13:50:10Z"}
+Handling connection for 9229
+Handling connection for 9229
+Handling connection for 9229
+Forwarding from 0.0.0.0:3000 -> 3000
+Forwarding from [::1]:3000 -> 3000
+Forwarding from 0.0.0.0:9229 -> 9229
+Forwarding from [::1]:9229 -> 9229
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T13:50:54Z"}
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T13:51:05Z"}
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T13:51:17Z"}
+Handling connection for 9229
+Handling connection for 9229
+Handling connection for 9229
+Forwarding from 0.0.0.0:3000 -> 3000
+Forwarding from [::1]:3000 -> 3000
+Forwarding from 0.0.0.0:9229 -> 9229
+Forwarding from [::1]:9229 -> 9229
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T13:52:01Z"}
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T13:52:12Z"}
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T13:52:22Z"}
+Handling connection for 9229
+Handling connection for 9229
+Handling connection for 9229
+Forwarding from 0.0.0.0:3000 -> 3000
+Forwarding from [::1]:3000 -> 3000
+Forwarding from 0.0.0.0:9229 -> 9229
+Forwarding from [::1]:9229 -> 9229
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T13:53:06Z"}
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T13:53:18Z"}
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T13:53:28Z"}
+Handling connection for 9229
+Handling connection for 9229
+Handling connection for 9229
+Forwarding from 0.0.0.0:3000 -> 3000
+Forwarding from [::1]:3000 -> 3000
+Forwarding from 0.0.0.0:9229 -> 9229
+Forwarding from [::1]:9229 -> 9229
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T13:54:12Z"}
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T13:54:25Z"}
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T13:54:33Z"}
+Handling connection for 9229
+Handling connection for 9229
+Handling connection for 9229
+Forwarding from 0.0.0.0:3000 -> 3000
+Forwarding from [::1]:3000 -> 3000
+Forwarding from 0.0.0.0:9229 -> 9229
+Forwarding from [::1]:9229 -> 9229
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T13:55:17Z"}
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T13:55:31Z"}
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T13:55:39Z"}
+Handling connection for 9229
+Handling connection for 9229
+Handling connection for 9229
+Handling connection for 9229
+Forwarding from 0.0.0.0:3000 -> 3000
+Forwarding from [::1]:3000 -> 3000
+Forwarding from 0.0.0.0:9229 -> 9229
+Forwarding from [::1]:9229 -> 9229
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T13:56:39Z"}
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T13:56:45Z"}
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T13:57:00Z"}
+Handling connection for 9229
+Handling connection for 9229
+Handling connection for 9229
+Forwarding from 0.0.0.0:3000 -> 3000
+Forwarding from [::1]:3000 -> 3000
+Forwarding from 0.0.0.0:9229 -> 9229
+Forwarding from [::1]:9229 -> 9229
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T13:57:44Z"}
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T13:57:52Z"}
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T13:58:06Z"}
+Handling connection for 9229
+Handling connection for 9229
+Handling connection for 9229
+Forwarding from 0.0.0.0:3000 -> 3000
+Forwarding from [::1]:3000 -> 3000
+Forwarding from 0.0.0.0:9229 -> 9229
+Forwarding from [::1]:9229 -> 9229
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T13:58:50Z"}
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T13:58:59Z"}
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T13:59:11Z"}
+Handling connection for 9229
+Handling connection for 9229
+Handling connection for 9229
+Forwarding from 0.0.0.0:3000 -> 3000
+Forwarding from [::1]:3000 -> 3000
+Forwarding from 0.0.0.0:9229 -> 9229
+Forwarding from [::1]:9229 -> 9229
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T13:59:55Z"}
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T14:00:06Z"}
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T14:00:17Z"}
+Handling connection for 9229
+Handling connection for 9229
+Handling connection for 9229
+Forwarding from 0.0.0.0:3000 -> 3000
+Forwarding from [::1]:3000 -> 3000
+Forwarding from 0.0.0.0:9229 -> 9229
+Forwarding from [::1]:9229 -> 9229
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T14:01:01Z"}
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T14:01:12Z"}
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T14:01:22Z"}
+Handling connection for 9229
+Handling connection for 9229
+Handling connection for 9229
+Forwarding from 0.0.0.0:3000 -> 3000
+Forwarding from [::1]:3000 -> 3000
+Forwarding from 0.0.0.0:9229 -> 9229
+Forwarding from [::1]:9229 -> 9229
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T14:02:06Z"}
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T14:02:19Z"}
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T14:02:28Z"}
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 9229
+Handling connection for 9229
+Handling connection for 9229
+Forwarding from 0.0.0.0:3000 -> 3000
+Forwarding from [::1]:3000 -> 3000
+Forwarding from 0.0.0.0:9229 -> 9229
+Forwarding from [::1]:9229 -> 9229
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T14:03:13Z"}
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T14:03:25Z"}
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T14:03:34Z"}
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 9229
+Handling connection for 9229
+Forwarding from 0.0.0.0:3000 -> 3000
+Forwarding from [::1]:3000 -> 3000
+Forwarding from 0.0.0.0:9229 -> 9229
+Forwarding from [::1]:9229 -> 9229
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T14:04:10Z"}
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T14:04:18Z"}
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T14:04:40Z"}
+Handling connection for 9229
+Handling connection for 9229
+Forwarding from 0.0.0.0:3000 -> 3000
+Forwarding from [::1]:3000 -> 3000
+Forwarding from 0.0.0.0:9229 -> 9229
+Forwarding from [::1]:9229 -> 9229
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T14:05:46Z"}
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T14:06:08Z"}
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T14:06:29Z"}
+Handling connection for 9229
+Handling connection for 9229
+Forwarding from 0.0.0.0:3000 -> 3000
+Forwarding from [::1]:3000 -> 3000
+Forwarding from 0.0.0.0:9229 -> 9229
+Forwarding from [::1]:9229 -> 9229
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T14:07:36Z"}
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T14:07:57Z"}
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T14:08:19Z"}
+Handling connection for 9229
+Handling connection for 9229
+Forwarding from 0.0.0.0:3000 -> 3000
+Forwarding from [::1]:3000 -> 3000
+Forwarding from 0.0.0.0:9229 -> 9229
+Forwarding from [::1]:9229 -> 9229
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T14:09:26Z"}
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T14:09:48Z"}
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T14:10:09Z"}
+Handling connection for 9229
+Handling connection for 9229
+Forwarding from 0.0.0.0:3000 -> 3000
+Forwarding from [::1]:3000 -> 3000
+Forwarding from 0.0.0.0:9229 -> 9229
+Forwarding from [::1]:9229 -> 9229
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T14:11:16Z"}
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T14:11:37Z"}
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T14:11:59Z"}
+Handling connection for 9229
+Handling connection for 9229
+Forwarding from 0.0.0.0:3000 -> 3000
+Forwarding from [::1]:3000 -> 3000
+Forwarding from 0.0.0.0:9229 -> 9229
+Forwarding from [::1]:9229 -> 9229
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T14:13:05Z"}
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T14:13:27Z"}
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T14:13:48Z"}
+Handling connection for 9229
+Handling connection for 9229
+Forwarding from 0.0.0.0:3000 -> 3000
+Forwarding from [::1]:3000 -> 3000
+Forwarding from 0.0.0.0:9229 -> 9229
+Forwarding from [::1]:9229 -> 9229
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T14:14:55Z"}
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T14:15:16Z"}
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T14:15:39Z"}
+Handling connection for 9229
+Handling connection for 9229
+Forwarding from 0.0.0.0:3000 -> 3000
+Forwarding from [::1]:3000 -> 3000
+Forwarding from 0.0.0.0:9229 -> 9229
+Forwarding from [::1]:9229 -> 9229
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T14:16:45Z"}
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T14:17:07Z"}
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T14:17:28Z"}
+Handling connection for 9229
+Handling connection for 9229
+Forwarding from 0.0.0.0:3000 -> 3000
+Forwarding from [::1]:3000 -> 3000
+Forwarding from 0.0.0.0:9229 -> 9229
+Forwarding from [::1]:9229 -> 9229
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T14:18:35Z"}
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T14:18:56Z"}
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T14:19:18Z"}
+Handling connection for 9229
+Handling connection for 9229
+Forwarding from 0.0.0.0:3000 -> 3000
+Forwarding from [::1]:3000 -> 3000
+Forwarding from 0.0.0.0:9229 -> 9229
+Forwarding from [::1]:9229 -> 9229
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T14:20:24Z"}
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T14:20:46Z"}
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T14:21:07Z"}
+Handling connection for 9229
+Handling connection for 9229
+Forwarding from 0.0.0.0:3000 -> 3000
+Forwarding from [::1]:3000 -> 3000
+Forwarding from 0.0.0.0:9229 -> 9229
+Forwarding from [::1]:9229 -> 9229
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T14:22:15Z"}
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T14:22:36Z"}
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T14:22:58Z"}
+Handling connection for 9229
+Handling connection for 9229
+Forwarding from 0.0.0.0:3000 -> 3000
+Forwarding from [::1]:3000 -> 3000
+Forwarding from 0.0.0.0:9229 -> 9229
+Forwarding from [::1]:9229 -> 9229
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T14:24:04Z"}
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T14:24:26Z"}
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T14:24:47Z"}
+Handling connection for 9229
+Handling connection for 9229
+Forwarding from 0.0.0.0:3000 -> 3000
+Forwarding from [::1]:3000 -> 3000
+Forwarding from 0.0.0.0:9229 -> 9229
+Forwarding from [::1]:9229 -> 9229
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T14:25:54Z"}
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T14:26:15Z"}
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T14:26:37Z"}
+Handling connection for 9229
+Handling connection for 9229
+Forwarding from 0.0.0.0:3000 -> 3000
+Forwarding from [::1]:3000 -> 3000
+Forwarding from 0.0.0.0:9229 -> 9229
+Forwarding from [::1]:9229 -> 9229
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T14:27:43Z"}
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T14:28:05Z"}
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T14:28:26Z"}
+Handling connection for 9229
+Handling connection for 9229
+Forwarding from 0.0.0.0:3000 -> 3000
+Forwarding from [::1]:3000 -> 3000
+Forwarding from 0.0.0.0:9229 -> 9229
+Forwarding from [::1]:9229 -> 9229
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T14:29:34Z"}
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T14:29:55Z"}
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T14:30:17Z"}
+Handling connection for 3000
+Handling connection for 9229
+Forwarding from 0.0.0.0:3000 -> 3000
+Handling connection for 3000
+Forwarding from [::1]:3000 -> 3000
+Forwarding from 0.0.0.0:9229 -> 9229
+Forwarding from [::1]:9229 -> 9229
+Handling connection for 3000
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T14:31:01Z"}
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T14:31:22Z"}
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T14:31:44Z"}
+Handling connection for 9229
+Handling connection for 9229
+Forwarding from 0.0.0.0:3000 -> 3000
+Forwarding from [::1]:3000 -> 3000
+Forwarding from 0.0.0.0:9229 -> 9229
+Forwarding from [::1]:9229 -> 9229
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T14:32:50Z"}
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T14:33:12Z"}
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T14:33:33Z"}
+Handling connection for 9229
+Handling connection for 9229
+Forwarding from 0.0.0.0:3000 -> 3000
+Forwarding from [::1]:3000 -> 3000
+Forwarding from 0.0.0.0:9229 -> 9229
+Forwarding from [::1]:9229 -> 9229
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T14:34:40Z"}
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T14:35:02Z"}
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T14:35:24Z"}
+Handling connection for 9229
+Handling connection for 9229
+Forwarding from 0.0.0.0:3000 -> 3000
+Forwarding from [::1]:3000 -> 3000
+Forwarding from 0.0.0.0:9229 -> 9229
+Forwarding from [::1]:9229 -> 9229
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T14:36:30Z"}
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T14:36:52Z"}
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T14:37:13Z"}
+Handling connection for 9229
+Handling connection for 9229
+Forwarding from 0.0.0.0:3000 -> 3000
+Forwarding from [::1]:3000 -> 3000
+Forwarding from 0.0.0.0:9229 -> 9229
+Forwarding from [::1]:9229 -> 9229
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T14:38:20Z"}
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T14:38:41Z"}
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T14:39:03Z"}
+Handling connection for 9229
+Handling connection for 9229
+Forwarding from 0.0.0.0:3000 -> 3000
+Forwarding from [::1]:3000 -> 3000
+Forwarding from 0.0.0.0:9229 -> 9229
+Forwarding from [::1]:9229 -> 9229
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T14:40:09Z"}
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T14:40:31Z"}
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T14:40:52Z"}
+Handling connection for 9229
+Handling connection for 9229
+Forwarding from 0.0.0.0:3000 -> 3000
+Forwarding from [::1]:3000 -> 3000
+Forwarding from 0.0.0.0:9229 -> 9229
+Forwarding from [::1]:9229 -> 9229
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T14:42:00Z"}
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T14:42:21Z"}
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T14:42:43Z"}
+Handling connection for 9229
+Handling connection for 9229
+Forwarding from 0.0.0.0:3000 -> 3000
+Forwarding from [::1]:3000 -> 3000
+Forwarding from 0.0.0.0:9229 -> 9229
+Forwarding from [::1]:9229 -> 9229
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T14:43:49Z"}
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T14:44:11Z"}
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T14:44:32Z"}
+Handling connection for 9229
+Handling connection for 9229
+Forwarding from 0.0.0.0:3000 -> 3000
+Forwarding from [::1]:3000 -> 3000
+Forwarding from 0.0.0.0:9229 -> 9229
+Forwarding from [::1]:9229 -> 9229
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T14:45:39Z"}
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T14:46:00Z"}
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T14:46:22Z"}
+Handling connection for 9229
+Handling connection for 9229
+Forwarding from 0.0.0.0:3000 -> 3000
+Forwarding from [::1]:3000 -> 3000
+Forwarding from 0.0.0.0:9229 -> 9229
+Forwarding from [::1]:9229 -> 9229
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T14:47:28Z"}
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T14:47:50Z"}
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T14:48:11Z"}
+Handling connection for 9229
+Handling connection for 9229
+Forwarding from 0.0.0.0:3000 -> 3000
+Forwarding from [::1]:3000 -> 3000
+Forwarding from 0.0.0.0:9229 -> 9229
+Forwarding from [::1]:9229 -> 9229
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T14:49:19Z"}
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T14:49:40Z"}
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T14:50:02Z"}
+Handling connection for 9229
+Handling connection for 9229
+Forwarding from 0.0.0.0:3000 -> 3000
+Forwarding from [::1]:3000 -> 3000
+Forwarding from 0.0.0.0:9229 -> 9229
+Forwarding from [::1]:9229 -> 9229
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T14:51:08Z"}
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T14:51:30Z"}
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T14:51:51Z"}
+Handling connection for 9229
+Handling connection for 9229
+Forwarding from 0.0.0.0:3000 -> 3000
+Forwarding from [::1]:3000 -> 3000
+Forwarding from 0.0.0.0:9229 -> 9229
+Forwarding from [::1]:9229 -> 9229
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T14:52:58Z"}
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T14:53:19Z"}
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T14:53:41Z"}
+Handling connection for 9229
+Handling connection for 9229
+Forwarding from 0.0.0.0:3000 -> 3000
+Forwarding from [::1]:3000 -> 3000
+Forwarding from 0.0.0.0:9229 -> 9229
+Forwarding from [::1]:9229 -> 9229
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T14:54:47Z"}
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T14:55:09Z"}
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T14:55:31Z"}
+Handling connection for 9229
+Handling connection for 9229
+Forwarding from 0.0.0.0:3000 -> 3000
+Forwarding from [::1]:3000 -> 3000
+Forwarding from 0.0.0.0:9229 -> 9229
+Forwarding from [::1]:9229 -> 9229
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T14:56:38Z"}
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T14:56:59Z"}
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T14:57:21Z"}
+Handling connection for 9229
+Handling connection for 9229
+Forwarding from 0.0.0.0:3000 -> 3000
+Forwarding from [::1]:3000 -> 3000
+Forwarding from 0.0.0.0:9229 -> 9229
+Forwarding from [::1]:9229 -> 9229
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T14:58:27Z"}
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T14:58:49Z"}
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T14:59:10Z"}
+Handling connection for 9229
+Handling connection for 9229
+Forwarding from 0.0.0.0:3000 -> 3000
+Forwarding from [::1]:3000 -> 3000
+Forwarding from 0.0.0.0:9229 -> 9229
+Forwarding from [::1]:9229 -> 9229
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T15:00:17Z"}
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T15:00:38Z"}
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T15:01:00Z"}
+Handling connection for 9229
+Handling connection for 9229
+Forwarding from 0.0.0.0:3000 -> 3000
+Forwarding from [::1]:3000 -> 3000
+Forwarding from 0.0.0.0:9229 -> 9229
+Forwarding from [::1]:9229 -> 9229
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T15:02:07Z"}
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T15:02:29Z"}
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T15:02:50Z"}
+Handling connection for 9229
+Handling connection for 9229
+Forwarding from 0.0.0.0:3000 -> 3000
+Forwarding from [::1]:3000 -> 3000
+Forwarding from 0.0.0.0:9229 -> 9229
+Forwarding from [::1]:9229 -> 9229
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T15:03:57Z"}
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T15:04:18Z"}
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T15:04:40Z"}
+Handling connection for 9229
+Handling connection for 9229
+Forwarding from 0.0.0.0:3000 -> 3000
+Forwarding from [::1]:3000 -> 3000
+Forwarding from 0.0.0.0:9229 -> 9229
+Forwarding from [::1]:9229 -> 9229
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T15:05:46Z"}
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T15:06:08Z"}
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T15:06:29Z"}
+Handling connection for 9229
+Handling connection for 9229
+Forwarding from 0.0.0.0:3000 -> 3000
+Forwarding from [::1]:3000 -> 3000
+Forwarding from 0.0.0.0:9229 -> 9229
+Forwarding from [::1]:9229 -> 9229
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T15:07:36Z"}
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T15:07:57Z"}
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T15:08:19Z"}
+Handling connection for 9229
+Handling connection for 9229
+Forwarding from 0.0.0.0:3000 -> 3000
+Forwarding from [::1]:3000 -> 3000
+Forwarding from 0.0.0.0:9229 -> 9229
+Forwarding from [::1]:9229 -> 9229
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T15:09:26Z"}
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T15:09:48Z"}
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T15:10:09Z"}
+Handling connection for 9229
+Handling connection for 9229
+Forwarding from 0.0.0.0:3000 -> 3000
+Forwarding from [::1]:3000 -> 3000
+Forwarding from 0.0.0.0:9229 -> 9229
+Forwarding from [::1]:9229 -> 9229
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T15:11:16Z"}
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T15:11:37Z"}
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T15:11:59Z"}
+Handling connection for 9229
+Handling connection for 9229
+Forwarding from 0.0.0.0:3000 -> 3000
+Forwarding from [::1]:3000 -> 3000
+Forwarding from 0.0.0.0:9229 -> 9229
+Forwarding from [::1]:9229 -> 9229
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T15:13:05Z"}
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T15:13:27Z"}
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T15:13:48Z"}
+Handling connection for 9229
+Handling connection for 9229
+Forwarding from 0.0.0.0:3000 -> 3000
+Forwarding from [::1]:3000 -> 3000
+Forwarding from 0.0.0.0:9229 -> 9229
+Forwarding from [::1]:9229 -> 9229
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T15:14:55Z"}
+Handling connection for 9229
+{"level":"error","msg":"an error occurred forwarding 9229 -\u003e 9229: error forwarding port 9229 to pod bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-10e303a5-dbc3-3c91-ed5a-1ae226108a76\": failed to connect to localhost:9229 inside namespace \"bb3afb16787b4c4d5f4cd0ba1c834b48291a2becdbc82e7a36757d6ca3b74e2a\", IPv4: dial tcp4 127.0.0.1:9229: connect: connection refused IPv6 dial tcp6 [::1]:9229: connect: connection refused","time":"2025-06-07T15:15:17Z"}

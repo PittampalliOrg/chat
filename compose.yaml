@@ -16,9 +16,10 @@ services:
 # ──────────── DEV ───────────────────────────────────────────────────────────
   frontend-dev:
     # profiles: ["dev"]
-    image: kind:3 
+    image: kubernetes:2
     volumes:
-      - .:/workspace
+      - .:/workspace/chat
+      - ../cdk8s-project:/workspace/cdk8s-project
       # - /var/run/docker.sock:/var/run/docker-host.sock
     # environment:
     #   - POSTGRES_URL=${DEV_POSTGRES_URL}
@@ -33,6 +34,13 @@ services:
     command: sleep infinity # (or ["pnpm","dev"])
     ports: ["3000:3000"]
     depends_on: [redis, db]
+    networks: [kind]
+
+  cdk8s:
+    image: kubernetes:2
+    volumes:
+      - ../cdk8s:/workspace
+    command: sleep infinity
     networks: [kind]
 
   # frontend-dapr-dev:

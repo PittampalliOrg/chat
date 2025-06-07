@@ -16,7 +16,7 @@ pipelines:
       run_dependencies --all                            # 1. Deploy any projects this project needs (see "dependencies")
       ensure_pull_secrets --all                         # 2. Ensure pull secrets
       build_images --all -t $(git describe --always)    # 3. Build, tag (git commit hash) and push all images (see "images")
-      create_deployments --all                          # 4. Deploy Helm charts and manifests specfied as "deployments"
+      create_deployments --all                          # 4. Deploy Helm charts and manifests specfied as "deployments")
 
 # This is a list of `images` that DevSpace can build for this project
 # We recommend to skip image building during development (devspace dev) as much as possible
@@ -26,25 +26,24 @@ images:
     dockerfile: ./Dockerfile
 
 # This is a list of `deployments` that DevSpace can create for this project
-# deployments:
-#   app:
-#     # This deployment uses `kubectl` but you can also define `helm` deployments
-#     kubectl:
-#       manifests:
-        # - ./resources/nextjs/base/**
-        # - ./resources/infra-secrets/base/**
-        # - ./resources/postgres/base/**
-        # - ./resources/redis/base/**
+deployments:
+  app:
+    # This deployment uses `kubectl` but you can also define `helm` deployments
+    kubectl:
+      manifests:
+        - ./resources/nextjs/base/**
+        - ./resources/postgres/base/**
+        - ./resources/redis/base/**
 
 # This is a list of `dev` containers that are based on the containers created by your deployments
 dev:
   app:
     # Search for the container that runs this image
-    imageSelector: nextjs
+    imageSelector: vpittamp.azurecr.io/chat-frontend
     # Replace the container image with this dev-optimized image (allows to skip image building during development)
     devImage: vpittamp.azurecr.io/kind:2
     
-    # Sync files between the local filesystem and the development container
+    # Simplified sync configuration - sync everything except what we don't need
     sync:
       - path: .:/workspace
         excludePaths:
@@ -65,74 +64,69 @@ dev:
           - kind-pki/
           - resources/ 
           - scripts/
-      - path: ./package.json:/workspace/package.json
-        file: true
-      - path: ./middleware.ts:/workspace/middleware.ts
-        file: true
-      - path: ./instrumentation.client.ts:/workspace/instrumentation.client.ts
-        file: true
-      - path: ./devspace_start.sh:/workspace/devspace_start.sh
-        file: true
-      - path: ./instrumentation.node.ts:/workspace/instrumentation.node.ts
-        file: true
-      - path: ./middleware.ts:/workspace/middleware.ts
-        file: true
-      - path: ./tailwind.config.ts:/workspace/tailwind.config.ts
-        file: true
-      - path: ./components.json:/workspace/components.json
-        file: true
-      - path: ./drizzle.config.ts:/workspace/drizzle.config.ts
-        file: true
-      - path: ./instrumentation.ts:/workspace/instrumentation.ts
-        file: true
-      - path: ./next-env.d.ts:/workspace/next-env.d.ts
-        file: true
-      - path: ./pnpm-lock.yaml:/workspace/pnpm-lock.yaml
-        file: true
-      - path: ./.env:/workspace/.env
-        file: true
-      - path: ./.devspace_start.sh:/workspace/.devspace_start.sh
-        file: true
+          - cdk8s/
+          - dist/
+          - build/
+          - "*.log"
+          - ".DS_Store"
+        # Configure sync behavior
+        initialSync: mirrorLocal
+        waitInitialSync: true
+        # onUpload:
+        #   # Don't restart container - Next.js handles its own hot reloading
+        #   restartContainer: false
 
     # Open a terminal and use the following command to start it
     terminal:
-      command: ./workspace/devspace_start.sh
+      command: /workspace/devspace_start.sh
+      workDir: /workspace
+    
     # Inject a lightweight SSH server into the container (so your IDE can connect to the remote dev env)
     ssh:
       enabled: true
+    
     # Make the following commands from my local machine available inside the dev container
     proxyCommands:
       - command: devspace
       - command: kubectl
       - command: helm
       - gitCredentials: true
+    
     # Forward the following ports to be able access your application via localhost
     ports:
-      - port: "30080:30080"      # <─ replaces the two-field form
-        bindAddress: 0.0.0.0   # keep this if you need it
-      - port: "9229"           # debugger, same local & remote
+      - port: "3000:3000"
+        bindAddress: 0.0.0.0
+      - port: "9229"           # Node.js debugger port
+    
     # Open the following URLs once they return an HTTP status code other than 502 or 503
     open:
-      - url: http://chat.localtest.me:30080
-# vars: 
-#   NEXTAUTH_URL="http://localhost:3000"
-#   NEXT_PUBLIC_BASE_URL="http://localhost:3000"
-#   NEXT_PUBLIC_ASSET_PREFIX="http://localhost:3000"
-#   NEXT_PUBLIC_SITE_URL="http://localhost:3000"
-#   NEXT_PUBLIC_BASE_PATH="http://localhost:3000"
-#   NEXT_PUBLIC_OTEL_TRACES_ENDPOINT="http://localhost:3000/api/telemetry/traces"
-#   NEXT_PUBLIC_OTEL_LOGS_ENDPOINT="http://localhost:3000/api/telemetry/logs"
+      - url: http://localhost:3000
+    
+    # Environment variables for development
+    env:
+      - name: NODE_ENV
+        value: "development"
+      - name: NEXTAUTH_URL
+        value: "http://localhost:3000"
+      - name: NEXT_PUBLIC_BASE_URL
+        value: "http://localhost:3000"
+      - name: NEXT_PUBLIC_BASE_PATH
+        value: ""  # Override the invalid base path from configmap
+      - name: NEXT_PUBLIC_ASSET_PREFIX
+        value: ""  # Clear asset prefix for local dev
+
 # Use the `commands` section to define repeatable dev workflows for this project 
 commands:
   migrate-db:
     command: |-
-      echo 'This is a cross-platform, shared command that can be used to codify any kind of dev task.'
-      echo 'Anyone using this project can invoke it via "devspace run migrate-db"'
-
-# Define dependencies to other projects with a devspace.yaml
-# dependencies:
-#   api:
-#     git: https://...  # Git-based dependencies
-#     tag: v1.0.0
-#   ui:
-#     path: ./ui        # Path-based dependencies (for monorepos)
+      echo 'Running database migrations...'
+      devspace enter -- pnpm run db:migrate
+  
+  logs:
+    command: |-
+      devspace logs -f
+  
+  restart:
+    command: |-
+      devspace enter -- pkill -f "node"
+      echo "Restarted Next.js server"

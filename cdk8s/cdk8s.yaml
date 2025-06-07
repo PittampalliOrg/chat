@@ -1,4 +1,0 @@
-version: 2
-app: node dist/main.js
-outdir: dist
-language: typescript
