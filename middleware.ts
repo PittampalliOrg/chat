@@ -34,10 +34,12 @@ export async function middleware(request: NextRequest) {
   const session = await auth();
 
   if (!session?.user) {
-    const redirectUrl = encodeURIComponent(request.url);
+    // Use the configured base URL instead of request.url to avoid internal pod hostnames
+    const baseUrl = process.env.NEXTAUTH_URL || process.env.AUTH_URL || 'https://chat.localtest.me';
+    const redirectUrl = encodeURIComponent(new URL(pathname, baseUrl).toString());
 
     return NextResponse.redirect(
-      new URL(`/api/auth/guest?redirectUrl=${redirectUrl}`, request.url),
+      new URL(`/api/auth/guest?redirectUrl=${redirectUrl}`, baseUrl),
     );
   }
 
