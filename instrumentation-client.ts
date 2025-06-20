@@ -9,7 +9,7 @@ import { getWebAutoInstrumentations } from '@opentelemetry/auto-instrumentations
 
 // 2️⃣  OTLP exporter (HTTP/proto) – works with your /api/telemetry proxy
 const exporter = new OTLPTraceExporter({
-  url: process.env.NEXT_PUBLIC_OTEL_TRACES_ENDPOINT ?? '/api/traces',
+  url: typeof window !== 'undefined' ? `${window.location.origin}/api/traces` : 'http://localhost:3000/api/traces',
 });
 
 // 3️⃣  Provider with **spanProcessors** array
