@@ -15,16 +15,53 @@ pipelines:
     run: |-
       run_dependencies --all                            # 1. Deploy any projects this project needs (see "dependencies")
       ensure_pull_secrets --all                         # 2. Ensure pull secrets
-      build_images --all -t $(git describe --always)    # 3. Build, tag (git commit hash) and push all images (see "images")
+      VERSION=$(cat .version 2>/dev/null || echo "0.1.0")
+      GIT_TAG_OR_HASH=$(git describe --always)
+      build_images --all -t $VERSION -t $GIT_TAG_OR_HASH -t latest    # 3. Build, tag and push all images
       create_deployments --all                          # 4. Deploy Helm charts and manifests specfied as "deployments"
+
+  build: |-
+    # Get version from .version file or use default
+    VERSION=$(cat .version 2>/dev/null || echo "0.1.0")
+    GIT_TAG_OR_HASH=$(git describe --always)
+    build_images app -t $VERSION -t $GIT_TAG_OR_HASH
+    echo "Built image with tags: $VERSION and $GIT_TAG_OR_HASH"
+  
+  build-patch: |-
+    # Bump patch version and build
+    NEW_VERSION=$(./scripts/bump-version.sh patch)
+    GIT_TAG_OR_HASH=$(git describe --always)
+    build_images app -t $NEW_VERSION -t $GIT_TAG_OR_HASH -t latest
+    echo "Built image with tags: $NEW_VERSION, $GIT_TAG_OR_HASH, and latest"
+  
+  build-minor: |-
+    # Bump minor version and build
+    NEW_VERSION=$(./scripts/bump-version.sh minor)
+    GIT_TAG_OR_HASH=$(git describe --always)
+    build_images app -t $NEW_VERSION -t $GIT_TAG_OR_HASH -t latest
+    echo "Built image with tags: $NEW_VERSION, $GIT_TAG_OR_HASH, and latest"
+  
+  build-major: |-
+    # Bump major version and build
+    NEW_VERSION=$(./scripts/bump-version.sh major)
+    GIT_TAG_OR_HASH=$(git describe --always)
+    build_images app -t $NEW_VERSION -t $GIT_TAG_OR_HASH -t latest
+    echo "Built image with tags: $NEW_VERSION, $GIT_TAG_OR_HASH, and latest"
 
 # This is a list of `images` that DevSpace can build for this project
 # We recommend to skip image building during development (devspace dev) as much as possible
 images:
   app:
     image: vpittamp.azurecr.io/chat-frontend
+    buildKit: {}
     dockerfile: ./Dockerfile
-
+    buildArgs:
+      NEXT_PUBLIC_BASE_PATH: "http://chat.localtest.me"
+      NEXT_PUBLIC_BASE_URL: "http://chat.localtest.me"
+      NEXT_PUBLIC_SITE_URL: "http://chat.localtest.me"
+      POSTGRES_URL: "postgresql://neon:npg@postgres-service.nextjs.svc.cluster.local:5432/neondb?sslmode=require"
+      REDIS_URL: "redis://redis-service:6379"
+      NODE_ENV: "production"
 # This is a list of `deployments` that DevSpace can create for this project
 # deployments:
 #   app:
