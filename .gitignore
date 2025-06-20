@@ -51,3 +51,6 @@ scripts/kind-headlamp.yaml
 -
 scripts/kind-headlamp.yaml
 scripts/kind-headlamp.yaml
+
+# Neon Local
+.neon_local/

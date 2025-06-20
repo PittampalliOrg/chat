@@ -1,3 +1,4 @@
+# 'Dockerfile'
 # syntax=docker.io/docker/dockerfile:1
 
 FROM node:22-alpine AS base
@@ -46,9 +47,11 @@ ARG REDIS_AVAILABLE
 ARG TIMEZONE_DB_API_KEY
 ARG NEON_API_KEY
 ARG NEON_PROJECT_ID
+ARG NEXT_PUBLIC_BASE_PATH
 
 # Set ENV variables for the builder stage
-ENV POSTGRES_URL=$POSTGRES_URL
+# Use a placeholder for POSTGRES_URL during build if not provided
+ENV POSTGRES_URL=${POSTGRES_URL:-postgres://placeholder:placeholder@localhost:5432/placeholder}
 ENV AUTH_SECRET=$AUTH_SECRET
 ENV XAI_API_KEY=$XAI_API_KEY
 ENV BLOB_READ_WRITE_TOKEN=$BLOB_READ_WRITE_TOKEN
@@ -57,6 +60,8 @@ ENV TIMEZONE_DB_API_KEY=$TIMEZONE_DB_API_KEY
 ENV REDIS_AVAILABLE=true
 ENV NEON_API_KEY=$NEON_API_KEY
 ENV NEON_PROJECT_ID=$NEON_PROJECT_ID
+ENV NODE_ENV=production
+ENV NEXT_PUBLIC_BASE_PATH=${NEXT_PUBLIC_BASE_PATH:-http://chat.localtest.me}
 
 RUN echo POSTGRES_URL=$POSTGRES_URL \
   echo AUTH_SECRET=$AUTH_SECRET \
@@ -86,6 +91,7 @@ ARG REDIS_AVAILABLE
 ARG TIMEZONE_DB_API_KEY
 ARG NEON_API_KEY
 ARG NEON_PROJECT_ID
+ARG NEXT_PUBLIC_BASE_PATH
 
 # Set ENV variables for the runner stage
 ENV POSTGRES_URL=$POSTGRES_URL
@@ -97,6 +103,8 @@ ENV TIMEZONE_DB_API_KEY=$TIMEZONE_DB_API_KEY
 ENV REDIS_AVAILABLE=true
 ENV NEON_API_KEY=$NEON_API_KEY
 ENV NEON_PROJECT_ID=$NEON_PROJECT_ID
+ENV NODE_ENV=production
+ENV NEXT_PUBLIC_BASE_PATH=${NEXT_PUBLIC_BASE_PATH:-http://chat.localtest.me}
 
 # Copy deployment ID from builder stage
 COPY --from=builder /app/.env.production.local ./.env.production.local
@@ -116,5 +124,10 @@ USER nextjs
 EXPOSE 3000
 
 ENV PORT=3000
-ENV HOSTNAME="0.0.0.0"
+
+# IMPORTANT: Do not set HOSTNAME here - it should be set by the deployment
+# or use the default Next.js behavior. Setting it to 0.0.0.0 causes
+# redirect URL issues in authentication flows.
+# If you need to bind to all interfaces, use the -H flag in the CMD instead
+
 CMD ["node", "server.js"]
