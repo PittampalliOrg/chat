@@ -2,16 +2,24 @@ import { Toaster } from 'sonner';
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import { ThemeProvider } from '@/components/theme-provider';
+import { trace } from "@opentelemetry/api"
 
 import './globals.css';
 import { SessionProvider } from 'next-auth/react';
 
-export const metadata: Metadata = {
-  metadataBase: new URL('https://chat.vercel.ai'),
-  title: 'Next.js Chatbot Template',
-  description: 'Next.js chatbot template using the AI SDK.',
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const activeSpan = trace.getActiveSpan()
+  const traceparent = activeSpan ? `00-${activeSpan.spanContext().traceId}-${activeSpan.spanContext().spanId}-01` : "" 
 
+  return {
+    metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL || "https://chat.vercel.ai"),
+    title: "Next.js Chatbot Template", 
+    description: "Next.js chatbot template using the AI SDK.", 
+    other: {
+      ...(traceparent && { traceparent }), 
+    },
+  }
+}
 export const viewport = {
   maximumScale: 1, // Disable auto-zoom on mobile Safari
 };
