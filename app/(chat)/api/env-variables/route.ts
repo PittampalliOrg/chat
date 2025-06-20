@@ -14,9 +14,14 @@ export async function GET() {
       key.includes("TOKEN") ||
       (key.includes("KEY") && (key.includes("API") || key.includes("ACCESS")))
 
-    if (key.startsWith("NEXT_INTERNAL_") || isSensitive) {
+    // Skip npm_package_* variables as they clutter the display
+    if (key.startsWith("npm_package_")) {
       return
     }
+
+    // if (key.startsWith("NEXT_INTERNAL_") || isSensitive) {
+    //   return
+    // }
 
     // Separate client and server variables
     if (key.startsWith("NEXT_PUBLIC_")) {
@@ -27,8 +32,23 @@ export async function GET() {
     }
   })
 
+  // Sort the variables alphabetically by key
+  const sortedClientEnvVars = Object.keys(clientEnvVars)
+    .sort()
+    .reduce((acc, key) => {
+      acc[key] = clientEnvVars[key]
+      return acc
+    }, {} as Record<string, string>)
+
+  const sortedServerEnvVars = Object.keys(serverEnvVars)
+    .sort()
+    .reduce((acc, key) => {
+      acc[key] = serverEnvVars[key]
+      return acc
+    }, {} as Record<string, string>)
+
   return NextResponse.json({
-    client: clientEnvVars,
-    server: serverEnvVars,
+    client: sortedClientEnvVars,
+    server: sortedServerEnvVars,
   })
 }

@@ -1,5 +1,7 @@
 import { config } from 'dotenv';
-import postgres from 'postgres';
+import { drizzle } from 'drizzle-orm/neon-http';
+import { neon } from '@neondatabase/serverless';
+import { migrate } from 'drizzle-orm/neon-http/migrator';
 import {
   chat,
   message,
@@ -8,20 +10,20 @@ import {
   vote,
   voteDeprecated,
 } from '../schema';
-import { drizzle } from 'drizzle-orm/postgres-js';
+
 import { inArray } from 'drizzle-orm';
 import { appendResponseMessages, type UIMessage } from 'ai';
 
 config({
-  path: '.env.local',
+  path: '.env',
 });
 
 if (!process.env.POSTGRES_URL) {
   throw new Error('POSTGRES_URL environment variable is not set');
 }
 
-const client = postgres(process.env.POSTGRES_URL);
-const db = drizzle(client);
+const sql = neon(process.env.POSTGRES_URL!);
+const db = drizzle(sql);
 
 const BATCH_SIZE = 100; // Process 100 chats at a time
 const INSERT_BATCH_SIZE = 1000; // Insert 1000 messages at a time

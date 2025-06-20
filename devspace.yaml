@@ -40,9 +40,21 @@ images:
 dev:
   app:
     # Search for the container that runs this image
-    imageSelector: nextjs
+    imageSelector: vpittamp.azurecr.io/chat-frontend
+    # Specify the container name to target
+    container: nextjs
     # Replace the container image with this dev-optimized image (allows to skip image building during development)
     devImage: vpittamp.azurecr.io/kind:2
+    # Set the working directory
+    workingDir: /workspace
+    # Increase memory for development
+    resources:
+      limits:
+        memory: 4Gi
+        cpu: "2"
+      requests:
+        memory: 2Gi
+        cpu: "500m"
     
     # Sync files between the local filesystem and the development container
     sync:
@@ -63,40 +75,15 @@ dev:
           - deployments/
           - iac/
           - kind-pki/
-          - resources/ 
+          - resources/
           - scripts/
-      - path: ./package.json:/workspace/package.json
-        file: true
-      - path: ./middleware.ts:/workspace/middleware.ts
-        file: true
-      - path: ./instrumentation.client.ts:/workspace/instrumentation.client.ts
-        file: true
+          - .env*
       - path: ./devspace_start.sh:/workspace/devspace_start.sh
-        file: true
-      - path: ./instrumentation.node.ts:/workspace/instrumentation.node.ts
-        file: true
-      - path: ./middleware.ts:/workspace/middleware.ts
-        file: true
-      - path: ./tailwind.config.ts:/workspace/tailwind.config.ts
-        file: true
-      - path: ./components.json:/workspace/components.json
-        file: true
-      - path: ./drizzle.config.ts:/workspace/drizzle.config.ts
-        file: true
-      - path: ./instrumentation.ts:/workspace/instrumentation.ts
-        file: true
-      - path: ./next-env.d.ts:/workspace/next-env.d.ts
-        file: true
-      - path: ./pnpm-lock.yaml:/workspace/pnpm-lock.yaml
-        file: true
-      - path: ./.env:/workspace/.env
-        file: true
-      - path: ./.devspace_start.sh:/workspace/.devspace_start.sh
         file: true
 
     # Open a terminal and use the following command to start it
     terminal:
-      command: ./workspace/devspace_start.sh
+      command: bash
     # Inject a lightweight SSH server into the container (so your IDE can connect to the remote dev env)
     ssh:
       enabled: true
@@ -108,20 +95,22 @@ dev:
       - gitCredentials: true
     # Forward the following ports to be able access your application via localhost
     ports:
-      - port: "30080:30080"      # <─ replaces the two-field form
-        bindAddress: 0.0.0.0   # keep this if you need it
-      - port: "9229"           # debugger, same local & remote
+      - port: "3000:3000"
+        bindAddress: 0.0.0.0
+      - port: "9229"           # Node.js debugger port
+    
     # Open the following URLs once they return an HTTP status code other than 502 or 503
     open:
-      - url: http://chat.localtest.me:30080
-# vars: 
-#   NEXTAUTH_URL="http://localhost:3000"
-#   NEXT_PUBLIC_BASE_URL="http://localhost:3000"
-#   NEXT_PUBLIC_ASSET_PREFIX="http://localhost:3000"
-#   NEXT_PUBLIC_SITE_URL="http://localhost:3000"
-#   NEXT_PUBLIC_BASE_PATH="http://localhost:3000"
-#   NEXT_PUBLIC_OTEL_TRACES_ENDPOINT="http://localhost:3000/api/telemetry/traces"
-#   NEXT_PUBLIC_OTEL_LOGS_ENDPOINT="http://localhost:3000/api/telemetry/logs"
+      - url: http://chat.localtest.me:3000
+    
+    # Environment variables for development
+    # DevSpace will inherit all env vars from ConfigMaps and Secrets
+    # Only override what's absolutely necessary for local development
+    env:
+      - name: NEXT_PUBLIC_BASE_PATH
+        value: ""  # Override the invalid base path from configmap
+      - name: HOSTNAME
+        value: "0.0.0.0"  # Ensure app listens on all interfaces
 # Use the `commands` section to define repeatable dev workflows for this project 
 commands:
   migrate-db:
