@@ -66,7 +66,7 @@ export class Dag {
     postgresUrl:   Secret,
     authSecret:    Secret,
     xaiKey:        Secret,
-    // blobToken:     Secret,
+    blobToken:     Secret,
     redisUrl:      Secret,
     tzdbKey:       Secret,
     neonApiKey:    Secret,
@@ -121,7 +121,7 @@ export class Dag {
       .withSecretVariable("POSTGRES_URL",          postgresUrl)
       .withSecretVariable("AUTH_SECRET",           authSecret)
       .withSecretVariable("XAI_API_KEY",           xaiKey)
-      // .withSecretVariable("BLOB_READ_WRITE_TOKEN", blobToken)
+      .withSecretVariable("BLOB_READ_WRITE_TOKEN", blobToken)
       .withSecretVariable("REDIS_URL",             redisUrl)
       .withSecretVariable("TIMEZONE_DB_API_KEY",   tzdbKey)
       .withSecretVariable("NEON_API_KEY",          neonApiKey)
@@ -158,7 +158,7 @@ export class Dag {
       .withSecretVariable("POSTGRES_URL",          postgresUrl)
       .withSecretVariable("AUTH_SECRET",           authSecret)
       .withSecretVariable("XAI_API_KEY",           xaiKey)
-      // .withSecretVariable("BLOB_READ_WRITE_TOKEN", blobToken)
+      .withSecretVariable("BLOB_READ_WRITE_TOKEN", blobToken)
       .withSecretVariable("REDIS_URL",             redisUrl)
       .withSecretVariable("TIMEZONE_DB_API_KEY",   tzdbKey)
       .withSecretVariable("NEON_API_KEY",          neonApiKey)
@@ -189,19 +189,20 @@ export class Dag {
     username: string,
     password: Secret,
     /* ── all the secrets build() already needs ── */
-    postgresUrl:   Secret = dag.setSecret("POSTGRES_URL", "[REDACTED_POSTGRES_URL]
-    authSecret:    Secret = dag.setSecret("AUTH_SECRET", "[REDACTED_AUTH_SECRET]"),
-    xaiKey:        Secret = dag.setSecret("XAI_API_KEY", "[REDACTED_XAI_KEY]"),
-    redisUrl:      Secret = dag.setSecret("REDIS_URL", "redis://redis-service.nextjs:6379"),
-    tzdbKey:       Secret = dag.setSecret("TIMEZONE_DB_API_KEY", "[REDACTED_TZDB_KEY]"),
-    neonApiKey:    Secret = dag.setSecret("NEON_API_KEY", "[REDACTED_NEON_API_KEY]"),
-    neonProjectId: Secret = dag.setSecret("NEON_PROJECT_ID", "[REDACTED_NEON_PROJECT_ID]"),
+    postgresUrl:   Secret,
+    authSecret:    Secret,
+    xaiKey:        Secret,
+    blobToken:     Secret,
+    redisUrl:      Secret,
+    tzdbKey:       Secret,
+    neonApiKey:    Secret,
+    neonProjectId: Secret,
     nextPublicBasePath = "http://chat.localtest.me",
   ): Promise<string> {
 
     // 1. Build the production image using the existing pipeline
     const ctr = await this.build(
-      srcDir, postgresUrl, authSecret, xaiKey, redisUrl,
+      srcDir, postgresUrl, authSecret, xaiKey, blobToken, redisUrl,
       tzdbKey, neonApiKey, neonProjectId, nextPublicBasePath
     )
 

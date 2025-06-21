@@ -77,6 +77,14 @@ jobs:
       env:
         ACR_PASSWORD: ${{ secrets.ACR_PASSWORD }}
         ACR_USERNAME: ${{ secrets.ACR_USERNAME }}
+        POSTGRES_URL: ${{ secrets.POSTGRES_URL }}
+        AUTH_SECRET: ${{ secrets.AUTH_SECRET }}
+        XAI_API_KEY: ${{ secrets.XAI_API_KEY }}
+        BLOB_READ_WRITE_TOKEN: ${{ secrets.BLOB_READ_WRITE_TOKEN }}
+        REDIS_URL: ${{ secrets.REDIS_URL }}
+        TIMEZONE_DB_API_KEY: ${{ secrets.TIMEZONE_DB_API_KEY }}
+        NEON_API_KEY: ${{ secrets.NEON_API_KEY }}
+        NEON_PROJECT_ID: ${{ secrets.NEON_PROJECT_ID }}
       run: |
         cd .dagger
         
@@ -87,7 +95,15 @@ jobs:
           --repo ${{ env.ACR_REPO }} \
           --tag ${{ steps.version.outputs.version }} \
           --username ${{ secrets.ACR_USERNAME }} \
-          --password env:ACR_PASSWORD
+          --password env:ACR_PASSWORD \
+          --postgres-url env:POSTGRES_URL \
+          --auth-secret env:AUTH_SECRET \
+          --[REDACTED_XAI_KEY] env:XAI_API_KEY \
+          --blob-token env:BLOB_READ_WRITE_TOKEN \
+          --redis-url env:REDIS_URL \
+          --tzdb-key env:TIMEZONE_DB_API_KEY \
+          --neon-api-key env:NEON_API_KEY \
+          --neon-project-id env:NEON_PROJECT_ID
 
     - name: Commit version bump
       if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/basics')
