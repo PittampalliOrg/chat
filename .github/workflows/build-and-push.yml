@@ -98,7 +98,7 @@ jobs:
           --password env:ACR_PASSWORD \
           --postgres-url env:POSTGRES_URL \
           --auth-secret env:AUTH_SECRET \
-          --[REDACTED_XAI_KEY] env:XAI_API_KEY \
+          --xai-key env:XAI_API_KEY \
           --blob-token env:BLOB_READ_WRITE_TOKEN \
           --redis-url env:REDIS_URL \
           --tzdb-key env:TIMEZONE_DB_API_KEY \
