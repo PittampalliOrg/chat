@@ -28,6 +28,10 @@ function PureMessages({
   reload,
   isReadonly,
 }: MessagesProps) {
+  console.log('[Messages] Rendering messages');
+  console.log('[Messages] Status:', status);
+  console.log('[Messages] Messages count:', messages.length);
+  console.log('[Messages] Messages:', messages.map(m => ({ id: m.id, role: m.role, content: m.content?.slice(0, 50) + '...' })));
   const {
     containerRef: messagesContainerRef,
     endRef: messagesEndRef,
@@ -68,7 +72,12 @@ function PureMessages({
 
       {status === 'submitted' &&
         messages.length > 0 &&
-        messages[messages.length - 1].role === 'user' && <ThinkingMessage />}
+        messages[messages.length - 1].role === 'user' && (
+          <>
+            {console.log('[Messages] Showing thinking message')}
+            <ThinkingMessage />
+          </>
+        )}
 
       <motion.div
         ref={messagesEndRef}

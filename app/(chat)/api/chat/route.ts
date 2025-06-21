@@ -62,12 +62,16 @@ function getStreamContext() {
 }
 
 export async function POST(request: Request) {
+  console.log('[Chat API] POST request received');
+  
   let requestBody: PostRequestBody;
 
   try {
     const json = await request.json();
+    console.log('[Chat API] Request body:', JSON.stringify(json, null, 2));
     requestBody = postRequestBodySchema.parse(json);
-  } catch (_) {
+  } catch (error) {
+    console.error('[Chat API] Failed to parse request body:', error);
     return new ChatSDKError('bad_request:api').toResponse();
   }
 
@@ -76,8 +80,10 @@ export async function POST(request: Request) {
       requestBody;
 
     const session = await auth();
+    console.log('[Chat API] Session user:', session?.user?.id);
 
     if (!session?.user) {
+      console.log('[Chat API] No session user, returning unauthorized');
       return new ChatSDKError('unauthorized:chat').toResponse();
     }
 
@@ -153,8 +159,13 @@ export async function POST(request: Request) {
 
     const mcpTools = await mcpClient.tools();
 
+    console.log('[Chat API] Creating data stream for chat:', id);
+    console.log('[Chat API] Using model:', selectedChatModel);
+    console.log('[Chat API] Stream ID:', streamId);
+    
     const stream = createDataStream({
       execute: (dataStream) => {
+        console.log('[Chat API] Executing stream text generation');
         const result = streamText({
           model: myProvider.languageModel(selectedChatModel),
           system: systemPrompt({ selectedChatModel, requestHints }),
@@ -174,6 +185,7 @@ export async function POST(request: Request) {
             }),
           },
           onFinish: async ({ response }) => {
+            console.log('[Chat API] Stream finished, response messages count:', response.messages.length);
             mcpClient.close();
 
             if (session.user?.id) {
@@ -206,8 +218,8 @@ export async function POST(request: Request) {
                     },
                   ],
                 });
-              } catch (_) {
-                console.log('Failed to save chat');
+              } catch (error) {
+                console.error('[Chat API] Failed to save chat:', error);
               }
             }
           },
@@ -216,17 +228,20 @@ export async function POST(request: Request) {
             functionId: 'stream-text',
           },
           onError: (error) => {
-            console.error(error);
+            console.error('[Chat API] Stream text error:', error);
           },
         });
 
+        console.log('[Chat API] Consuming stream');
         result.consumeStream();
 
+        console.log('[Chat API] Merging into data stream');
         result.mergeIntoDataStream(dataStream, {
           sendReasoning: true,
         });
       },
-      onError: () => {
+      onError: (error) => {
+        console.error('[Chat API] Data stream error:', error);
         return 'Oops, an error occurred!';
       },
     });
@@ -234,16 +249,24 @@ export async function POST(request: Request) {
     const streamContext = getStreamContext();
 
     if (streamContext) {
+      console.log('[Chat API] Creating resumable stream response');
       return new Response(
         await streamContext.resumableStream(streamId, () => stream),
       );
     } else {
+      console.log('[Chat API] Creating regular stream response');
       return new Response(stream);
     }
   } catch (error) {
+    console.error('[Chat API] Unhandled error:', error);
     if (error instanceof ChatSDKError) {
       return error.toResponse();
     }
+    // Return a generic error response for unexpected errors
+    return new Response(JSON.stringify({ error: 'Internal server error' }), {
+      status: 500,
+      headers: { 'Content-Type': 'application/json' },
+    });
   }
 }
 

@@ -6,6 +6,7 @@ import { trace } from "@opentelemetry/api"
 
 import './globals.css';
 import { SessionProvider } from 'next-auth/react';
+import '@/lib/suppress-extension-errors';
 
 export async function generateMetadata(): Promise<Metadata> {
   const activeSpan = trace.getActiveSpan()

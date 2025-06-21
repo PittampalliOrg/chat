@@ -23,17 +23,34 @@ export async function fetchWithErrorHandlers(
   input: RequestInfo | URL,
   init?: RequestInit,
 ) {
+  console.log('[fetchWithErrorHandlers] Making request to:', input);
+  console.log('[fetchWithErrorHandlers] Request init:', init);
+  
   try {
     const response = await fetch(input, init);
+    console.log('[fetchWithErrorHandlers] Response status:', response.status);
+    console.log('[fetchWithErrorHandlers] Response headers:', Object.fromEntries(response.headers.entries()));
 
     if (!response.ok) {
-      const { code, cause } = await response.json();
-      throw new ChatSDKError(code as ErrorCode, cause);
+      console.error('[fetchWithErrorHandlers] Response not OK');
+      const text = await response.text();
+      console.error('[fetchWithErrorHandlers] Response body:', text);
+      
+      try {
+        const { code, cause } = JSON.parse(text);
+        throw new ChatSDKError(code as ErrorCode, cause);
+      } catch (parseError) {
+        console.error('[fetchWithErrorHandlers] Failed to parse error response:', parseError);
+        throw new Error(`HTTP ${response.status}: ${text}`);
+      }
     }
 
     return response;
   } catch (error: unknown) {
+    console.error('[fetchWithErrorHandlers] Caught error:', error);
+    
     if (typeof navigator !== 'undefined' && !navigator.onLine) {
+      console.error('[fetchWithErrorHandlers] User is offline');
       throw new ChatSDKError('offline:chat');
     }
 

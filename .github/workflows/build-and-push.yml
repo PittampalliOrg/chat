@@ -1,0 +1,111 @@
+name: Build and Push to ACR
+
+on:
+  push:
+    branches:
+      - main
+      - basics
+  pull_request:
+    branches:
+      - main
+      - basics
+  workflow_dispatch:
+    inputs:
+      version_bump:
+        description: 'Version bump type (major, minor, patch)'
+        required: false
+        default: 'patch'
+        type: choice
+        options:
+          - major
+          - minor
+          - patch
+
+env:
+  ACR_REPO: chat-frontend
+  DAGGER_VERSION: 0.18.10
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: Setup Dagger
+      run: |
+        curl -fsSL https://dl.dagger.io/dagger/install.sh | sh
+        sudo mv bin/dagger /usr/local/bin
+        dagger version
+
+    - name: Determine version bump type
+      id: bump_type
+      run: |
+        if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
+          echo "type=${{ github.event.inputs.version_bump }}" >> $GITHUB_OUTPUT
+        else
+          echo "type=patch" >> $GITHUB_OUTPUT
+        fi
+
+    - name: Bump version
+      id: version
+      run: |
+        # Make bump-version.sh executable
+        chmod +x ./scripts/bump-version.sh
+        
+        # Bump the version
+        NEW_VERSION=$(./scripts/bump-version.sh ${{ steps.bump_type.outputs.type }})
+        echo "version=${NEW_VERSION}" >> $GITHUB_OUTPUT
+        echo "New version: ${NEW_VERSION}"
+
+    - name: Cache Dagger engine
+      uses: actions/cache@v4
+      with:
+        path: ~/.local/share/dagger
+        key: ${{ runner.os }}-dagger-${{ env.DAGGER_VERSION }}
+        restore-keys: |
+          ${{ runner.os }}-dagger-
+
+    - name: Build and push to ACR
+      env:
+        ACR_PASSWORD: ${{ secrets.ACR_PASSWORD }}
+        ACR_USERNAME: ${{ secrets.ACR_USERNAME }}
+      run: |
+        cd .dagger
+        
+        # Run the Dagger pipeline
+        dagger call push-to-acr \
+          --src-dir .. \
+          --acr-name ${{ secrets.ACR_USERNAME }} \
+          --repo ${{ env.ACR_REPO }} \
+          --tag ${{ steps.version.outputs.version }} \
+          --username ${{ secrets.ACR_USERNAME }} \
+          --password env:ACR_PASSWORD
+
+    - name: Commit version bump
+      if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/basics')
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add .version
+        git commit -m "chore: bump version to ${{ steps.version.outputs.version }} [skip ci]"
+        git push
+
+    - name: Create Release Tag
+      if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/basics')
+      run: |
+        git tag -a "v${{ steps.version.outputs.version }}" -m "Release version ${{ steps.version.outputs.version }}"
+        git push origin "v${{ steps.version.outputs.version }}"
+
+    - name: Output summary
+      run: |
+        echo "## Build Summary" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "- **Image**: ${{ secrets.ACR_USERNAME }}.azurecr.io/${{ env.ACR_REPO }}:${{ steps.version.outputs.version }}" >> $GITHUB_STEP_SUMMARY
+        echo "- **Version**: ${{ steps.version.outputs.version }}" >> $GITHUB_STEP_SUMMARY
+        echo "- **Trigger**: ${{ github.event_name }}" >> $GITHUB_STEP_SUMMARY
+        echo "- **Branch**: ${{ github.ref_name }}" >> $GITHUB_STEP_SUMMARY
+        echo "- **Commit**: ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY

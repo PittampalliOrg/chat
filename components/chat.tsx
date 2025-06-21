@@ -45,6 +45,8 @@ export function Chat({
     initialVisibilityType,
   });
 
+  console.log('[Chat Component] Initializing useChat hook for chat:', id);
+  
   const {
     messages,
     setMessages,
@@ -57,27 +59,54 @@ export function Chat({
     reload,
     experimental_resume,
     data,
+    error,
   } = useChat({
     id,
     initialMessages,
     experimental_throttle: 100,
     sendExtraMessageFields: true,
     generateId: generateUUID,
-    fetch: fetchWithErrorHandlers,
-    experimental_prepareRequestBody: (body) => ({
-      id,
-      message: body.messages.at(-1),
-      selectedChatModel: initialChatModel,
-      selectedVisibilityType: visibilityType,
-    }),
-    onFinish: () => {
+    onResponse: (response) => {
+      console.log('[Chat Component] Got onResponse callback');
+      console.log('[Chat Component] Response status:', response.status);
+      console.log('[Chat Component] Response headers:', Object.fromEntries(response.headers.entries()));
+    },
+    fetch: async (input, init) => {
+      console.log('[Chat Component] Making chat request');
+      try {
+        const response = await fetchWithErrorHandlers(input, init);
+        console.log('[Chat Component] Got response:', response);
+        return response;
+      } catch (error) {
+        console.error('[Chat Component] Fetch error:', error);
+        throw error;
+      }
+    },
+    experimental_prepareRequestBody: (body) => {
+      const requestBody = {
+        id,
+        message: body.messages.at(-1),
+        selectedChatModel: initialChatModel,
+        selectedVisibilityType: visibilityType,
+      };
+      console.log('[Chat Component] Preparing request body:', requestBody);
+      return requestBody;
+    },
+    onFinish: (message) => {
+      console.log('[Chat Component] Chat finished:', message);
       mutate(unstable_serialize(getChatHistoryPaginationKey));
     },
     onError: (error) => {
+      console.error('[Chat Component] Chat error:', error);
       if (error instanceof ChatSDKError) {
         toast({
           type: 'error',
           description: error.message,
+        });
+      } else {
+        toast({
+          type: 'error',
+          description: 'An unexpected error occurred. Please try again.',
         });
       }
     },
@@ -108,6 +137,16 @@ export function Chat({
   const [attachments, setAttachments] = useState<Array<Attachment>>([]);
   const isArtifactVisible = useArtifactSelector((state) => state.isVisible);
 
+  // Log current chat state
+  useEffect(() => {
+    console.log('[Chat Component] Status:', status);
+    console.log('[Chat Component] Messages count:', messages.length);
+    console.log('[Chat Component] Data:', data);
+    if (error) {
+      console.error('[Chat Component] Error state:', error);
+    }
+  }, [status, messages, data, error]);
+
   useAutoResume({
     autoResume,
     initialMessages,
@@ -115,6 +154,11 @@ export function Chat({
     data,
     setMessages,
   });
+
+  // Add error display
+  if (error) {
+    console.error('[Chat Component] Rendering error state:', error);
+  }
 
   return (
     <>
@@ -126,6 +170,12 @@ export function Chat({
           isReadonly={isReadonly}
           session={session}
         />
+        
+        {error && (
+          <div className="mx-auto px-4 py-2 bg-destructive/10 text-destructive rounded-md max-w-3xl">
+            <p className="text-sm font-medium">Error: {error.message || 'Failed to send message'}</p>
+          </div>
+        )}
 
         <Messages
           chatId={id}

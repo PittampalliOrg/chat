@@ -1,15 +1,8 @@
 {
-  "name": "workspace",
-  "engineVersion": "v0.18.8",
+  "name": "dag",
+  "engineVersion": "v0.18.10",
   "sdk": {
     "source": "typescript"
   },
-  "dependencies": [
-    {
-      "name": "azure-key-vault",
-      "source": "github.com/mustafayildirim/daggerverse/azure-key-vault@b3d60db7d217146341ef3f8fb9a509897f686b10",
-      "pin": "b3d60db7d217146341ef3f8fb9a509897f686b10"
-    }
-  ],
   "source": ".dagger"
 }
