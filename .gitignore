@@ -54,3 +54,4 @@ scripts/kind-headlamp.yaml
 
 # Neon Local
 .neon_local/
+.git.backup/
