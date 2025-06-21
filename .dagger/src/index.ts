@@ -3,11 +3,6 @@ import {
   Secret, Directory, Container,
 } from "@dagger.io/dagger";
 
-/* ---------------------------------------------------------------- *  
- * Helpers                                                          *
- * ---------------------------------------------------------------- */
-
-/** Resolve which package‑manager to use by testing for lock‑files. */
 async function choosePM(src: Directory) {
   // Helper to probe for a file without File.exists()
   const has = async (p: string): Promise<boolean> => {
