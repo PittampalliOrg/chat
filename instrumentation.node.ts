@@ -18,11 +18,7 @@ provider.register()
 
 registerInstrumentations({
   instrumentations: [
-    getNodeAutoInstrumentations({
-      "@opentelemetry/instrumentation-winston": {
-        enabled: false,
-      },
-    }),
+    getNodeAutoInstrumentations(),
   ],
 })
 
