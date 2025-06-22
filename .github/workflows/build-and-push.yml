@@ -85,6 +85,9 @@ jobs:
         TIMEZONE_DB_API_KEY: ${{ secrets.TIMEZONE_DB_API_KEY }}
         NEON_API_KEY: ${{ secrets.NEON_API_KEY }}
         NEON_PROJECT_ID: ${{ secrets.NEON_PROJECT_ID }}
+        # Dagger Cloud token for pipeline traces and visualization
+        # Traces will be available at https://dagger.cloud
+        DAGGER_CLOUD_TOKEN: ${{ secrets.DAGGER_CLOUD_TOKEN }}
       run: |
         cd .dagger
         
