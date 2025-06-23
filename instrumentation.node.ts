@@ -12,7 +12,7 @@ const exporter = new OTLPTraceExporter({
 const spanProcessorInstance: SpanProcessor = new BatchSpanProcessor(exporter)
 
 const provider = new NodeTracerProvider({
-  spanProcessors: [spanProcessorInstance], // This should now work
+  spanProcessors: [spanProcessorInstance], 
 })
 provider.register()
 
