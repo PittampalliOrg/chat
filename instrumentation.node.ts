@@ -26,4 +26,4 @@ registerInstrumentations({
   ],
 })
 
-console.log("Node.js OpenTelemetry instrumentation initialized.")
+console.log("Node.js opentelemetry instrumentation initialized.")
