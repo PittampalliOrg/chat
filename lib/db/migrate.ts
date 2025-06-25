@@ -1,6 +1,9 @@
 import { drizzle } from 'drizzle-orm/neon-http';
 import { neon } from '@neondatabase/serverless';
 import { migrate } from 'drizzle-orm/neon-http/migrator';
+import { config } from 'dotenv';
+
+config({ path: '.env' });
 
 const sql = neon(process.env.POSTGRES_URL!);
 const db = drizzle(sql);
