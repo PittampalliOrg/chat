@@ -67,6 +67,18 @@ jobs:
         echo "version=${NEW_VERSION}" >> $GITHUB_OUTPUT
         echo "New version: ${NEW_VERSION}"
 
+    - name: Gather build metadata
+      id: metadata
+      run: |
+        echo "commit_sha=${{ github.sha }}" >> $GITHUB_OUTPUT
+        echo "commit_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+        echo "branch=${{ github.ref_name }}" >> $GITHUB_OUTPUT
+        echo "build_time=$(date -u +"%Y-%m-%dT%H:%M:%SZ")" >> $GITHUB_OUTPUT
+        echo "commit_message=$(git log -1 --pretty=%B | head -n 1 | tr -d '\n' | cut -c1-100)" >> $GITHUB_OUTPUT
+        echo "commit_author=$(git log -1 --pretty=%an)" >> $GITHUB_OUTPUT
+        echo "build_number=${{ github.run_number }}" >> $GITHUB_OUTPUT
+        echo "repository=${{ github.repository }}" >> $GITHUB_OUTPUT
+
     - name: Cache Dagger engine
       uses: actions/cache@v4
       with:
@@ -108,7 +120,16 @@ jobs:
           --redis-url env:REDIS_URL \
           --tzdb-key env:TIMEZONE_DB_API_KEY \
           --neon-api-key env:NEON_API_KEY \
-          --neon-project-id env:NEON_PROJECT_ID
+          --neon-project-id env:NEON_PROJECT_ID \
+          --git-commit-sha "${{ steps.metadata.outputs.commit_sha }}" \
+          --git-commit-short "${{ steps.metadata.outputs.commit_short }}" \
+          --git-branch "${{ steps.metadata.outputs.branch }}" \
+          --build-time "${{ steps.metadata.outputs.build_time }}" \
+          --build-version "${{ steps.version.outputs.version }}" \
+          --git-commit-message "${{ steps.metadata.outputs.commit_message }}" \
+          --git-commit-author "${{ steps.metadata.outputs.commit_author }}" \
+          --build-number "${{ steps.metadata.outputs.build_number }}" \
+          --git-repository "${{ steps.metadata.outputs.repository }}"
 
     - name: Commit version bump
       if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/basics')
@@ -134,3 +155,13 @@ jobs:
         echo "- **Trigger**: ${{ github.event_name }}" >> $GITHUB_STEP_SUMMARY
         echo "- **Branch**: ${{ github.ref_name }}" >> $GITHUB_STEP_SUMMARY
         echo "- **Commit**: ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
+        echo "- **Build Time**: ${{ steps.metadata.outputs.build_time }}" >> $GITHUB_STEP_SUMMARY
+        echo "- **Build Number**: #${{ steps.metadata.outputs.build_number }}" >> $GITHUB_STEP_SUMMARY
+        echo "- **Author**: ${{ steps.metadata.outputs.commit_author }}" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "### Build Metadata (embedded in image)" >> $GITHUB_STEP_SUMMARY
+        echo "These environment variables are available in the Next.js app:" >> $GITHUB_STEP_SUMMARY
+        echo "- \`NEXT_PUBLIC_GIT_COMMIT\`: ${{ steps.metadata.outputs.commit_sha }}" >> $GITHUB_STEP_SUMMARY
+        echo "- \`NEXT_PUBLIC_GIT_BRANCH\`: ${{ steps.metadata.outputs.branch }}" >> $GITHUB_STEP_SUMMARY
+        echo "- \`NEXT_PUBLIC_BUILD_VERSION\`: ${{ steps.version.outputs.version }}" >> $GITHUB_STEP_SUMMARY
+        echo "- \`NEXT_PUBLIC_BUILD_TIME\`: ${{ steps.metadata.outputs.build_time }}" >> $GITHUB_STEP_SUMMARY

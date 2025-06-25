@@ -67,6 +67,16 @@ export class Dag {
     neonApiKey:    Secret,
     neonProjectId: Secret,
     nextPublicBasePath = "http://chat.localtest.me",
+    // Build metadata parameters
+    gitCommitSha = "",
+    gitCommitShort = "",
+    gitBranch = "",
+    buildTime = "",
+    buildVersion = "",
+    gitCommitMessage = "",
+    gitCommitAuthor = "",
+    buildNumber = "",
+    gitRepository = "",
   ): Promise<Container> {
 
     /* Detect PM & create cache volume ----------------------------------- */
@@ -93,13 +103,18 @@ export class Dag {
       .withDirectory("/app", srcDir, { exclude: ["**/node_modules/**", "**/.next/**"] })
       .withExec([
         "sh", "-c",
-        `if [ -d ".git" ]; then
-           echo "NEXT_PUBLIC_DEPLOYMENT_ID=$(git rev-parse --short HEAD)" > .env.production.local &&
-           echo "DEPLOYMENT_ID=$(git rev-parse --short HEAD)"            >> .env.production.local ;
-         else
-           echo "NEXT_PUBLIC_DEPLOYMENT_ID=unknown" > .env.production.local &&
-           echo "DEPLOYMENT_ID=unknown"            >> .env.production.local ;
-         fi`,
+        `# Create .env.production.local with build metadata
+         echo "NEXT_PUBLIC_DEPLOYMENT_ID=${gitCommitShort || 'unknown'}" > .env.production.local &&
+         echo "DEPLOYMENT_ID=${gitCommitShort || 'unknown'}" >> .env.production.local &&
+         echo "NEXT_PUBLIC_GIT_COMMIT=${gitCommitSha}" >> .env.production.local &&
+         echo "NEXT_PUBLIC_GIT_COMMIT_SHORT=${gitCommitShort}" >> .env.production.local &&
+         echo "NEXT_PUBLIC_GIT_BRANCH=${gitBranch}" >> .env.production.local &&
+         echo "NEXT_PUBLIC_BUILD_TIME=${buildTime}" >> .env.production.local &&
+         echo "NEXT_PUBLIC_BUILD_VERSION=${buildVersion}" >> .env.production.local &&
+         echo "NEXT_PUBLIC_GIT_COMMIT_MESSAGE=${gitCommitMessage}" >> .env.production.local &&
+         echo "NEXT_PUBLIC_GIT_COMMIT_AUTHOR=${gitCommitAuthor}" >> .env.production.local &&
+         echo "NEXT_PUBLIC_BUILD_NUMBER=${buildNumber}" >> .env.production.local &&
+         echo "NEXT_PUBLIC_GIT_REPOSITORY=${gitRepository}" >> .env.production.local`,
       ])
       // Fix OpenTelemetry by finding and patching the problematic file
       .withExec(["sh", "-c", `
@@ -127,6 +142,16 @@ export class Dag {
       .withEnvVariable("NEXT_PUBLIC_SITE_URL", nextPublicBasePath)
       .withEnvVariable("REDIS_AVAILABLE", "true")
       .withEnvVariable("OTEL_SDK_DISABLED", "true")
+      // Build metadata as environment variables
+      .withEnvVariable("NEXT_PUBLIC_GIT_COMMIT", gitCommitSha)
+      .withEnvVariable("NEXT_PUBLIC_GIT_COMMIT_SHORT", gitCommitShort)
+      .withEnvVariable("NEXT_PUBLIC_GIT_BRANCH", gitBranch)
+      .withEnvVariable("NEXT_PUBLIC_BUILD_TIME", buildTime)
+      .withEnvVariable("NEXT_PUBLIC_BUILD_VERSION", buildVersion)
+      .withEnvVariable("NEXT_PUBLIC_GIT_COMMIT_MESSAGE", gitCommitMessage)
+      .withEnvVariable("NEXT_PUBLIC_GIT_COMMIT_AUTHOR", gitCommitAuthor)
+      .withEnvVariable("NEXT_PUBLIC_BUILD_NUMBER", buildNumber)
+      .withEnvVariable("NEXT_PUBLIC_GIT_REPOSITORY", gitRepository)
       // Clear NODE_OPTIONS to prevent OpenTelemetry auto-instrumentation during build
       .withEnvVariable("NODE_OPTIONS", "")
       .withExec(pm.build);
@@ -193,12 +218,24 @@ export class Dag {
     neonApiKey:    Secret,
     neonProjectId: Secret,
     nextPublicBasePath = "http://chat.localtest.me",
+    // Build metadata parameters
+    gitCommitSha = "",
+    gitCommitShort = "",
+    gitBranch = "",
+    buildTime = "",
+    buildVersion = "",
+    gitCommitMessage = "",
+    gitCommitAuthor = "",
+    buildNumber = "",
+    gitRepository = "",
   ): Promise<string> {
 
     // 1. Build the production image using the existing pipeline
     const ctr = await this.build(
       srcDir, postgresUrl, authSecret, xaiKey, blobToken, redisUrl,
-      tzdbKey, neonApiKey, neonProjectId, nextPublicBasePath
+      tzdbKey, neonApiKey, neonProjectId, nextPublicBasePath,
+      gitCommitSha, gitCommitShort, gitBranch, buildTime, buildVersion,
+      gitCommitMessage, gitCommitAuthor, buildNumber, gitRepository
     )
 
     // 2. Publish it to ACR
