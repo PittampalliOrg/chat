@@ -1,0 +1,187 @@
+version: v2beta1
+name: chat
+
+# This is a list of `pipelines` that DevSpace can execute (you can define your own)
+pipelines:
+  # This is the pipeline for the main command: `devspace dev` (or `devspace run-pipeline dev`)
+  dev:
+    run: |-
+      run_dependencies --all       # 1. Deploy any dependencies
+      ensure_pull_secrets --all    # 2. Ensure pull secrets
+      wait_pod --label-selector app=nextjs --timeout 300  # 3. Wait for ArgoCD to deploy the app
+      start_dev app                # 4. Start dev mode "app" (see "dev" section)
+
+images:
+  app:
+    image: vpittamp.azurecr.io/chat-frontend:0.3.41
+    buildKit: {}
+    dockerfile: ./Dockerfile
+    buildArgs:
+      NEXT_PUBLIC_BASE_PATH: ""
+      NEXT_PUBLIC_BASE_URL: "http://chat.localtest.me"
+      NEXT_PUBLIC_SITE_URL: "http://chat.localtest.me"
+      POSTGRES_URL: "postgresql://neondb_owner:npg_NPr0x7XCTbSI@ep-wispy-math-a8k8xapb-pooler.eastus2.azure.neon.tech/neondb?sslmode=require"
+      REDIS_URL: "redis://redis-service:6379"
+      NODE_ENV: "production"
+# Deployments are managed by ArgoCD from the dist/ directory
+# DevSpace will attach to existing pods created by ArgoCD
+
+# This is a list of `dev` containers that are based on the containers created by your deployments
+dev:
+  app:
+    # Select container from ArgoCD-managed deployment
+    namespace: nextjs
+    labelSelector:
+      app: nextjs
+    container: nextjs
+    # Replace the container image with this dev-optimized image (allows to skip image building during development)
+    devImage: ghcr.io/loft-sh/devspace-containers/typescript:20-alpine
+    # Set the working directory
+    workingDir: /home/nextjs/app
+    # Override command to prevent production server from running
+    command: ["sh", "-c", "sleep infinity"]
+    # Increase memory for development
+    resources:
+      limits:
+        memory: 4Gi
+        cpu: "2"
+      requests:
+        memory: 2Gi
+        cpu: "500m"
+    
+    # Sync files between the local filesystem and the development container
+    sync:
+      - path: .:/home/nextjs/app
+        excludePaths:
+          - .devcontainer/
+          - .devbox/
+          - .devspace/
+          - .git/
+          - .vscode/
+          - node_modules/
+          - .pnpm-store/
+          - .next/
+          - .github/
+          - .postgresql/
+          - apps/
+          - bootstrap/
+          - dapr/
+          - deployments/
+          - iac/
+          - kind-pki/
+          - resources/
+          - scripts/
+          - .env*
+
+    # Open a terminal and use the following command to start it
+    terminal:
+      command: ./devspace_start.sh
+      workDir: /home/nextjs/app
+      disableScreen: true
+    
+    # Inject a lightweight SSH server into the container (so your IDE can connect to the remote dev env)
+    ssh:
+      enabled: true
+
+    # Make the following commands from my local machine available inside the dev container
+    # Disabled proxy commands due to permission issues
+    # proxyCommands:
+    #   - gitCredentials: true
+    #   - command: devspace
+    #   - command: kubectl
+    # Forward the following ports to be able access your application via localhost
+    ports:
+      - port: "3000"
+        bindAddress: 0.0.0.0
+      - port: "9229" # Node.js debugger port
+
+    # Open the following URLs once they return an HTTP status code other than 502 or 503
+    open:
+      - url: http://chat.localtest.me
+
+    # Environment variables for development
+    # DevSpace will inherit all env vars from ConfigMaps and Secrets
+    # Only override what's absolutely necessary for local development
+    env:
+      - name: NEXT_PUBLIC_BASE_PATH
+        value: ""
+      - name: NEXT_PUBLIC_BASE_URL
+        value: "http://chat.localtest.me"
+      - name: NEXT_PUBLIC_SITE_URL
+        value: "http://chat.localtest.me"
+      - name: NODE_ENV
+        value: "development"
+      - name: HOSTNAME
+        value: "0.0.0.0" # Ensure app listens on all interfaces
+      # Auth configuration
+      - name: AUTH_SECRET
+        value: "n23o8+iHZsLpp84Zz+9bQJUINHvv7RmCqAAwovgjb6c="
+      - name: AUTH_TRUST_HOST
+        value: "true"
+      - name: AUTH_URL
+        value: "http://chat.localtest.me"
+      - name: NEXTAUTH_URL
+        value: "http://chat.localtest.me"
+      - name: NEXTAUTH_SECRET
+        value: "n23o8+iHZsLpp84Zz+9bQJUINHvv7RmCqAAwovgjb6c="
+      # Database configuration
+      - name: POSTGRES_URL
+        value: "postgresql://neondb_owner:npg_NPr0x7XCTbSI@ep-wispy-math-a8k8xapb-pooler.eastus2.azure.neon.tech/neondb?sslmode=require"
+      # Redis configuration
+      - name: REDIS_URL
+        value: "redis://redis-service.nextjs.svc.cluster.local:6379"
+      - name: REDIS_AVAILABLE
+        value: "true"
+      # Disable OpenTelemetry to reduce warnings
+      - name: OTEL_SDK_DISABLED
+        value: "true"
+      # API Keys (you may want to use secrets for these in production)
+      - name: BLOB_READ_WRITE_TOKEN
+        value: "****"
+# Use the `commands` section to define repeatable dev workflows for this project
+commands:
+  # Check ArgoCD sync status
+  argocd-status:
+    command: |-
+      echo "Checking ArgoCD application status..."
+      kubectl get app cdk8s-applications -n argocd -o jsonpath='{.status.sync.status}'
+      echo ""
+      kubectl get app cdk8s-applications -n argocd -o jsonpath='{.status.health.status}'
+      echo ""
+  
+  # Refresh ArgoCD application (useful after making changes to dist/)
+  argocd-refresh:
+    command: |-
+      echo "Refreshing ArgoCD application..."
+      kubectl patch app cdk8s-applications -n argocd --type merge -p '{"metadata":{"annotations":{"argocd.argoproj.io/refresh":"hard"}}}'
+  
+  # Disable ArgoCD auto-sync during development
+  argocd-disable-sync:
+    command: |-
+      echo "Disabling ArgoCD auto-sync for development..."
+      kubectl patch app cdk8s-applications -n argocd --type merge -p '{"spec":{"syncPolicy":{"automated":null}}}'
+  
+  # Re-enable ArgoCD auto-sync after development
+  argocd-enable-sync:
+    command: |-
+      echo "Re-enabling ArgoCD auto-sync..."
+      kubectl patch app cdk8s-applications -n argocd --type merge -p '{"spec":{"syncPolicy":{"automated":{"prune":true,"selfHeal":true,"allowEmpty":true}}}}'
+  
+  # Sync local changes to ArgoCD
+  sync-to-argocd:
+    command: |-
+      echo "This would typically:"
+      echo "1. Run CDK8s synthesis"
+      echo "2. Copy files to dist/"
+      echo "3. Commit and push to git"
+      echo "4. Trigger ArgoCD sync"
+      echo ""
+      echo "Since you're using GitHub Actions for synthesis, commit your changes and push to trigger the workflow."
+
+# Define dependencies to other projects with a devspace.yaml
+# dependencies:
+#   api:
+#     git: https://...  # Git-based dependencies
+#     tag: v1.0.0
+#   ui:
+#     path: ./ui        # Path-based dependencies (for monorepos)

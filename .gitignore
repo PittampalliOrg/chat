@@ -4,6 +4,7 @@
 node_modules
 .pnp
 .pnp.js
+.pnpm-store/
 
 # testing
 coverage
@@ -41,3 +42,10 @@ yarn-error.log*
 /playwright-report/
 /blob-report/
 /playwright/*
+package-lock.json
+.devcontainer/azure.sp.env
+.devcontainer/devcontainer.env
+.devcontainer/wi.env
+.gitignore
+
+*.log
