@@ -42,7 +42,7 @@ async function initializeProvider() {
     propagator: new B3Propagator(),
   });
 
-  // 5️⃣  Auto-instrument browser APIs
+  // 5️⃣  Auto-instrument browser APIs 
   registerInstrumentations({
     instrumentations: [
       getWebAutoInstrumentations({
