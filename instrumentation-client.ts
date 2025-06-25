@@ -39,7 +39,7 @@ async function initializeProvider() {
   // 4️⃣  Register & wire context/propagation
   provider.register({
     contextManager: new ZoneContextManager(),
-    propagator: new B3Propagator(),
+    propagator: new B3Propagator(), 
   });
 
   // 5️⃣  Auto-instrument browser APIs 
