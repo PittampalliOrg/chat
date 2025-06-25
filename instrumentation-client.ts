@@ -6,30 +6,53 @@ import { ZoneContextManager }    from '@opentelemetry/context-zone';
 import { B3Propagator }          from '@opentelemetry/propagator-b3';
 import { registerInstrumentations } from '@opentelemetry/instrumentation';
 import { getWebAutoInstrumentations } from '@opentelemetry/auto-instrumentations-web';
+import { Resource } from '@opentelemetry/resources';
+import { browserDetector } from '@opentelemetry/resources';
 
 // 2️⃣  OTLP exporter (HTTP/proto) – works with your /api/telemetry proxy
 const exporter = new OTLPTraceExporter({
   url: typeof window !== 'undefined' ? `${window.location.origin}/api/traces` : 'http://localhost:3000/api/traces',
 });
 
-// 3️⃣  Provider with **spanProcessors** array
-const provider = new WebTracerProvider({
-  spanProcessors: [new BatchSpanProcessor(exporter)],
-});
+// 3️⃣  Initialize provider with resource configuration
+async function initializeProvider() {
+  // Detect browser resources
+  const browserResource = await browserDetector.detect();
+  
+  // Merge with custom resource attributes
+  const resource = Resource.default()
+    .merge(browserResource)
+    .merge(
+      new Resource({
+        'service.name': 'nextjs-browser',
+        'service.version': '1.0.0',
+        'deployment.environment': 'production',
+        'telemetry.sdk.language': 'webjs',
+      })
+    );
 
-// 4️⃣  Register & wire context/propagation
-provider.register({
-  contextManager: new ZoneContextManager(),
-  propagator: new B3Propagator(),
-});
+  const provider = new WebTracerProvider({
+    resource,
+    spanProcessors: [new BatchSpanProcessor(exporter)],
+  });
 
-// 5️⃣  Auto-instrument browser APIs
-registerInstrumentations({
-  instrumentations: [
-    getWebAutoInstrumentations({
-      '@opentelemetry/instrumentation-xml-http-request': { clearTimingResources: true },
-    }),
-  ],
-});
+  // 4️⃣  Register & wire context/propagation
+  provider.register({
+    contextManager: new ZoneContextManager(),
+    propagator: new B3Propagator(),
+  });
 
-console.log('OpenTelemetry client SDK initialised (2.x)');
+  // 5️⃣  Auto-instrument browser APIs
+  registerInstrumentations({
+    instrumentations: [
+      getWebAutoInstrumentations({
+        '@opentelemetry/instrumentation-xml-http-request': { clearTimingResources: true },
+      }),
+    ],
+  });
+
+  console.log('OpenTelemetry client SDK initialised with resource:', resource.attributes);
+}
+
+// Initialize the provider
+initializeProvider();
