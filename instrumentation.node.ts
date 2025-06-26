@@ -14,11 +14,8 @@ const spanProcessorInstance: SpanProcessor = new BatchSpanProcessor(exporter)
 
 // Detect resources from environment
 const detectResources = async () => {
-  // Start with empty resource
-  let detectedResource = Resource.empty();
-  
-  // Detect environment variables (including OTEL_RESOURCE_ATTRIBUTES)
-  detectedResource = detectedResource.merge(await envDetector.detect());
+  // Start with default resource
+  let detectedResource = Resource.default();
   
   // Detect process information
   detectedResource = detectedResource.merge(await processDetector.detect());
@@ -29,16 +26,22 @@ const detectResources = async () => {
   // Detect OS information
   detectedResource = detectedResource.merge(await osDetector.detect());
   
-  // Add custom service attributes
-  detectedResource = detectedResource.merge(
-    new Resource({
-      'service.name': process.env.OTEL_SERVICE_NAME || 'nextjs',
-      'service.version': process.env.npm_package_version || '1.0.0',
-      'deployment.environment': process.env.NODE_ENV || 'development',
-      'k8s.namespace.name': process.env.K8S_NAMESPACE || 'nextjs',
-      'k8s.pod.name': process.env.HOSTNAME || 'unknown',
-    })
-  );
+  // Detect environment variables (including OTEL_RESOURCE_ATTRIBUTES)
+  // This is done after other detectors to allow env vars to override
+  detectedResource = detectedResource.merge(await envDetector.detect());
+  
+  // Add custom service attributes LAST to ensure they take precedence
+  // These will override any service.name from OTEL_RESOURCE_ATTRIBUTES
+  const customResource = new Resource({
+    'service.name': process.env.OTEL_SERVICE_NAME || 'nextjs',
+    'service.version': process.env.npm_package_version || '1.0.0',
+    'deployment.environment': process.env.NODE_ENV || 'development',
+    'k8s.namespace.name': process.env.K8S_NAMESPACE || 'nextjs',
+    'k8s.pod.name': process.env.HOSTNAME || 'unknown',
+  });
+  
+  // Merge custom resource last to ensure our service.name takes precedence
+  detectedResource = detectedResource.merge(customResource);
   
   return detectedResource;
 }
