@@ -5,7 +5,11 @@ import { config } from 'dotenv';
 
 config({ path: '.env' });
 
-const sql = neon(process.env.POSTGRES_URL!);
+const postgresUrl = process.env.POSTGRES_URL;
+if (!postgresUrl) {
+  throw new Error('POSTGRES_URL environment variable is not set');
+}
+const sql = neon(postgresUrl);
 const db = drizzle(sql);
 
 const main = async () => {

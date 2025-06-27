@@ -133,7 +133,7 @@ export function EnvVariablesDisplay() {
         {entries.map(([key, value]) => (
           <div
             key={key}
-            className="group flex items-start gap-2 py-2 px-2 -mx-2 rounded hover:bg-muted/50 transition-colors"
+            className="group flex items-start gap-2 p-2 -mx-2 rounded hover:bg-muted/50 transition-colors"
           >
             <div className="flex-1 min-w-0">
               <div className="flex items-start gap-2">
@@ -159,13 +159,13 @@ export function EnvVariablesDisplay() {
                   <Button
                     variant="ghost"
                     size="sm"
-                    className="h-7 w-7 p-0"
+                    className="size-7 p-0"
                     onClick={() => handleCopy(key, value)}
                   >
                     {copiedKey === key ? (
-                      <CopyCheckIcon className="h-3.5 w-3.5 text-green-600" />
+                      <CopyCheckIcon className="size-3.5 text-green-600" />
                     ) : (
-                      <CopyIcon className="h-3.5 w-3.5" />
+                      <CopyIcon className="size-3.5" />
                     )}
                   </Button>
                 </TooltipTrigger>
@@ -176,10 +176,10 @@ export function EnvVariablesDisplay() {
                   <Button
                     variant="ghost"
                     size="sm"
-                    className="h-7 w-7 p-0"
+                    className="size-7 p-0"
                     onClick={() => setSelectedVar({ key, value })}
                   >
-                    <MaximizeIcon className="h-3.5 w-3.5" />
+                    <MaximizeIcon className="size-3.5" />
                   </Button>
                 </TooltipTrigger>
                 <TooltipContent>View full value</TooltipContent>
@@ -216,7 +216,7 @@ export function EnvVariablesDisplay() {
           </div>
 
           <div className="relative mb-3">
-            <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
             <Input
               id="env-search-input"
               type="text"
@@ -230,9 +230,9 @@ export function EnvVariablesDisplay() {
                 variant="ghost"
                 size="sm"
                 onClick={() => setSearchQuery("")}
-                className="absolute right-1 top-1/2 -translate-y-1/2 h-7 w-7 p-0 hover:bg-transparent"
+                className="absolute right-1 top-1/2 -translate-y-1/2 size-7 p-0 hover:bg-transparent"
               >
-                <X className="h-4 w-4 text-muted-foreground hover:text-foreground" />
+                <X className="size-4 text-muted-foreground hover:text-foreground" />
                 <span className="sr-only">Clear search</span>
               </Button>
             )}
@@ -262,7 +262,7 @@ export function EnvVariablesDisplay() {
                     size="sm"
                     onClick={() => handleCopyAll(filteredVars.client, "client")}
                   >
-                    <CopyIcon className="h-3.5 w-3.5 mr-1" />
+                    <CopyIcon className="size-3.5 mr-1" />
                     Copy All
                   </Button>
                 </div>
@@ -278,7 +278,7 @@ export function EnvVariablesDisplay() {
                     size="sm"
                     onClick={() => handleCopyAll(filteredVars.server, "server")}
                   >
-                    <CopyIcon className="h-3.5 w-3.5 mr-1" />
+                    <CopyIcon className="size-3.5 mr-1" />
                     Copy All
                   </Button>
                 </div>
@@ -307,7 +307,7 @@ export function EnvVariablesDisplay() {
               size="sm"
               onClick={() => selectedVar && handleCopy(selectedVar.key, selectedVar.value)}
             >
-              <CopyIcon className="h-4 w-4 mr-2" />
+              <CopyIcon className="size-4 mr-2" />
               Copy Value
             </Button>
           </div>

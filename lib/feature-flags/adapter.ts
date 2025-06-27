@@ -11,7 +11,7 @@ export const openFeatureAdapter = createOpenFeatureAdapter(async () => {
   const provider = new FlagdProvider({
     // Connect to flagd sidecar on default RPC port
     host: process.env.FLAGD_HOST || 'localhost',
-    port: parseInt(process.env.FLAGD_PORT || '8013'),
+    port: Number.parseInt(process.env.FLAGD_PORT || '8013'),
     
     // Use LRU cache for better performance
     cache: 'lru',

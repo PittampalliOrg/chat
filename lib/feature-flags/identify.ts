@@ -1,5 +1,5 @@
-import { cookies, headers } from 'next/headers';
-import { dedupe } from 'flags';
+import { cookies } from 'next/headers';
+import { dedupe } from 'flags/next';
 import type { EvaluationContext } from '@openfeature/server-sdk';
 import { nanoid } from 'nanoid';
 
@@ -38,33 +38,12 @@ async function getStableId(): Promise<string> {
  * This is called automatically by the flags SDK when evaluating flags
  */
 export const identify = dedupe(async (): Promise<EvaluationContext> => {
-  const userId = await getStableId();
-  const headersList = await headers();
+  const stableId = await getStableId();
   
-  // Get user tier from auth session or default to 'free'
-  // In a real app, this would come from your auth system
-  const userTier = headersList.get('x-user-tier') || 'free';
-  
-  // Build evaluation context for OpenFeature
-  const context: EvaluationContext = {
-    // Required for targeting
-    targetingKey: userId,
-    
-    // Custom attributes for flag evaluation
-    userId,
-    userTier,
-    environment: process.env.NODE_ENV || 'development',
-    
-    // Add request-specific context
-    userAgent: headersList.get('user-agent') || 'unknown',
-    
-    // Add any other context that might be useful for targeting
-    // Examples:
-    // - User's subscription level
-    // - Geographic location
-    // - A/B test groups
-    // - Feature rollout cohorts
+  // Return OpenFeature context with targetingKey
+  return { 
+    targetingKey: stableId,
+    // You can add additional context properties here if needed
+    // environment: process.env.NODE_ENV || 'development',
   };
-  
-  return context;
 });

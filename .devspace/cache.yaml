@@ -1,12 +1,4 @@
 varsEncrypted: true
-images:
-    devspace-pnpm:
-        imageConfigHash: 90614ca9fd7bc6b2a22c8bffb52b1183a85405f570ce25078f67b4b1052470ad
-        dockerfileHash: 49b4974407442753484026c89d0e4ddf3816921ba8a8a50b1ac246275323cfce
-        contextHash: f87362f05f4d959d2d3067f5101538e79e665f515a001b3bae3e08b8e9043d79
-        imageName: kind-registry:5001/devspace-pnpm
-        localRegistryImageName: localhost:30540/devspace-pnpm
-        tag: latest
 lastContext:
     namespace: nextjs
     context: kind-gitops

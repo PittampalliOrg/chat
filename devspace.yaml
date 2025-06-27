@@ -13,7 +13,7 @@ pipelines:
 
 images:
   app:
-    image: vpittamp.azurecr.io/chat-frontend:0.3.41
+    image: vpittamp.azurecr.io/chat-frontend:latest
     buildKit: {}
     dockerfile: ./Dockerfile
     buildArgs:

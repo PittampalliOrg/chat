@@ -9,8 +9,10 @@
       "node_modules",
       ".next",
       "public",
-      ".vercel"
-    ]
+      ".vercel",
+      ".dagger/**"
+    ],
+    "maxSize": 5242880
   },
   "vcs": {
     "enabled": true,

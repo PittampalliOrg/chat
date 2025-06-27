@@ -1,7 +1,6 @@
 import { config } from 'dotenv';
 import { drizzle } from 'drizzle-orm/neon-http';
 import { neon } from '@neondatabase/serverless';
-import { migrate } from 'drizzle-orm/neon-http/migrator';
 import {
   chat,
   message,
@@ -22,7 +21,7 @@ if (!process.env.POSTGRES_URL) {
   throw new Error('POSTGRES_URL environment variable is not set');
 }
 
-const sql = neon(process.env.POSTGRES_URL!);
+const sql = neon(process.env.POSTGRES_URL);
 const db = drizzle(sql);
 
 const BATCH_SIZE = 100; // Process 100 chats at a time

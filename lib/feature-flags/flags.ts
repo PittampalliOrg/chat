@@ -1,6 +1,6 @@
 import { flag } from "flags/next";
-import { openFeatureAdapter } from "./adapter";
 import { identify } from "./identify";
+import { openFeatureAdapter } from "./adapter";
 
 /**
  * Type-safe feature flag definitions for the Next.js application
@@ -14,6 +14,10 @@ export const enableReasoningModel = flag<boolean>({
   description: "Enable the advanced reasoning model",
   identify,
   adapter: openFeatureAdapter.booleanValue(),
+  options: [
+    { value: true, label: "Enabled" },
+    { value: false, label: "Disabled" },
+  ],
 });
 
 // File Upload Configuration
@@ -23,6 +27,7 @@ export const maxFileUploadSize = flag<number>({
   description: "Maximum file upload size in MB",
   identify,
   adapter: openFeatureAdapter.numberValue(),
+  options: [5, 10, 25, 50, 100],
 });
 
 // Feature Toggles
@@ -32,6 +37,10 @@ export const enableMcpServers = flag<boolean>({
   description: "Enable MCP (Model Context Protocol) servers",
   identify,
   adapter: openFeatureAdapter.booleanValue(),
+  options: [
+    { value: true, label: "Enabled" },
+    { value: false, label: "Disabled" },
+  ],
 });
 
 export const enableArtifactCreation = flag<boolean>({
@@ -40,6 +49,10 @@ export const enableArtifactCreation = flag<boolean>({
   description: "Enable artifact creation functionality",
   identify,
   adapter: openFeatureAdapter.booleanValue(),
+  options: [
+    { value: true, label: "Enabled" },
+    { value: false, label: "Disabled" },
+  ],
 });
 
 export const enableWeatherTool = flag<boolean>({
@@ -83,6 +96,11 @@ export const uiThemeVariant = flag<string>({
   description: "UI theme variant for A/B testing",
   identify,
   adapter: openFeatureAdapter.stringValue(),
+  options: [
+    { value: "classic", label: "Classic" },
+    { value: "modern", label: "Modern" },
+    { value: "minimal", label: "Minimal" },
+  ],
 });
 
 // System Features

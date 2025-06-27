@@ -31,6 +31,11 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
+  // Skip auth for .well-known directory (used by Vercel toolbar)
+  if (pathname.startsWith('/.well-known')) {
+    return NextResponse.next();
+  }
+
   const session = await auth();
 
   if (!session?.user) {

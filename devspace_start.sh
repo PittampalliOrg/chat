@@ -2,6 +2,7 @@
 set +e  # Continue on errors
 
 export NODE_ENV=development
+export FLAGS_SECRET=${FLAGS_SECRET:-"dev-flags-secret-change-in-production"}
 
 # Always add local bin to PATH in case it was installed previously
 export PATH="$HOME/.local/bin:$PATH"
