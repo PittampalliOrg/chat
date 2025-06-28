@@ -5,14 +5,14 @@
 ### 1. Direct NodePort Access (No hosts file needed)
 ```bash
 # The flagd UI is accessible at:
-http://localhost:30080/
+http://localhost:30080/feature
 
 # This works because nginx-ingress controller is exposed on NodePort 30080
 ```
 
 ### 2. Using curl with Host header (No hosts file needed)
 ```bash
-curl -H "Host: flagd.localtest.me" http://localhost:30080/
+curl -H "Host: flagd.localtest.me" http://localhost:30080/feature
 ```
 
 ### 3. Port Forwarding (Alternative)
@@ -21,7 +21,7 @@ curl -H "Host: flagd.localtest.me" http://localhost:30080/
 kubectl port-forward -n nextjs svc/flagd-ui-nextjs 8080:80
 
 # Then access at:
-http://localhost:8080/
+http://localhost:8080/feature
 ```
 
 ## To Enable Domain-based Access:
@@ -32,7 +32,7 @@ http://localhost:8080/
 sudo ./add-flagd-host.sh
 
 # Then access at:
-http://flagd.localtest.me:30080/
+http://flagd.localtest.me:30080/feature
 ```
 
 ### Option 2: Use Browser Extension
@@ -49,7 +49,7 @@ kubectl get svc -n nextjs flagd-ui-nextjs
 ### Test the endpoint:
 ```bash
 # Test with curl
-curl -H "Host: flagd.localtest.me" http://localhost:30080/
+curl -H "Host: flagd.localtest.me" http://localhost:30080/feature
 
 # Should return HTML content
 ```
