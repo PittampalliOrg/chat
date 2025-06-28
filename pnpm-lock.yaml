@@ -58,11 +58,28 @@ importers:
         specifier: ^0.0.8
         version: 0.0.8(cdk8s@2.69.74(constructs@10.4.2))(constructs@10.4.2)
       '@openfeature/flagd-provider':
+<<<<<<< HEAD
         specifier: ^0.10.3
         version: 0.10.5(@grpc/grpc-js@1.13.4)(@openfeature/core@1.8.1)(@openfeature/server-sdk@1.18.0(@openfeature/core@1.8.1))
       '@openfeature/server-sdk':
         specifier: ^1.7.5
         version: 1.18.0(@openfeature/core@1.8.1)
+=======
+        specifier: ^0.13.3
+        version: 0.13.3(@grpc/grpc-js@1.13.4)(@openfeature/core@1.8.1)(@openfeature/server-sdk@1.18.0(@openfeature/core@1.8.1))
+      '@openfeature/flagd-web-provider':
+        specifier: ^0.7.3
+        version: 0.7.3(@openfeature/core@1.8.1)(@openfeature/web-sdk@1.5.0(@openfeature/core@1.8.1))
+      '@openfeature/react-sdk':
+        specifier: ^1.0.0
+        version: 1.0.0(@openfeature/web-sdk@1.5.0(@openfeature/core@1.8.1))(react@19.0.0-rc-45804af1-20241021)
+      '@openfeature/server-sdk':
+        specifier: ^1.18.0
+        version: 1.18.0(@openfeature/core@1.8.1)
+      '@openfeature/web-sdk':
+        specifier: ^1.5.0
+        version: 1.5.0(@openfeature/core@1.8.1)
+>>>>>>> f81d5ea3 (feat: implement OpenFeature/flagd feature flags system)
       '@opentelemetry/api':
         specifier: ^1.8.0
         version: 1.9.0
@@ -525,6 +542,9 @@ packages:
     cpu: [x64]
     os: [win32]
 
+  '@bufbuild/protobuf@1.10.1':
+    resolution: {integrity: sha512-wJ8ReQbHxsAfXhrf9ixl0aYbZorRuOWpBNzm8pL8ftmSxQx/wnJD5Eg861NwJU/czy2VXFIebCeZnZrI9rktIQ==}
+
   '@codemirror/autocomplete@6.18.6':
     resolution: {integrity: sha512-PHHBXFomUs5DF+9tCOM/UoW6XQ4R44lLNNhRaW9PKPTU0D7lIjRg3ElxaJnTwsl/oHiR93WSXDBrekhoUGCPtg==}
 
@@ -558,6 +578,17 @@ packages:
   '@colors/colors@1.6.0':
     resolution: {integrity: sha512-Ir+AOibqzrIsL6ajt3Rz3LskB7OiMVHqltZmspbW/TJuTVuyOMirVqAkjfY6JISiLHgyNqicAC8AyHHGzNd/dA==}
     engines: {node: '>=0.1.90'}
+
+  '@connectrpc/connect-web@1.6.1':
+    resolution: {integrity: sha512-GVfxQOmt3TtgTaKeXLS/EA2IHa3nHxwe2BCHT7X0Q/0hohM+nP5DDnIItGEjGrGdt3LTTqWqE4s70N4h+qIMlQ==}
+    peerDependencies:
+      '@bufbuild/protobuf': ^1.10.0
+      '@connectrpc/connect': 1.6.1
+
+  '@connectrpc/connect@1.6.1':
+    resolution: {integrity: sha512-KchMDNtU4CDTdkyf0qG7ugJ6qHTOR/aI7XebYn3OTCNagaDYWiZUVKgRgwH79yeMkpNgvEUaXSK7wKjaBK9b/Q==}
+    peerDependencies:
+      '@bufbuild/protobuf': ^1.10.0
 
   '@dagger.io/dagger@0.18.10':
     resolution: {integrity: sha512-UI5vgl67cRPDEGd/24joQRRY1mbxyazGJvscFiT0bRMpV7Z1Iw3smsLCtNKYFBsxSNfT+Eby7nXAW9zZu3tzhQ==}
@@ -1328,6 +1359,7 @@ packages:
   '@openfeature/core@1.8.1':
     resolution: {integrity: sha512-5mDq0RTlCZKc3BKAArnz4CiPK5uPY5rf1NpYRy4snPf4OppcZXnjjrvozo5I1p4UtyHGu/maoUVtaQCY54/n0A==}
 
+<<<<<<< HEAD
   '@openfeature/flagd-core@0.1.11':
     resolution: {integrity: sha512-tLIqTNTSb5UNQbfbm7nFUhPGe3TicjJUw42NgkWss76K+opwIuGS8eDzKWhshn3269W+3rLC6MA8iuZb6go8pQ==}
     peerDependencies:
@@ -1338,6 +1370,29 @@ packages:
     peerDependencies:
       '@grpc/grpc-js': ~1.8.0 || ~1.9.0
       '@openfeature/server-sdk': '>=1.8.0'
+=======
+  '@openfeature/flagd-core@1.0.0':
+    resolution: {integrity: sha512-JoaiDfQHgD15shkD5i/I+bpssvqqIwu2dkXMgQ8PfG/keYITCvNFIbxyqPKn+nAX9DR0Zp0P+spJTXtyxLMikw==}
+    peerDependencies:
+      '@openfeature/core': '>=1.6.0'
+
+  '@openfeature/flagd-provider@0.13.3':
+    resolution: {integrity: sha512-8aYURWAMsOcjY3lX5UMJRC4h76m1SDLMnb72wid+VFx1By4UL2yR28fO50i7x2CpVDANd2L5kArDAIA2HvU7MA==}
+    peerDependencies:
+      '@grpc/grpc-js': ~1.8.0 || ~1.9.0 || ~1.10.0 || ~1.11.0 || ~1.12.0
+      '@openfeature/server-sdk': ^1.17.0
+
+  '@openfeature/flagd-web-provider@0.7.3':
+    resolution: {integrity: sha512-SwkJKDXJmRO8x/muYkoGOTiyplVWV+mmlRFDjbBnIVcWJZBS9tPfRHZfQsB2pI/25oB3Je2yffh0B6eJ0wwWyw==}
+    peerDependencies:
+      '@openfeature/web-sdk': ^1.0.0
+
+  '@openfeature/react-sdk@1.0.0':
+    resolution: {integrity: sha512-662enepQyWu5eT8Cr1L0kNOrvIkucrUjDcaJacB4bP99B9VMnEBwWTF/8zEhRqrwNJ/gMIpzGm9fu0dfinu2+Q==}
+    peerDependencies:
+      '@openfeature/web-sdk': ^1.5.0
+      react: '>=16.8.0'
+>>>>>>> f81d5ea3 (feat: implement OpenFeature/flagd feature flags system)
 
   '@openfeature/server-sdk@1.18.0':
     resolution: {integrity: sha512-uP8nqEGBS58s3iWXx6d8vnJ6ZVt3DACJL4PWADOAuwIS4xXpID91783e9f6zQ0i1ijQpj3yx+3ZuCB2LfQMUMA==}
@@ -1345,6 +1400,14 @@ packages:
     peerDependencies:
       '@openfeature/core': ^1.7.0
 
+<<<<<<< HEAD
+=======
+  '@openfeature/web-sdk@1.5.0':
+    resolution: {integrity: sha512-AK9A4X6vRKQf/OvCue1LKM6thSDqbx/Sf3dHBTZ6p7DfpIKsD8mzCTgMhb5jukVlqwdKMlewU/rlYTYqqfnnTw==}
+    peerDependencies:
+      '@openfeature/core': ^1.8.0
+
+>>>>>>> f81d5ea3 (feat: implement OpenFeature/flagd feature flags system)
   '@opentelemetry/api-logs@0.200.0':
     resolution: {integrity: sha512-IKJBQxh91qJ+3ssRly5hYEJ8NDHu9oY/B1PXVSCWf7zytmYO9RNLB0Ox9XQ/fJ8m6gY6Q6NtBWlmXfaXt5Uc4Q==}
     engines: {node: '>=8.0.0'}
@@ -4472,8 +4535,13 @@ packages:
   json-buffer@3.0.1:
     resolution: {integrity: sha512-4bV5BfR2mqfQTJm+V5tPPdf+ZpuhiIvTuAB5g8kcrXOZpTT/QwwVRWBywX1ozr6lEuPdbHxwaJlm9G6mI2sfSQ==}
 
+<<<<<<< HEAD
   json-logic-engine@1.3.1:
     resolution: {integrity: sha512-ek2rHlbzVjsWG/5HM8P/ljYrYS5nDFYtSHk2r/U4oaUGKRWyZo7bDyDiLmYSfEmZp2LJMgnjVo2b0tHc+cqVHQ==}
+=======
+  json-logic-engine@4.0.2:
+    resolution: {integrity: sha512-LvKZcgQ1c2fZ0/wl+mjnerllVWdKSR2y24AQjy0bnVgOg3ZqQBTbCeMmmn518F+GhdAc1VOXHbyOAf7rQy6qRA==}
+>>>>>>> f81d5ea3 (feat: implement OpenFeature/flagd feature flags system)
     engines: {node: '>=12.22.7'}
 
   json-schema-traverse@0.4.1:
@@ -4568,6 +4636,13 @@ packages:
   lru-cache@10.4.3:
     resolution: {integrity: sha512-JNAzZcXrCt42VGLuYz0zfAzDfAvJWW6AfYlDBQyDV5DClI2m5sAmK+OIO7s59XfsRsWHp02jAJrRadPRGTt6SQ==}
 
+<<<<<<< HEAD
+=======
+  lru-cache@11.1.0:
+    resolution: {integrity: sha512-QIXZUBJUx+2zHUdQujWejBkcD9+cs94tLn0+YL8UrCh+D5sCXZ4c7LaEH48pNwRY3MLDgqUFyhlCyjJPf1WP0A==}
+    engines: {node: 20 || >=22}
+
+>>>>>>> f81d5ea3 (feat: implement OpenFeature/flagd feature flags system)
   lru-cache@6.0.0:
     resolution: {integrity: sha512-Jo6dJ04CmSjuznwJSS3pUeWmd/H0ffTlkXXgwZi+eq1UCmqQwCh+eLsYOYCwY991i2Fah4h1BEMCx4qThGbsiA==}
     engines: {node: '>=10'}
@@ -6141,6 +6216,8 @@ snapshots:
   '@biomejs/cli-win32-x64@1.9.4':
     optional: true
 
+  '@bufbuild/protobuf@1.10.1': {}
+
   '@codemirror/autocomplete@6.18.6':
     dependencies:
       '@codemirror/language': 6.11.1
@@ -6213,6 +6290,15 @@ snapshots:
       w3c-keyname: 2.2.8
 
   '@colors/colors@1.6.0': {}
+
+  '@connectrpc/connect-web@1.6.1(@bufbuild/protobuf@1.10.1)(@connectrpc/connect@1.6.1(@bufbuild/protobuf@1.10.1))':
+    dependencies:
+      '@bufbuild/protobuf': 1.10.1
+      '@connectrpc/connect': 1.6.1(@bufbuild/protobuf@1.10.1)
+
+  '@connectrpc/connect@1.6.1(@bufbuild/protobuf@1.10.1)':
+    dependencies:
+      '@bufbuild/protobuf': 1.10.1
 
   '@dagger.io/dagger@0.18.10':
     dependencies:
@@ -6771,16 +6857,25 @@ snapshots:
 
   '@openfeature/core@1.8.1': {}
 
+<<<<<<< HEAD
   '@openfeature/flagd-core@0.1.11(@openfeature/core@1.8.1)':
+=======
+  '@openfeature/flagd-core@1.0.0(@openfeature/core@1.8.1)':
+>>>>>>> f81d5ea3 (feat: implement OpenFeature/flagd feature flags system)
     dependencies:
       '@openfeature/core': 1.8.1
       ajv: 8.17.1
       imurmurhash: 0.1.4
+<<<<<<< HEAD
       json-logic-engine: 1.3.1
+=======
+      json-logic-engine: 4.0.2
+>>>>>>> f81d5ea3 (feat: implement OpenFeature/flagd feature flags system)
       object-hash: 3.0.0
       semver: 7.5.3
       tslib: 2.8.1
 
+<<<<<<< HEAD
   '@openfeature/flagd-provider@0.10.5(@grpc/grpc-js@1.13.4)(@openfeature/core@1.8.1)(@openfeature/server-sdk@1.18.0(@openfeature/core@1.8.1))':
     dependencies:
       '@grpc/grpc-js': 1.13.4
@@ -6792,10 +6887,43 @@ snapshots:
     transitivePeerDependencies:
       - '@openfeature/core'
 
+=======
+  '@openfeature/flagd-provider@0.13.3(@grpc/grpc-js@1.13.4)(@openfeature/core@1.8.1)(@openfeature/server-sdk@1.18.0(@openfeature/core@1.8.1))':
+    dependencies:
+      '@grpc/grpc-js': 1.13.4
+      '@openfeature/flagd-core': 1.0.0(@openfeature/core@1.8.1)
+      '@openfeature/server-sdk': 1.18.0(@openfeature/core@1.8.1)
+      lru-cache: 11.1.0
+    transitivePeerDependencies:
+      - '@openfeature/core'
+
+  '@openfeature/flagd-web-provider@0.7.3(@openfeature/core@1.8.1)(@openfeature/web-sdk@1.5.0(@openfeature/core@1.8.1))':
+    dependencies:
+      '@bufbuild/protobuf': 1.10.1
+      '@connectrpc/connect': 1.6.1(@bufbuild/protobuf@1.10.1)
+      '@connectrpc/connect-web': 1.6.1(@bufbuild/protobuf@1.10.1)(@connectrpc/connect@1.6.1(@bufbuild/protobuf@1.10.1))
+      '@openfeature/flagd-core': 1.0.0(@openfeature/core@1.8.1)
+      '@openfeature/web-sdk': 1.5.0(@openfeature/core@1.8.1)
+    transitivePeerDependencies:
+      - '@openfeature/core'
+
+  '@openfeature/react-sdk@1.0.0(@openfeature/web-sdk@1.5.0(@openfeature/core@1.8.1))(react@19.0.0-rc-45804af1-20241021)':
+    dependencies:
+      '@openfeature/web-sdk': 1.5.0(@openfeature/core@1.8.1)
+      react: 19.0.0-rc-45804af1-20241021
+
+>>>>>>> f81d5ea3 (feat: implement OpenFeature/flagd feature flags system)
   '@openfeature/server-sdk@1.18.0(@openfeature/core@1.8.1)':
     dependencies:
       '@openfeature/core': 1.8.1
 
+<<<<<<< HEAD
+=======
+  '@openfeature/web-sdk@1.5.0(@openfeature/core@1.8.1)':
+    dependencies:
+      '@openfeature/core': 1.8.1
+
+>>>>>>> f81d5ea3 (feat: implement OpenFeature/flagd feature flags system)
   '@opentelemetry/api-logs@0.200.0':
     dependencies:
       '@opentelemetry/api': 1.9.0
@@ -10466,7 +10594,11 @@ snapshots:
 
   json-buffer@3.0.1: {}
 
+<<<<<<< HEAD
   json-logic-engine@1.3.1: {}
+=======
+  json-logic-engine@4.0.2: {}
+>>>>>>> f81d5ea3 (feat: implement OpenFeature/flagd feature flags system)
 
   json-schema-traverse@0.4.1: {}
 
@@ -10553,6 +10685,11 @@ snapshots:
 
   lru-cache@10.4.3: {}
 
+<<<<<<< HEAD
+=======
+  lru-cache@11.1.0: {}
+
+>>>>>>> f81d5ea3 (feat: implement OpenFeature/flagd feature flags system)
   lru-cache@6.0.0:
     dependencies:
       yallist: 4.0.0

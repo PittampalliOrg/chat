@@ -138,6 +138,11 @@ dev:
       # API Keys (you may want to use secrets for these in production)
       - name: BLOB_READ_WRITE_TOKEN
         value: "****"
+      # Feature flag configuration
+      - name: FLAGD_HOST
+        value: "flagd.default.svc.cluster.local"
+      - name: FLAGD_PORT
+        value: "8013"
 # Use the `commands` section to define repeatable dev workflows for this project
 commands:
   # Check ArgoCD sync status

@@ -8,6 +8,7 @@ import { VercelToolbar } from '@vercel/toolbar/next';
 import './globals.css';
 import { SessionProvider } from 'next-auth/react';
 import '@/lib/suppress-extension-errors';
+import { OpenFeatureClientProvider } from './providers/openfeature-provider';
 
 export async function generateMetadata(): Promise<Metadata> {
   const activeSpan = trace.getActiveSpan()
@@ -88,7 +89,9 @@ export default async function RootLayout({
           disableTransitionOnChange
         >
           <Toaster position="top-center" />
-          <SessionProvider>{children}</SessionProvider>
+          <OpenFeatureClientProvider>
+            <SessionProvider>{children}</SessionProvider>
+          </OpenFeatureClientProvider>
           {process.env.NODE_ENV === 'development' && <VercelToolbar />}
         </ThemeProvider>
       </body>
