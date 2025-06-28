@@ -1,10 +1,11 @@
 'use client';
 
-import { useBooleanFlagValue, useStringFlagValue, useNumberFlagValue, useObjectFlagValue } from '@openfeature/react-sdk';
+import { useBooleanFlagValue, useStringFlagValue, useNumberFlagValue, useObjectFlagValue, useOpenFeatureClient } from '@openfeature/react-sdk';
 import { useEffect, useState } from 'react';
 
 export function FeatureFlagClient() {
   const [isConnected, setIsConnected] = useState(false);
+  const client = useOpenFeatureClient();
   
   // Use OpenFeature hooks for real-time flag updates
   const enableNewUI = useBooleanFlagValue('enableNewUI', false);
@@ -13,10 +14,11 @@ export function FeatureFlagClient() {
   const theme = useObjectFlagValue('theme', { primary: 'blue', secondary: 'green' });
 
   useEffect(() => {
-    // Simple connection check
-    const timer = setTimeout(() => setIsConnected(true), 1000);
-    return () => clearTimeout(timer);
-  }, []);
+    // Check if the client is ready
+    if (client) {
+      setIsConnected(true);
+    }
+  }, [client]);
 
   const flags = {
     enableNewUI,

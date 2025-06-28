@@ -3,11 +3,9 @@
 import { OpenFeatureProvider } from '@openfeature/react-sdk';
 import { FlagdWebProvider } from '@openfeature/flagd-web-provider';
 import { OpenFeature } from '@openfeature/web-sdk';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 export function OpenFeatureClientProvider({ children }: { children: React.ReactNode }) {
-  const [isInitialized, setIsInitialized] = useState(false);
-
   useEffect(() => {
     // Initialize OpenFeature client
     const initializeClient = async () => {
@@ -23,10 +21,9 @@ export function OpenFeatureClientProvider({ children }: { children: React.ReactN
       try {
         await OpenFeature.setProvider(provider);
         console.log('[OpenFeature] Client provider initialized');
-        setIsInitialized(true);
       } catch (error) {
         console.error('[OpenFeature] Failed to initialize:', error);
-        setIsInitialized(true); // Continue with defaults
+        // Continue with defaults
       }
     };
 
@@ -35,9 +32,6 @@ export function OpenFeatureClientProvider({ children }: { children: React.ReactN
     }
   }, []);
 
-  if (!isInitialized) {
-    return <>{children}</>;
-  }
-
+  // Always wrap children with OpenFeatureProvider to avoid context errors
   return <OpenFeatureProvider>{children}</OpenFeatureProvider>;
 }
