@@ -47,82 +47,64 @@ jobs:
         sudo mv bin/dagger /usr/local/bin
         dagger version
 
-    - name: Determine version bump type
-      id: bump_type
-      run: |
-        if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
-          echo "type=${{ github.event.inputs.version_bump }}" >> $GITHUB_OUTPUT
-        else
-          echo "type=patch" >> $GITHUB_OUTPUT
-        fi
-
-    - name: Get latest version from ACR
-      id: latest_version
-      env:
-        ACR_PASSWORD: ${{ secrets.ACR_PASSWORD }}
-      run: |
-        # Get manifest for the repository
-        REGISTRY="${{ secrets.ACR_USERNAME }}.azurecr.io"
-        REPO="${{ env.ACR_REPO }}"
-        
-        # Use Azure CLI REST API format for ACR
-        TOKEN=$(echo -n "${{ secrets.ACR_USERNAME }}:$ACR_PASSWORD" | base64)
-        
-        # Get tags from ACR REST API
-        echo "Fetching tags from: https://${REGISTRY}/v2/${REPO}/tags/list"
-        RESPONSE=$(curl -s -w "\nHTTP_STATUS:%{http_code}" -H "Authorization: Basic $TOKEN" \
-          "https://${REGISTRY}/v2/${REPO}/tags/list")
-        
-        # Extract HTTP status code
-        HTTP_STATUS=$(echo "$RESPONSE" | tail -n 1 | cut -d: -f2)
-        BODY=$(echo "$RESPONSE" | sed '$d')
-        
-        echo "HTTP Status: $HTTP_STATUS"
-        
-        if [ "$HTTP_STATUS" != "200" ]; then
-          echo "Failed to fetch tags from ACR. Response: $BODY"
-          echo "Using Docker CLI as fallback..."
-          
-          # Fallback: Login and use docker to get tags
-          echo "$ACR_PASSWORD" | docker login ${REGISTRY} -u ${{ secrets.ACR_USERNAME }} --password-stdin
-          
-          # Use Azure CLI if available
-          if command -v az &> /dev/null; then
-            echo "Using Azure CLI to fetch tags..."
-            LATEST_VERSION=$(az acr repository show-tags --name ${{ secrets.ACR_USERNAME }} \
-              --repository ${REPO} --orderby time_desc --output tsv 2>/dev/null | \
-              grep -E '^[0-9]+\.[0-9]+\.[0-9]+$' | head -1)
-          else
-            echo "Azure CLI not available, parsing docker API response..."
-            LATEST_VERSION=""
-          fi
-        else
-          # Parse tags and find latest semantic version
-          echo "Tags response: $BODY"
-          LATEST_VERSION=$(echo "$BODY" | jq -r '.tags[]' 2>/dev/null | \
-            grep -E '^[0-9]+\.[0-9]+\.[0-9]+$' | \
-            sort -V | tail -1)
-        fi
-        
-        # Default to 0.0.0 if no version found
-        if [ -z "$LATEST_VERSION" ]; then
-          echo "No existing versions found in ACR, starting from 0.0.0"
-          LATEST_VERSION="0.0.0"
-        fi
-        
-        echo "latest=${LATEST_VERSION}" >> $GITHUB_OUTPUT
-        echo "Latest version in ACR: ${LATEST_VERSION}"
-
-    - name: Bump version
+    - name: Get next version
       id: version
+      uses: paulhatch/semantic-version@v5.4.0
+      with:
+        # The prefix to use to identify tags
+        tag_prefix: "v"
+        # A string which, if present in a commit, indicates a major version change
+        major_pattern: "(MAJOR)"
+        # A string which, if present in a commit, indicates a minor version change
+        minor_pattern: "(MINOR)"
+        # If true, the body of commits will also be searched for major/minor patterns
+        search_commit_body: true
+        # Pattern to use if branch name should be included in version
+        # branch_format: "${branch}"
+        # If this is set to true, *every* commit will be treated as a new version.
+        bump_each_commit: false
+        # If bump_each_commit is true, commit messages are still searched for patterns
+        # This enables committers to "skip" a version bump by using a pattern
+        enable_prerelease_mode: false
+        # Format of the version output
+        version_format: "${major}.${minor}.${patch}"
+        # Optional path to check for changes. If any changes are detected in the path the
+        # version will be bumped.
+        # change_path: "src/"
+        # Named version, will be used as suffix for name version tag
+        # namespace: "my-app"
+        # If set to false, the action will not create a git tag for the version
+        # tag_on_release: true
+
+    - name: Handle version override for workflow_dispatch
+      id: final_version
       run: |
-        # Make bump-version-acr.sh executable
-        chmod +x ./scripts/bump-version-acr.sh
+        # For workflow_dispatch, check if we need to force a major/minor bump
+        if [ "${{ github.event_name }}" == "workflow_dispatch" ] && [ "${{ github.event.inputs.version_bump }}" != "patch" ]; then
+          CURRENT_VERSION="${{ steps.version.outputs.version }}"
+          BUMP_TYPE="${{ github.event.inputs.version_bump }}"
+          
+          # Parse current version
+          IFS='.' read -r MAJOR MINOR PATCH <<< "$CURRENT_VERSION"
+          
+          # Apply the requested bump
+          if [ "$BUMP_TYPE" == "major" ]; then
+            MAJOR=$((MAJOR + 1))
+            MINOR=0
+            PATCH=0
+          elif [ "$BUMP_TYPE" == "minor" ]; then
+            MINOR=$((MINOR + 1))
+            PATCH=0
+          fi
+          
+          FINAL_VERSION="${MAJOR}.${MINOR}.${PATCH}"
+          echo "Overriding version from $CURRENT_VERSION to $FINAL_VERSION due to workflow_dispatch"
+        else
+          FINAL_VERSION="${{ steps.version.outputs.version }}"
+        fi
         
-        # Bump the version based on latest from ACR
-        NEW_VERSION=$(./scripts/bump-version-acr.sh ${{ steps.latest_version.outputs.latest }} ${{ steps.bump_type.outputs.type }})
-        echo "version=${NEW_VERSION}" >> $GITHUB_OUTPUT
-        echo "New version: ${NEW_VERSION}"
+        echo "version=${FINAL_VERSION}" >> $GITHUB_OUTPUT
+        echo "Final version: ${FINAL_VERSION}"
 
     - name: Gather build metadata
       id: metadata
@@ -167,7 +149,7 @@ jobs:
           --src-dir .. \
           --acr-name ${{ secrets.ACR_USERNAME }} \
           --repo ${{ env.ACR_REPO }} \
-          --tag ${{ steps.version.outputs.version }} \
+          --tag ${{ steps.final_version.outputs.version }} \
           --username ${{ secrets.ACR_USERNAME }} \
           --password env:ACR_PASSWORD \
           --postgres-url env:POSTGRES_URL \
@@ -182,26 +164,32 @@ jobs:
           --git-commit-short "${{ steps.metadata.outputs.commit_short }}" \
           --git-branch "${{ steps.metadata.outputs.branch }}" \
           --build-time "${{ steps.metadata.outputs.build_time }}" \
-          --build-version "${{ steps.version.outputs.version }}" \
+          --build-version "${{ steps.final_version.outputs.version }}" \
           --git-commit-message "${{ steps.metadata.outputs.commit_message }}" \
           --git-commit-author "${{ steps.metadata.outputs.commit_author }}" \
           --build-number "${{ steps.metadata.outputs.build_number }}" \
           --git-repository "${{ steps.metadata.outputs.repository }}"
 
-    # Version tracking is now done via ACR tags, no need to commit .version file
+    # Version tracking is now done via git tags
 
     - name: Create Release Tag
       if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/basics')
       run: |
-        git tag -a "v${{ steps.version.outputs.version }}" -m "Release version ${{ steps.version.outputs.version }}"
-        git push origin "v${{ steps.version.outputs.version }}"
+        # Only create tag if one doesn't already exist (semantic-version might have created it)
+        if ! git rev-parse "v${{ steps.final_version.outputs.version }}" >/dev/null 2>&1; then
+          git tag -a "v${{ steps.final_version.outputs.version }}" -m "Release version ${{ steps.final_version.outputs.version }}"
+          git push origin "v${{ steps.final_version.outputs.version }}"
+        else
+          echo "Tag v${{ steps.final_version.outputs.version }} already exists"
+        fi
 
     - name: Output summary
       run: |
         echo "## Build Summary" >> $GITHUB_STEP_SUMMARY
         echo "" >> $GITHUB_STEP_SUMMARY
-        echo "- **Image**: ${{ secrets.ACR_USERNAME }}.azurecr.io/${{ env.ACR_REPO }}:${{ steps.version.outputs.version }}" >> $GITHUB_STEP_SUMMARY
-        echo "- **Version**: ${{ steps.version.outputs.version }}" >> $GITHUB_STEP_SUMMARY
+        echo "- **Image**: ${{ secrets.ACR_USERNAME }}.azurecr.io/${{ env.ACR_REPO }}:${{ steps.final_version.outputs.version }}" >> $GITHUB_STEP_SUMMARY
+        echo "- **Version**: ${{ steps.final_version.outputs.version }}" >> $GITHUB_STEP_SUMMARY
+        echo "- **Version Type**: ${{ steps.version.outputs.version_type }}" >> $GITHUB_STEP_SUMMARY
         echo "- **Trigger**: ${{ github.event_name }}" >> $GITHUB_STEP_SUMMARY
         echo "- **Branch**: ${{ github.ref_name }}" >> $GITHUB_STEP_SUMMARY
         echo "- **Commit**: ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
@@ -213,5 +201,5 @@ jobs:
         echo "These environment variables are available in the Next.js app:" >> $GITHUB_STEP_SUMMARY
         echo "- \`NEXT_PUBLIC_GIT_COMMIT\`: ${{ steps.metadata.outputs.commit_sha }}" >> $GITHUB_STEP_SUMMARY
         echo "- \`NEXT_PUBLIC_GIT_BRANCH\`: ${{ steps.metadata.outputs.branch }}" >> $GITHUB_STEP_SUMMARY
-        echo "- \`NEXT_PUBLIC_BUILD_VERSION\`: ${{ steps.version.outputs.version }}" >> $GITHUB_STEP_SUMMARY
+        echo "- \`NEXT_PUBLIC_BUILD_VERSION\`: ${{ steps.final_version.outputs.version }}" >> $GITHUB_STEP_SUMMARY
         echo "- \`NEXT_PUBLIC_BUILD_TIME\`: ${{ steps.metadata.outputs.build_time }}" >> $GITHUB_STEP_SUMMARY
