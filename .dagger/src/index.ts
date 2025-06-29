@@ -239,11 +239,28 @@ export class Dag {
     )
 
     // 2. Publish it to ACR
-    const registry = `${acrName}.azurecr.io`
-    const address  = `${registry}/${repo}:${tag}`
+    // Handle case where acrName might already include .azurecr.io
+    const registryName = acrName.replace('.azurecr.io', '');
+    const registry = `${registryName}.azurecr.io`;
+    const address  = `${registry}/${repo}:${tag}`;
 
-    return await ctr
-      .withRegistryAuth(registry, username, password)  // attach creds
-      .publish(address)                                // push & return digest
+    // Debug logging
+    console.log(`[DEBUG] ACR Name input: ${acrName}`);
+    console.log(`[DEBUG] Registry Name: ${registryName}`);
+    console.log(`[DEBUG] Registry URL: ${registry}`);
+    console.log(`[DEBUG] Username: ${username}`);
+    console.log(`[DEBUG] Full address: ${address}`);
+
+    try {
+      return await ctr
+        .withRegistryAuth(registry, username, password)  // attach creds
+        .publish(address)                                // push & return digest
+    } catch (error) {
+      console.error(`[ERROR] Failed to push to ACR: ${error}`);
+      console.error(`[ERROR] Registry: ${registry}`);
+      console.error(`[ERROR] Address: ${address}`);
+      console.error(`[ERROR] Username: ${username}`);
+      throw error;
+    }
   }
 }
