@@ -13,7 +13,7 @@ export function OpenFeatureClientProvider({ children }: { children: React.ReactN
       // In production, you might connect directly to flagd
       const provider = new FlagdWebProvider({
         host: window.location.hostname,
-        port: window.location.port ? parseInt(window.location.port) : 80,
+        port: window.location.port ? Number.parseInt(window.location.port) : 80,
         pathPrefix: 'api/flagd',
         tls: window.location.protocol === 'https:',
       });

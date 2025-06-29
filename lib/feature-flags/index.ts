@@ -3,10 +3,11 @@
  * Export all feature flags and utilities for easy import
  */
 
-export * from './flags';
+// Temporarily comment out problematic exports
+// export * from './flags';
 export * from './adapter';
 export * from './examples';
-export { identify } from './identify';
+// export { identify } from './identify';
 
 /**
  * Initialize feature flags on application startup

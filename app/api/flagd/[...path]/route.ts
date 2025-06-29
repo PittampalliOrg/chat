@@ -1,14 +1,15 @@
-import { NextRequest } from 'next/server';
+import type { NextRequest } from 'next/server';
 
 const FLAGD_HOST = process.env.FLAGD_HOST || 'localhost';
 const FLAGD_PORT = process.env.FLAGD_PORT || '8013';
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { path: string[] } }
+  { params }: { params: Promise<{ path: string[] }> }
 ) {
-  const path = params.path.join('/');
-  const url = `http://${FLAGD_HOST}:${FLAGD_PORT}/${path}`;
+  const { path } = await params;
+  const pathStr = path.join('/');
+  const url = `http://${FLAGD_HOST}:${FLAGD_PORT}/${pathStr}`;
   
   try {
     const response = await fetch(url, {
@@ -41,9 +42,10 @@ export async function GET(
   }
 }
 
-export async function POST(request: NextRequest, { params }: { params: { path: string[] } }) {
-  const path = params.path.join('/');
-  const url = `http://${FLAGD_HOST}:${FLAGD_PORT}/${path}`;
+export async function POST(request: NextRequest, { params }: { params: Promise<{ path: string[] }> }) {
+  const { path } = await params;
+  const pathStr = path.join('/');
+  const url = `http://${FLAGD_HOST}:${FLAGD_PORT}/${pathStr}`;
   
   try {
     // Get the raw body as ArrayBuffer for binary data
@@ -61,7 +63,7 @@ export async function POST(request: NextRequest, { params }: { params: { path: s
     }
     
     // Handle EventStream endpoint specially
-    if (path.includes('EventStream')) {
+    if (pathStr.includes('EventStream')) {
       // For streaming endpoints, we need to handle differently
       const response = await fetch(url, {
         method: 'POST',

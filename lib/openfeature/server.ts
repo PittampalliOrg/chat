@@ -8,7 +8,7 @@ export async function initializeServerFeatureFlags() {
   
   const provider = new FlagdProvider({
     host: process.env.FLAGD_HOST || 'localhost',
-    port: parseInt(process.env.FLAGD_PORT || '8013'),
+    port: Number.parseInt(process.env.FLAGD_PORT || '8013'),
   });
   
   try {

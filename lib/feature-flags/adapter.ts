@@ -1,12 +1,11 @@
 import { OpenFeature, ServerProviderEvents } from "@openfeature/server-sdk";
-import { createOpenFeatureAdapter } from "@flags-sdk/openfeature";
 import { FlagdProvider } from '@openfeature/flagd-provider';
 
 /**
- * OpenFeature adapter for connecting to the flagd sidecar
+ * Initialize the flagd provider for OpenFeature
  * The flagd sidecar runs on localhost:8013 by default
  */
-export const openFeatureAdapter = createOpenFeatureAdapter(async () => {
+export async function initializeFlagdProvider() {
   // Configure the flagd provider to connect to the sidecar
   const provider = new FlagdProvider({
     // Connect to flagd sidecar on default RPC port
@@ -41,7 +40,7 @@ export const openFeatureAdapter = createOpenFeatureAdapter(async () => {
   });
   
   return client;
-});
+}
 
 /**
  * Initialize the feature flag system

@@ -3,8 +3,7 @@
  * This file only exports definitions that can be safely imported in client components
  */
 
-// Re-export only the flag definitions, not server-side utilities
-export * from './flags';
+// Temporarily export only examples until we implement proper OpenFeature-based flags
 export * from './examples';
 
 // Note: Do NOT export 'identify' or 'adapter' here as they use server-only APIs

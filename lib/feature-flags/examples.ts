@@ -2,117 +2,154 @@
  * Example implementations showing how to use feature flags in the Next.js application
  */
 
-import {
-  maxFileUploadSize,
-  enableArtifactCreation,
-  enableWeatherTool,
-  maintenanceMode,
-  rateLimitRequestsPerMinute,
-  uiThemeVariant,
-  enableDebugLogs
-} from './flags';
+// Temporarily disabled imports until OpenFeature implementation is ready
+// import {
+//   maxFileUploadSize,
+//   enableArtifactCreation,
+//   enableWeatherTool,
+//   maintenanceMode,
+//   rateLimitRequestsPerMinute,
+//   uiThemeVariant,
+//   enableDebugLogs
+// } from './flags';
 
 /**
  * Example: Check file upload size limit
  */
 export async function getMaxUploadSizeInBytes(): Promise<number> {
-  const maxSizeMB = await maxFileUploadSize();
+  // Temporarily use default value
+  const maxSizeMB = 10; // await maxFileUploadSize();
   return maxSizeMB * 1024 * 1024; // Convert MB to bytes
 }
 
 /**
- * Example: Check if artifact creation is enabled
+ * Example: Check if artifact creation is allowed
  */
-export async function canCreateArtifacts(): Promise<boolean> {
-  return await enableArtifactCreation();
+export async function isArtifactCreationAllowed(): Promise<boolean> {
+  // Temporarily use default value
+  return true; // await enableArtifactCreation();
 }
 
 /**
- * Example: Get available AI tools based on feature flags
+ * Example: Weather tool availability check
  */
-export async function getAvailableTools() {
-  const weatherEnabled = await enableWeatherTool();
-  
-  const tools = [];
-  
-  // Always available tools
-  tools.push('create-document', 'update-document', 'request-suggestions');
-  
-  // Conditionally available tools
-  if (weatherEnabled) {
-    tools.push('get-weather');
-  }
-  
-  return tools;
+export async function isWeatherToolAvailable(): Promise<boolean> {
+  // Temporarily use default value
+  return true; // await enableWeatherTool();
 }
 
 /**
- * Example: Check maintenance mode for middleware
+ * Example: Maintenance mode check
  */
 export async function isInMaintenanceMode(): Promise<boolean> {
-  // No user context needed for global maintenance mode
-  return await maintenanceMode();
+  // Temporarily use default value
+  return false; // await maintenanceMode();
 }
 
 /**
- * Example: Get rate limit for API endpoints
- * Note: User context is handled automatically by the identify function
+ * Example: Get rate limit
  */
-export async function getRateLimitForUser(): Promise<number> {
-  return await rateLimitRequestsPerMinute();
+export async function getRateLimitPerMinute(): Promise<number> {
+  // Temporarily use default value
+  return 30; // await rateLimitRequestsPerMinute();
 }
 
 /**
- * Example: Get UI theme variant for A/B testing
- * Note: User context is handled automatically by the identify function
+ * Example: Get UI theme variant
  */
-export async function getUserTheme(): Promise<string> {
-  return await uiThemeVariant();
+export async function getUITheme(): Promise<string> {
+  // Temporarily use default value
+  return 'classic'; // await uiThemeVariant();
 }
 
 /**
- * Example: Conditional logging based on feature flag
+ * Example: Check if debug logging is enabled
  */
-export async function debugLog(message: string, data?: any) {
-  const debugEnabled = await enableDebugLogs();
-  if (debugEnabled) {
-    console.log(`[DEBUG] ${message}`, data);
+export async function isDebugLoggingEnabled(): Promise<boolean> {
+  // Temporarily use default value
+  return false; // await enableDebugLogs();
+}
+
+/**
+ * Example: Validate file upload
+ */
+export async function validateFileUpload(fileSize: number): Promise<{ allowed: boolean; maxSize: number; reason?: string }> {
+  const maxSize = await getMaxUploadSizeInBytes();
+  
+  if (fileSize > maxSize) {
+    return {
+      allowed: false,
+      maxSize,
+      reason: `File size exceeds maximum allowed size of ${maxSize / 1024 / 1024}MB`
+    };
   }
+  
+  return { allowed: true, maxSize };
 }
 
 /**
- * Example: Using in API route handler
- * 
- * ```typescript
- * // app/api/upload/route.ts
- * import { getMaxUploadSizeInBytes } from '@/lib/feature-flags/examples';
- * 
- * export async function POST(request: Request) {
- *   const maxSize = await getMaxUploadSizeInBytes();
- *   
- *   const contentLength = request.headers.get('content-length');
- *   if (contentLength && parseInt(contentLength) > maxSize) {
- *     return new Response('File too large', { status: 413 });
- *   }
- *   
- *   // Process upload...
- * }
- * ```
+ * Example: Rate limiter
  */
+export async function checkRateLimit(userId: string, requestCount: number): Promise<{ allowed: boolean; limit: number }> {
+  const limit = await getRateLimitPerMinute();
+  
+  return {
+    allowed: requestCount < limit,
+    limit
+  };
+}
 
 /**
- * Example: Using in middleware
+ * Example: UI customization
+ */
+export async function getThemeClasses(): Promise<string> {
+  const theme = await getUITheme();
+  
+  const themeClasses = {
+    classic: 'bg-white text-gray-900',
+    modern: 'bg-slate-50 text-slate-900',
+    minimal: 'bg-gray-50 text-gray-800'
+  };
+  
+  return themeClasses[theme as keyof typeof themeClasses] || themeClasses.classic;
+}
+
+/**
+ * Example: Middleware pattern for feature flags
+ */
+export async function withFeatureFlag<T>(
+  flagCheck: () => Promise<boolean>,
+  enabledHandler: () => T,
+  disabledHandler?: () => T
+): Promise<T> {
+  const isEnabled = await flagCheck();
+  
+  if (isEnabled) {
+    return enabledHandler();
+  }
+  
+  if (disabledHandler) {
+    return disabledHandler();
+  }
+  
+  throw new Error('Feature is not available');
+}
+
+/**
+ * Example usage in components:
  * 
  * ```typescript
- * // middleware.ts
- * import { isInMaintenanceMode } from '@/lib/feature-flags/examples';
+ * // In a server component
+ * import { isArtifactCreationAllowed } from '@/lib/feature-flags/examples';
  * 
- * export async function middleware(request: NextRequest) {
- *   if (await isInMaintenanceMode()) {
- *     return NextResponse.rewrite(new URL('/maintenance', request.url));
- *   }
+ * export default async function MyComponent() {
+ *   const canCreateArtifacts = await isArtifactCreationAllowed();
  *   
- *   return NextResponse.next();
+ *   return (
+ *     <div>
+ *       {canCreateArtifacts && <ArtifactCreator />}
+ *     </div>
+ *   );
  * }
  * ```
  */

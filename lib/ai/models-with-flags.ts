@@ -1,4 +1,4 @@
-import { enableReasoningModel } from '@/lib/feature-flags/flags';
+// Temporarily disabled - import { enableReasoningModel } from '@/lib/feature-flags/flags';
 
 export const DEFAULT_CHAT_MODEL: string = 'chat-model';
 
@@ -14,7 +14,8 @@ export interface ChatModel {
  * Note: User context is handled automatically by the identify function
  */
 export async function getAvailableChatModels(): Promise<ChatModel[]> {
-  const isReasoningEnabled = await enableReasoningModel();
+  // Temporarily default to true until OpenFeature implementation is ready
+  const isReasoningEnabled = true; // await enableReasoningModel();
   
   const models: ChatModel[] = [
     {
