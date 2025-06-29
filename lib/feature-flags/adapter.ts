@@ -12,9 +12,9 @@ export async function initializeFlagdProvider() {
     host: process.env.FLAGD_HOST || 'localhost',
     port: Number.parseInt(process.env.FLAGD_PORT || '8013'),
     
-    // Use LRU cache for better performance
-    cache: 'lru',
-    maxCacheSize: 1000,
+    // Disable caching to ensure server-side flags are always fresh
+    // This ensures updates in flagd UI are immediately reflected
+    cache: 'disabled',
     
     // Note: deadline is not a valid option for FlagdProvider
     // Timeout is handled at the gRPC level

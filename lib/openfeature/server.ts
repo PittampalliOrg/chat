@@ -9,6 +9,9 @@ export async function initializeServerFeatureFlags() {
   const provider = new FlagdProvider({
     host: process.env.FLAGD_HOST || 'localhost',
     port: Number.parseInt(process.env.FLAGD_PORT || '8013'),
+    // Disable caching to ensure server-side flags are always fresh
+    // This ensures updates in flagd UI are immediately reflected
+    cache: 'disabled',
   });
   
   try {
