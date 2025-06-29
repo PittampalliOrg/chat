@@ -14,7 +14,7 @@ export function OpenFeatureClientProvider({ children }: { children: React.ReactN
       const provider = new FlagdWebProvider({
         host: window.location.hostname,
         port: window.location.port ? parseInt(window.location.port) : 80,
-        pathPrefix: '/api/flagd',
+        pathPrefix: 'api/flagd',
         tls: window.location.protocol === 'https:',
       });
 
