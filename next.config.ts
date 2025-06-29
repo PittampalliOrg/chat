@@ -14,11 +14,4 @@ const nextConfig: NextConfig = {
   },
 };
 
-// Enable Vercel toolbar in development
-let config = nextConfig;
-if (process.env.NODE_ENV === 'development') {
-  const withVercelToolbar = require('@vercel/toolbar/plugins/next')();
-  config = withVercelToolbar(nextConfig);
-}
-
-export default config;
+export default nextConfig;

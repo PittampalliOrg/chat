@@ -3,7 +3,6 @@ import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import { ThemeProvider } from '@/components/theme-provider';
 import { trace } from "@opentelemetry/api"
-import { VercelToolbar } from '@vercel/toolbar/next';
 
 import './globals.css';
 import { SessionProvider } from 'next-auth/react';
@@ -92,7 +91,6 @@ export default async function RootLayout({
           <OpenFeatureClientProvider>
             <SessionProvider>{children}</SessionProvider>
           </OpenFeatureClientProvider>
-          {process.env.NODE_ENV === 'development' && <VercelToolbar />}
         </ThemeProvider>
       </body>
     </html>
