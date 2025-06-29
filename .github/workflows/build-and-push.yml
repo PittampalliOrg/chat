@@ -61,24 +61,48 @@ jobs:
       env:
         ACR_PASSWORD: ${{ secrets.ACR_PASSWORD }}
       run: |
-        # Login to ACR using docker to query tags
-        echo "$ACR_PASSWORD" | docker login ${{ secrets.ACR_USERNAME }}.azurecr.io -u ${{ secrets.ACR_USERNAME }} --password-stdin
-        
         # Get manifest for the repository
         REGISTRY="${{ secrets.ACR_USERNAME }}.azurecr.io"
         REPO="${{ env.ACR_REPO }}"
         
-        # Use Docker Hub API style endpoint for ACR
+        # Use Azure CLI REST API format for ACR
         TOKEN=$(echo -n "${{ secrets.ACR_USERNAME }}:$ACR_PASSWORD" | base64)
         
         # Get tags from ACR REST API
-        RESPONSE=$(curl -s -H "Authorization: Basic $TOKEN" \
+        echo "Fetching tags from: https://${REGISTRY}/v2/${REPO}/tags/list"
+        RESPONSE=$(curl -s -w "\nHTTP_STATUS:%{http_code}" -H "Authorization: Basic $TOKEN" \
           "https://${REGISTRY}/v2/${REPO}/tags/list")
         
-        # Parse tags and find latest semantic version
-        LATEST_VERSION=$(echo "$RESPONSE" | jq -r '.tags[]' 2>/dev/null | \
-          grep -E '^[0-9]+\.[0-9]+\.[0-9]+$' | \
-          sort -V | tail -1)
+        # Extract HTTP status code
+        HTTP_STATUS=$(echo "$RESPONSE" | tail -n 1 | cut -d: -f2)
+        BODY=$(echo "$RESPONSE" | sed '$d')
+        
+        echo "HTTP Status: $HTTP_STATUS"
+        
+        if [ "$HTTP_STATUS" != "200" ]; then
+          echo "Failed to fetch tags from ACR. Response: $BODY"
+          echo "Using Docker CLI as fallback..."
+          
+          # Fallback: Login and use docker to get tags
+          echo "$ACR_PASSWORD" | docker login ${REGISTRY} -u ${{ secrets.ACR_USERNAME }} --password-stdin
+          
+          # Use Azure CLI if available
+          if command -v az &> /dev/null; then
+            echo "Using Azure CLI to fetch tags..."
+            LATEST_VERSION=$(az acr repository show-tags --name ${{ secrets.ACR_USERNAME }} \
+              --repository ${REPO} --orderby time_desc --output tsv 2>/dev/null | \
+              grep -E '^[0-9]+\.[0-9]+\.[0-9]+$' | head -1)
+          else
+            echo "Azure CLI not available, parsing docker API response..."
+            LATEST_VERSION=""
+          fi
+        else
+          # Parse tags and find latest semantic version
+          echo "Tags response: $BODY"
+          LATEST_VERSION=$(echo "$BODY" | jq -r '.tags[]' 2>/dev/null | \
+            grep -E '^[0-9]+\.[0-9]+\.[0-9]+$' | \
+            sort -V | tail -1)
+        fi
         
         # Default to 0.0.0 if no version found
         if [ -z "$LATEST_VERSION" ]; then

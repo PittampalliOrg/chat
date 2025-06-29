@@ -29,33 +29,11 @@
     "azure-cli@latest"
   ],
   "env": {
-    "OPENFAAS_URL": "http://localhost:8080",
-    "DEVCONTAINER_ENV_PATH": ".devcontainer/devcontainer.env",
-    "AZURE_SP_ENV_PATH": ".devcontainer/azure.sp.env",
-    "WI_ENV_PATH": ".devcontainer/wi.env"
+    "OPENFAAS_URL": "http://localhost:8080"
   },
   "shell": {
     "init_hook": [
       "echo 'Welcome to Kind devbox environment'",
-      "# Load environment variables from .devcontainer/*.env files",
-      "if [ -d \".devcontainer\" ]; then",
-      "  for env_file in .devcontainer/*.env; do",
-      "    if [ -f \"$env_file\" ]; then",
-      "      echo \"Loading environment from $(basename $env_file)\"",
-      "      set -a",
-      "      source \"$env_file\"",
-      "      set +a",
-      "    fi",
-      "  done",
-      "  # Verify critical environment variables",
-      "  if [ -n \"$SP_CLIENT_ID\" ]; then",
-      "    echo \"✓ Azure SP credentials loaded (SP_CLIENT_ID: ${SP_CLIENT_ID:0:8}...)\"",
-      "  else",
-      "    echo \"⚠ Warning: Azure SP credentials not found. Run 'source .devcontainer/azure.sp.env'\"",
-      "  fi",
-      "else",
-      "  echo \"⚠ Warning: .devcontainer directory not found\"",
-      "fi",
       "# Install npm global packages",
       "npm install devspace@latest cdk8s-cli",
       "npm install -g @google/gemini-cli",
@@ -89,8 +67,6 @@
       "fi"
     ],
     "scripts": {
-      "on-create": "bash ./.devcontainer/on-create.sh",
-      "setup-wi":  "bash -ic 'scripts/wi-kind-setup.sh'"
     }
   }
 }
