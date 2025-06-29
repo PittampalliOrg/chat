@@ -56,14 +56,47 @@ jobs:
           echo "type=patch" >> $GITHUB_OUTPUT
         fi
 
+    - name: Get latest version from ACR
+      id: latest_version
+      env:
+        ACR_PASSWORD: ${{ secrets.ACR_PASSWORD }}
+      run: |
+        # Login to ACR using docker to query tags
+        echo "$ACR_PASSWORD" | docker login ${{ secrets.ACR_USERNAME }}.azurecr.io -u ${{ secrets.ACR_USERNAME }} --password-stdin
+        
+        # Get manifest for the repository
+        REGISTRY="${{ secrets.ACR_USERNAME }}.azurecr.io"
+        REPO="${{ env.ACR_REPO }}"
+        
+        # Use Docker Hub API style endpoint for ACR
+        TOKEN=$(echo -n "${{ secrets.ACR_USERNAME }}:$ACR_PASSWORD" | base64)
+        
+        # Get tags from ACR REST API
+        RESPONSE=$(curl -s -H "Authorization: Basic $TOKEN" \
+          "https://${REGISTRY}/v2/${REPO}/tags/list")
+        
+        # Parse tags and find latest semantic version
+        LATEST_VERSION=$(echo "$RESPONSE" | jq -r '.tags[]' 2>/dev/null | \
+          grep -E '^[0-9]+\.[0-9]+\.[0-9]+$' | \
+          sort -V | tail -1)
+        
+        # Default to 0.0.0 if no version found
+        if [ -z "$LATEST_VERSION" ]; then
+          echo "No existing versions found in ACR, starting from 0.0.0"
+          LATEST_VERSION="0.0.0"
+        fi
+        
+        echo "latest=${LATEST_VERSION}" >> $GITHUB_OUTPUT
+        echo "Latest version in ACR: ${LATEST_VERSION}"
+
     - name: Bump version
       id: version
       run: |
-        # Make bump-version.sh executable
-        chmod +x ./scripts/bump-version.sh
+        # Make bump-version-acr.sh executable
+        chmod +x ./scripts/bump-version-acr.sh
         
-        # Bump the version
-        NEW_VERSION=$(./scripts/bump-version.sh ${{ steps.bump_type.outputs.type }})
+        # Bump the version based on latest from ACR
+        NEW_VERSION=$(./scripts/bump-version-acr.sh ${{ steps.latest_version.outputs.latest }} ${{ steps.bump_type.outputs.type }})
         echo "version=${NEW_VERSION}" >> $GITHUB_OUTPUT
         echo "New version: ${NEW_VERSION}"
 
@@ -131,14 +164,7 @@ jobs:
           --build-number "${{ steps.metadata.outputs.build_number }}" \
           --git-repository "${{ steps.metadata.outputs.repository }}"
 
-    - name: Commit version bump
-      if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/basics')
-      run: |
-        git config --local user.email "action@github.com"
-        git config --local user.name "GitHub Action"
-        git add .version
-        git commit -m "chore: bump version to ${{ steps.version.outputs.version }} [skip ci]"
-        git push
+    # Version tracking is now done via ACR tags, no need to commit .version file
 
     - name: Create Release Tag
       if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/basics')
