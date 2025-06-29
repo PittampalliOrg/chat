@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
-import * as flagDefinitions from '@/lib/feature-flags';
+import * as flagDefinitions from '@/lib/feature-flags/client';
 
 export default function FlagOverridesPage() {
   const [overrides, setOverrides] = useState<Record<string, any>>({});
