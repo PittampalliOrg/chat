@@ -173,7 +173,7 @@ jobs:
     # Version tracking is now done via git tags
 
     - name: Create Release Tag
-      if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/basics')
+      if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/basics' || github.ref == 'refs/heads/local')
       run: |
         # Only create tag if one doesn't already exist (semantic-version might have created it)
         if ! git rev-parse "v${{ steps.final_version.outputs.version }}" >/dev/null 2>&1; then
