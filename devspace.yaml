@@ -29,10 +29,9 @@ images:
 # This is a list of `dev` containers that are based on the containers created by your deployments
 dev:
   app:
-    # Select container from ArgoCD-managed deployment
+    # Target the specific deployment by name
     namespace: nextjs
-    labelSelector:
-      app: nextjs
+    name: nextjs-deployment  # Use deployment name instead of labelSelector
     container: nextjs
     # Replace the container image with this dev-optimized image (allows to skip image building during development)
     devImage: ghcr.io/loft-sh/devspace-containers/typescript:20-alpine
