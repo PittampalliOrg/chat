@@ -20,12 +20,14 @@ function PureChatHeader({
   selectedVisibilityType,
   isReadonly,
   session,
+  showEnvVariables = true,
 }: {
   chatId: string;
   selectedModelId: string;
   selectedVisibilityType: VisibilityType;
   isReadonly: boolean;
   session: Session;
+  showEnvVariables?: boolean;
 }) {
   const router = useRouter();
   const { open } = useSidebar();
@@ -70,7 +72,7 @@ function PureChatHeader({
           className="order-1 md:order-3"
         />
       )}
-<EnvVariablesDisplay />
+{showEnvVariables && <EnvVariablesDisplay />}
 
     </header>
   );

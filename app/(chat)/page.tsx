@@ -6,6 +6,7 @@ import { generateUUID } from '@/lib/utils';
 import { DataStreamHandler } from '@/components/data-stream-handler';
 import { auth } from '../(auth)/auth';
 import { redirect } from 'next/navigation';
+import { initializeServerFeatureFlags } from '@/lib/openfeature/server';
 
 export default async function Page() {
   const session = await auth();
@@ -19,6 +20,10 @@ export default async function Page() {
   const cookieStore = await cookies();
   const modelIdFromCookie = cookieStore.get('chat-model');
 
+  // Evaluate feature flag for EnvVariablesDisplay component
+  const client = await initializeServerFeatureFlags();
+  const showEnvVariables = await client.getBooleanValue('show-env-variables-display', true);
+
   if (!modelIdFromCookie) {
     return (
       <>
@@ -31,6 +36,7 @@ export default async function Page() {
           isReadonly={false}
           session={session}
           autoResume={false}
+          showEnvVariables={showEnvVariables}
         />
         <DataStreamHandler id={id} />
       </>
@@ -48,6 +54,7 @@ export default async function Page() {
         isReadonly={false}
         session={session}
         autoResume={false}
+        showEnvVariables={showEnvVariables}
       />
       <DataStreamHandler id={id} />
     </>

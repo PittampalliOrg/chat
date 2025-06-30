@@ -29,6 +29,7 @@ export function Chat({
   isReadonly,
   session,
   autoResume,
+  showEnvVariables,
 }: {
   id: string;
   initialMessages: Array<UIMessage>;
@@ -37,6 +38,7 @@ export function Chat({
   isReadonly: boolean;
   session: Session;
   autoResume: boolean;
+  showEnvVariables?: boolean;
 }) {
   const { mutate } = useSWRConfig();
 
@@ -125,6 +127,7 @@ export function Chat({
           selectedVisibilityType={initialVisibilityType}
           isReadonly={isReadonly}
           session={session}
+          showEnvVariables={showEnvVariables}
         />
 
         <Messages
