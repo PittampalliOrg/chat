@@ -62,7 +62,7 @@ jobs:
         # Pattern to use if branch name should be included in version
         # branch_format: "${branch}"
         # If this is set to true, *every* commit will be treated as a new version.
-        bump_each_commit: false
+        bump_each_commit: true
         # If bump_each_commit is true, commit messages are still searched for patterns
         # This enables committers to "skip" a version bump by using a pattern
         enable_prerelease_mode: false
