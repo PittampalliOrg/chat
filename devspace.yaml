@@ -104,7 +104,7 @@ dev:
     # Only override what's absolutely necessary for local development
     env:
       - name: NEXT_PUBLIC_BASE_PATH
-        value: ""
+        value: "http://chat.localtest.me"
       - name: NEXT_PUBLIC_BASE_URL
         value: "http://chat.localtest.me"
       - name: NEXT_PUBLIC_SITE_URL
