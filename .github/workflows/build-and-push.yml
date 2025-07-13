@@ -25,6 +25,7 @@ on:
 
 env:
   ACR_REPO: chat-frontend
+  GHCR_REPO: ${{ github.repository }}
   DAGGER_VERSION: 0.18.10
 
 jobs:
@@ -126,10 +127,11 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-dagger-
 
-    - name: Build and push to ACR
+    - name: Build and push to ACR and GHCR
       env:
         ACR_PASSWORD: ${{ secrets.ACR_PASSWORD }}
         ACR_USERNAME: ${{ secrets.ACR_USERNAME }}
+        GHCR_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         POSTGRES_URL: ${{ secrets.POSTGRES_URL }}
         AUTH_SECRET: ${{ secrets.AUTH_SECRET }}
         XAI_API_KEY: ${{ secrets.XAI_API_KEY }}
@@ -144,14 +146,16 @@ jobs:
       run: |
         cd .dagger
         
-        # Run the Dagger pipeline
-        dagger call push-to-acr \
+        # Run the Dagger pipeline to push to both registries
+        dagger call push-to-both-registries \
           --src-dir .. \
           --acr-name ${{ secrets.ACR_USERNAME }} \
-          --repo ${{ env.ACR_REPO }} \
+          --acr-repo ${{ env.ACR_REPO }} \
+          --ghcr-repo ${{ env.GHCR_REPO }} \
           --tag ${{ steps.final_version.outputs.version }} \
-          --username ${{ secrets.ACR_USERNAME }} \
-          --password env:ACR_PASSWORD \
+          --acr-username ${{ secrets.ACR_USERNAME }} \
+          --acr-password env:ACR_PASSWORD \
+          --ghcr-token env:GHCR_TOKEN \
           --postgres-url env:POSTGRES_URL \
           --auth-secret env:AUTH_SECRET \
           --xai-key env:XAI_API_KEY \
@@ -191,7 +195,11 @@ jobs:
       run: |
         echo "## Build Summary" >> $GITHUB_STEP_SUMMARY
         echo "" >> $GITHUB_STEP_SUMMARY
-        echo "- **Image**: ${{ secrets.ACR_USERNAME }}.azurecr.io/${{ env.ACR_REPO }}:${{ steps.final_version.outputs.version }}" >> $GITHUB_STEP_SUMMARY
+        echo "### Docker Images" >> $GITHUB_STEP_SUMMARY
+        echo "- **ACR Image**: ${{ secrets.ACR_USERNAME }}.azurecr.io/${{ env.ACR_REPO }}:${{ steps.final_version.outputs.version }}" >> $GITHUB_STEP_SUMMARY
+        echo "- **GHCR Image**: ghcr.io/${{ env.GHCR_REPO }}:${{ steps.final_version.outputs.version }}" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "### Build Details" >> $GITHUB_STEP_SUMMARY
         echo "- **Version**: ${{ steps.final_version.outputs.version }}" >> $GITHUB_STEP_SUMMARY
         echo "- **Version Type**: ${{ steps.version.outputs.version_type }}" >> $GITHUB_STEP_SUMMARY
         echo "- **Trigger**: ${{ github.event_name }}" >> $GITHUB_STEP_SUMMARY

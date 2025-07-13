@@ -263,4 +263,164 @@ export class Dag {
       throw error;
     }
   }
+
+  /**
+   * Build the app and push it to GitHub Container Registry (GHCR).
+   *
+   * @param srcDir  Project directory (same as build()).
+   * @param repo    Repository name (e.g. "owner/repo-name")
+   * @param tag     Image tag, e.g. "latest" or a git SHA
+   * @param token   GitHub token for authentication (Secret)
+   */
+  @func()
+  async pushToGhcr(
+    srcDir: Directory,
+    repo: string,
+    tag: string,
+    token: Secret,
+    /* ── all the secrets build() already needs ── */
+    postgresUrl:   Secret,
+    authSecret:    Secret,
+    xaiKey:        Secret,
+    blobToken:     Secret,
+    redisUrl:      Secret,
+    tzdbKey:       Secret,
+    neonApiKey:    Secret,
+    neonProjectId: Secret,
+    nextPublicBasePath = "http://chat.localtest.me",
+    // Build metadata parameters
+    gitCommitSha = "",
+    gitCommitShort = "",
+    gitBranch = "",
+    buildTime = "",
+    buildVersion = "",
+    gitCommitMessage = "",
+    gitCommitAuthor = "",
+    buildNumber = "",
+    gitRepository = "",
+  ): Promise<string> {
+
+    // 1. Build the production image using the existing pipeline
+    const ctr = await this.build(
+      srcDir, postgresUrl, authSecret, xaiKey, blobToken, redisUrl,
+      tzdbKey, neonApiKey, neonProjectId, nextPublicBasePath,
+      gitCommitSha, gitCommitShort, gitBranch, buildTime, buildVersion,
+      gitCommitMessage, gitCommitAuthor, buildNumber, gitRepository
+    )
+
+    // 2. Publish it to GHCR
+    const registry = "ghcr.io";
+    const address  = `${registry}/${repo}:${tag}`;
+
+    // Debug logging
+    console.log(`[DEBUG] GHCR Repository: ${repo}`);
+    console.log(`[DEBUG] Tag: ${tag}`);
+    console.log(`[DEBUG] Full address: ${address}`);
+
+    try {
+      // For GHCR, the username is the repository owner (extracted from repo)
+      const username = repo.split('/')[0];
+      return await ctr
+        .withRegistryAuth(registry, username, token)  // attach creds
+        .publish(address)                            // push & return digest
+    } catch (error) {
+      console.error(`[ERROR] Failed to push to GHCR: ${error}`);
+      console.error(`[ERROR] Address: ${address}`);
+      throw error;
+    }
+  }
+
+  /**
+   * Build the app once and push it to both ACR and GHCR in parallel.
+   *
+   * @param srcDir     Project directory
+   * @param acrName    ACR registry name (without .azurecr.io)
+   * @param acrRepo    Repository name inside ACR
+   * @param ghcrRepo   GitHub repository (e.g. "owner/repo-name")
+   * @param tag        Image tag for both registries
+   * @param acrUsername ACR username
+   * @param acrPassword ACR password (Secret)
+   * @param ghcrToken  GitHub token for GHCR (Secret)
+   */
+  @func()
+  async pushToBothRegistries(
+    srcDir: Directory,
+    acrName: string,
+    acrRepo: string,
+    ghcrRepo: string,
+    tag: string,
+    acrUsername: string,
+    acrPassword: Secret,
+    ghcrToken: Secret,
+    /* ── all the secrets build() already needs ── */
+    postgresUrl:   Secret,
+    authSecret:    Secret,
+    xaiKey:        Secret,
+    blobToken:     Secret,
+    redisUrl:      Secret,
+    tzdbKey:       Secret,
+    neonApiKey:    Secret,
+    neonProjectId: Secret,
+    nextPublicBasePath = "http://chat.localtest.me",
+    // Build metadata parameters
+    gitCommitSha = "",
+    gitCommitShort = "",
+    gitBranch = "",
+    buildTime = "",
+    buildVersion = "",
+    gitCommitMessage = "",
+    gitCommitAuthor = "",
+    buildNumber = "",
+    gitRepository = "",
+  ): Promise<{ acr: string; ghcr: string }> {
+
+    // 1. Build the production image once
+    console.log("[INFO] Building Docker image...");
+    const ctr = await this.build(
+      srcDir, postgresUrl, authSecret, xaiKey, blobToken, redisUrl,
+      tzdbKey, neonApiKey, neonProjectId, nextPublicBasePath,
+      gitCommitSha, gitCommitShort, gitBranch, buildTime, buildVersion,
+      gitCommitMessage, gitCommitAuthor, buildNumber, gitRepository
+    )
+
+    // 2. Prepare registry addresses
+    const registryName = acrName.replace('.azurecr.io', '');
+    const acrRegistry = `${registryName}.azurecr.io`;
+    const acrAddress  = `${acrRegistry}/${acrRepo}:${tag}`;
+    
+    const ghcrRegistry = "ghcr.io";
+    const ghcrAddress  = `${ghcrRegistry}/${ghcrRepo}:${tag}`;
+    const ghcrUsername = ghcrRepo.split('/')[0];
+
+    console.log(`[INFO] Pushing to ACR: ${acrAddress}`);
+    console.log(`[INFO] Pushing to GHCR: ${ghcrAddress}`);
+
+    // 3. Push to both registries in parallel
+    const [acrDigest, ghcrDigest] = await Promise.all([
+      // Push to ACR
+      ctr
+        .withRegistryAuth(acrRegistry, acrUsername, acrPassword)
+        .publish(acrAddress)
+        .catch(error => {
+          console.error(`[ERROR] Failed to push to ACR: ${error}`);
+          throw error;
+        }),
+      // Push to GHCR
+      ctr
+        .withRegistryAuth(ghcrRegistry, ghcrUsername, ghcrToken)
+        .publish(ghcrAddress)
+        .catch(error => {
+          console.error(`[ERROR] Failed to push to GHCR: ${error}`);
+          throw error;
+        })
+    ]);
+
+    console.log(`[SUCCESS] Pushed to ACR with digest: ${acrDigest}`);
+    console.log(`[SUCCESS] Pushed to GHCR with digest: ${ghcrDigest}`);
+
+    return {
+      acr: acrDigest,
+      ghcr: ghcrDigest
+    };
+  }
 }
