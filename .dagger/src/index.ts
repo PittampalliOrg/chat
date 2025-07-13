@@ -310,7 +310,7 @@ export class Dag {
 
     // 2. Publish it to GHCR
     const registry = "ghcr.io";
-    const address  = `${registry}/${repo}:${tag}`;
+    const address  = `${registry}/${repo.toLowerCase()}:${tag}`;
 
     // Debug logging
     console.log(`[DEBUG] GHCR Repository: ${repo}`);
@@ -319,7 +319,7 @@ export class Dag {
 
     try {
       // For GHCR, the username is the repository owner (extracted from repo)
-      const username = repo.split('/')[0];
+      const username = repo.split('/')[0].toLowerCase();
       return await ctr
         .withRegistryAuth(registry, username, token)  // attach creds
         .publish(address)                            // push & return digest
@@ -389,8 +389,8 @@ export class Dag {
     const acrAddress  = `${acrRegistry}/${acrRepo}:${tag}`;
     
     const ghcrRegistry = "ghcr.io";
-    const ghcrAddress  = `${ghcrRegistry}/${ghcrRepo}:${tag}`;
-    const ghcrUsername = ghcrRepo.split('/')[0];
+    const ghcrAddress  = `${ghcrRegistry}/${ghcrRepo.toLowerCase()}:${tag}`;
+    const ghcrUsername = ghcrRepo.split('/')[0].toLowerCase();
 
     console.log(`[INFO] Pushing to ACR: ${acrAddress}`);
     console.log(`[INFO] Pushing to GHCR: ${ghcrAddress}`);
