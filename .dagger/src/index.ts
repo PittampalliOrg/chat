@@ -372,7 +372,7 @@ export class Dag {
     gitCommitAuthor = "",
     buildNumber = "",
     gitRepository = "",
-  ): Promise<{ acr: string; ghcr: string }> {
+  ): Promise<string> {
 
     // 1. Build the production image once
     console.log("[INFO] Building Docker image...");
@@ -418,9 +418,6 @@ export class Dag {
     console.log(`[SUCCESS] Pushed to ACR with digest: ${acrDigest}`);
     console.log(`[SUCCESS] Pushed to GHCR with digest: ${ghcrDigest}`);
 
-    return {
-      acr: acrDigest,
-      ghcr: ghcrDigest
-    };
+    return `ACR: ${acrDigest}\nGHCR: ${ghcrDigest}`;
   }
 }
