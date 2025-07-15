@@ -1,16 +1,11 @@
+# '.github/workflows/build-and-push.yml'
 name: Build and Push to ACR
 
 on:
   push:
-    branches:
-      - main
-      - basics
-      - local
+    branches: [main, basics, local]
   pull_request:
-    branches:
-      - main
-      - basics
-      - local
+    branches: [main, basics, local]
   workflow_dispatch:
     inputs:
       version_bump:
@@ -18,10 +13,7 @@ on:
         required: false
         default: 'patch'
         type: choice
-        options:
-          - major
-          - minor
-          - patch
+        options: [major, minor, patch]
 
 env:
   ACR_REPO: chat-frontend
@@ -29,11 +21,11 @@ env:
 
 jobs:
   build-and-push:
-    runs-on: depot-ubuntu-24.04,dagger=0.18.12
+    runs-on: depot-ubuntu-24.04,dagger=0.18.12   # Depot VM with Dagger pre‑installed
     permissions:
       contents: write
       packages: write
-    
+
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
@@ -41,63 +33,38 @@ jobs:
         fetch-depth: 0
         token: ${{ secrets.GITHUB_TOKEN }}
 
+    # --- NEW: pull the engine image so it is ready before the first CLI call ---
+    - name: Pre‑pull Dagger Engine
+      run: docker pull registry.dagger.io/engine:v0.18.12
 
     - name: Get next version
       id: version
       uses: paulhatch/semantic-version@v5.4.0
       with:
-        # The prefix to use to identify tags
         tag_prefix: "v"
-        # A string which, if present in a commit, indicates a major version change
         major_pattern: "(MAJOR)"
-        # A string which, if present in a commit, indicates a minor version change
         minor_pattern: "(MINOR)"
-        # If true, the body of commits will also be searched for major/minor patterns
         search_commit_body: true
-        # Pattern to use if branch name should be included in version
-        # branch_format: "${branch}"
-        # If this is set to true, *every* commit will be treated as a new version.
         bump_each_commit: true
-        # If bump_each_commit is true, commit messages are still searched for patterns
-        # This enables committers to "skip" a version bump by using a pattern
         enable_prerelease_mode: false
-        # Format of the version output
         version_format: "${major}.${minor}.${patch}"
-        # Optional path to check for changes. If any changes are detected in the path the
-        # version will be bumped.
-        # change_path: "src/"
-        # Named version, will be used as suffix for name version tag
-        # namespace: "my-app"
-        # If set to false, the action will not create a git tag for the version
-        # tag_on_release: true
 
     - name: Handle version override for workflow_dispatch
       id: final_version
       run: |
-        # For workflow_dispatch, check if we need to force a major/minor bump
         if [ "${{ github.event_name }}" == "workflow_dispatch" ] && [ "${{ github.event.inputs.version_bump }}" != "patch" ]; then
           CURRENT_VERSION="${{ steps.version.outputs.version }}"
           BUMP_TYPE="${{ github.event.inputs.version_bump }}"
-          
-          # Parse current version
           IFS='.' read -r MAJOR MINOR PATCH <<< "$CURRENT_VERSION"
-          
-          # Apply the requested bump
           if [ "$BUMP_TYPE" == "major" ]; then
-            MAJOR=$((MAJOR + 1))
-            MINOR=0
-            PATCH=0
+            MAJOR=$((MAJOR + 1)); MINOR=0; PATCH=0
           elif [ "$BUMP_TYPE" == "minor" ]; then
-            MINOR=$((MINOR + 1))
-            PATCH=0
+            MINOR=$((MINOR + 1)); PATCH=0
           fi
-          
           FINAL_VERSION="${MAJOR}.${MINOR}.${PATCH}"
-          echo "Overriding version from $CURRENT_VERSION to $FINAL_VERSION due to workflow_dispatch"
         else
           FINAL_VERSION="${{ steps.version.outputs.version }}"
         fi
-        
         echo "version=${FINAL_VERSION}" >> $GITHUB_OUTPUT
         echo "Final version: ${FINAL_VERSION}"
 
@@ -113,7 +80,6 @@ jobs:
         echo "build_number=${{ github.run_number }}" >> $GITHUB_OUTPUT
         echo "repository=${{ github.repository }}" >> $GITHUB_OUTPUT
 
-
     - name: Build and push to ACR and GHCR
       env:
         ACR_PASSWORD: ${{ secrets.ACR_PASSWORD }}
@@ -127,61 +93,51 @@ jobs:
         TIMEZONE_DB_API_KEY: ${{ secrets.TIMEZONE_DB_API_KEY }}
         NEON_API_KEY: ${{ secrets.NEON_API_KEY }}
         NEON_PROJECT_ID: ${{ secrets.NEON_PROJECT_ID }}
-        # Dagger Cloud token for pipeline traces and visualization
-        # Traces will be available at https://dagger.cloud
         DAGGER_CLOUD_TOKEN: ${{ secrets.DAGGER_CLOUD_TOKEN }}
-        # Force Dagger to use BuildKit directly without trying to start its own engine
-        _EXPERIMENTAL_DAGGER_RUNNER_HOST: "docker-container://buildkitd"
+        DAGGER_SESSION_TIMEOUT_MS: "30000"          # wait up to 30 s for engine handshake
       run: |
         cd .dagger
-        
-        # Add retry logic for Depot runner initialization
         for i in {1..3}; do
           echo "::notice::Attempt $i/3 - Running Dagger build and push"
           if dagger call push-to-both-registries \
-          --src-dir .. \
-          --acr-name ${{ secrets.ACR_USERNAME }} \
-          --acr-repo ${{ env.ACR_REPO }} \
-          --ghcr-repo ${{ env.GHCR_REPO }} \
-          --tag ${{ steps.final_version.outputs.version }} \
-          --acr-username ${{ secrets.ACR_USERNAME }} \
-          --acr-password env:ACR_PASSWORD \
-          --ghcr-token env:GHCR_TOKEN \
-          --postgres-url env:POSTGRES_URL \
-          --auth-secret env:AUTH_SECRET \
-          --xai-key env:XAI_API_KEY \
-          --blob-token env:BLOB_READ_WRITE_TOKEN \
-          --redis-url env:REDIS_URL \
-          --tzdb-key env:TIMEZONE_DB_API_KEY \
-          --neon-api-key env:NEON_API_KEY \
-          --neon-project-id env:NEON_PROJECT_ID \
-          --git-commit-sha "${{ steps.metadata.outputs.commit_sha }}" \
-          --git-commit-short "${{ steps.metadata.outputs.commit_short }}" \
-          --git-branch "${{ steps.metadata.outputs.branch }}" \
-          --build-time "${{ steps.metadata.outputs.build_time }}" \
-          --build-version "${{ steps.final_version.outputs.version }}" \
-          --git-commit-message "${{ steps.metadata.outputs.commit_message }}" \
-          --git-commit-author "${{ steps.metadata.outputs.commit_author }}" \
-          --build-number "${{ steps.metadata.outputs.build_number }}" \
-          --git-repository "${{ steps.metadata.outputs.repository }}"; then
-            echo "::notice::Dagger build and push completed successfully"
-            break
+            --src-dir .. \
+            --acr-name ${{ secrets.ACR_USERNAME }} \
+            --acr-repo ${{ env.ACR_REPO }} \
+            --ghcr-repo ${{ env.GHCR_REPO }} \
+            --tag ${{ steps.final_version.outputs.version }} \
+            --acr-username ${{ secrets.ACR_USERNAME }} \
+            --acr-password env:ACR_PASSWORD \
+            --ghcr-token env:GHCR_TOKEN \
+            --postgres-url env:POSTGRES_URL \
+            --auth-secret env:AUTH_SECRET \
+            --xai-key env:XAI_API_KEY \
+            --blob-token env:BLOB_READ_WRITE_TOKEN \
+            --redis-url env:REDIS_URL \
+            --tzdb-key env:TIMEZONE_DB_API_KEY \
+            --neon-api-key env:NEON_API_KEY \
+            --neon-project-id env:NEON_PROJECT_ID \
+            --git-commit-sha "${{ steps.metadata.outputs.commit_sha }}" \
+            --git-commit-short "${{ steps.metadata.outputs.commit_short }}" \
+            --git-branch "${{ steps.metadata.outputs.branch }}" \
+            --build-time "${{ steps.metadata.outputs.build_time }}" \
+            --build-version "${{ steps.final_version.outputs.version }}" \
+            --git-commit-message "${{ steps.metadata.outputs.commit_message }}" \
+            --git-commit-author "${{ steps.metadata.outputs.commit_author }}" \
+            --build-number "${{ steps.metadata.outputs.build_number }}" \
+            --git-repository "${{ steps.metadata.outputs.repository }}"; then
+              echo "::notice::Dagger build and push completed successfully"
+              break
           else
-            echo "::warning::Attempt $i failed, retrying in 10 seconds..."
-            sleep 10
+              echo "::warning::Attempt $i failed, retrying in 10 seconds..."
+              sleep 10
           fi
         done
 
-    # Version tracking is now done via git tags
-
     - name: Create Release Tag
-      if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/basics' || github.ref == 'refs/heads/local')
+      if: github.event_name == 'push' && contains('refs/heads/main refs/heads/basics refs/heads/local', github.ref)
       run: |
-        # Configure git identity for tag creation
         git config user.name "github-actions[bot]"
         git config user.email "github-actions[bot]@users.noreply.github.com"
-        
-        # Only create tag if one doesn't already exist (semantic-version might have created it)
         if ! git rev-parse "v${{ steps.final_version.outputs.version }}" >/dev/null 2>&1; then
           git tag -a "v${{ steps.final_version.outputs.version }}" -m "Release version ${{ steps.final_version.outputs.version }}"
           git push origin "v${{ steps.final_version.outputs.version }}"
