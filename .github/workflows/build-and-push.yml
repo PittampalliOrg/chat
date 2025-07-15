@@ -7,13 +7,6 @@ on:
   pull_request:
     branches: [main, basics, local]
   workflow_dispatch:
-    inputs:
-      version_bump:
-        description: 'Version bump type (major, minor, patch)'
-        required: false
-        default: 'patch'
-        type: choice
-        options: [major, minor, patch]
 
 env:
   ACR_REPO: chat-frontend
@@ -37,36 +30,6 @@ jobs:
     - name: Pre‑pull Dagger Engine
       run: docker pull registry.dagger.io/engine:v0.18.12
 
-    - name: Get next version
-      id: version
-      uses: paulhatch/semantic-version@v5.4.0
-      with:
-        tag_prefix: "v"
-        major_pattern: "(MAJOR)"
-        minor_pattern: "(MINOR)"
-        search_commit_body: true
-        bump_each_commit: true
-        enable_prerelease_mode: false
-        version_format: "${major}.${minor}.${patch}"
-
-    - name: Handle version override for workflow_dispatch
-      id: final_version
-      run: |
-        if [ "${{ github.event_name }}" == "workflow_dispatch" ] && [ "${{ github.event.inputs.version_bump }}" != "patch" ]; then
-          CURRENT_VERSION="${{ steps.version.outputs.version }}"
-          BUMP_TYPE="${{ github.event.inputs.version_bump }}"
-          IFS='.' read -r MAJOR MINOR PATCH <<< "$CURRENT_VERSION"
-          if [ "$BUMP_TYPE" == "major" ]; then
-            MAJOR=$((MAJOR + 1)); MINOR=0; PATCH=0
-          elif [ "$BUMP_TYPE" == "minor" ]; then
-            MINOR=$((MINOR + 1)); PATCH=0
-          fi
-          FINAL_VERSION="${MAJOR}.${MINOR}.${PATCH}"
-        else
-          FINAL_VERSION="${{ steps.version.outputs.version }}"
-        fi
-        echo "version=${FINAL_VERSION}" >> $GITHUB_OUTPUT
-        echo "Final version: ${FINAL_VERSION}"
 
     - name: Gather build metadata
       id: metadata
@@ -104,7 +67,7 @@ jobs:
             --acr-name ${{ secrets.ACR_USERNAME }} \
             --acr-repo ${{ env.ACR_REPO }} \
             --ghcr-repo ${{ env.GHCR_REPO }} \
-            --tag ${{ steps.final_version.outputs.version }} \
+            --tag ${{ steps.metadata.outputs.commit_short }} \
             --acr-username ${{ secrets.ACR_USERNAME }} \
             --acr-password env:ACR_PASSWORD \
             --ghcr-token env:GHCR_TOKEN \
@@ -120,7 +83,7 @@ jobs:
             --git-commit-short "${{ steps.metadata.outputs.commit_short }}" \
             --git-branch "${{ steps.metadata.outputs.branch }}" \
             --build-time "${{ steps.metadata.outputs.build_time }}" \
-            --build-version "${{ steps.final_version.outputs.version }}" \
+            --build-version "${{ steps.metadata.outputs.commit_short }}" \
             --git-commit-message "${{ steps.metadata.outputs.commit_message }}" \
             --git-commit-author "${{ steps.metadata.outputs.commit_author }}" \
             --build-number "${{ steps.metadata.outputs.build_number }}" \
@@ -133,29 +96,17 @@ jobs:
           fi
         done
 
-    - name: Create Release Tag
-      if: github.event_name == 'push' && contains('refs/heads/main refs/heads/basics refs/heads/local', github.ref)
-      run: |
-        git config user.name "github-actions[bot]"
-        git config user.email "github-actions[bot]@users.noreply.github.com"
-        if ! git rev-parse "v${{ steps.final_version.outputs.version }}" >/dev/null 2>&1; then
-          git tag -a "v${{ steps.final_version.outputs.version }}" -m "Release version ${{ steps.final_version.outputs.version }}"
-          git push origin "v${{ steps.final_version.outputs.version }}"
-        else
-          echo "Tag v${{ steps.final_version.outputs.version }} already exists"
-        fi
 
     - name: Output summary
       run: |
         echo "## Build Summary" >> $GITHUB_STEP_SUMMARY
         echo "" >> $GITHUB_STEP_SUMMARY
         echo "### Docker Images" >> $GITHUB_STEP_SUMMARY
-        echo "- **ACR Image**: ${{ secrets.ACR_USERNAME }}.azurecr.io/${{ env.ACR_REPO }}:${{ steps.final_version.outputs.version }}" >> $GITHUB_STEP_SUMMARY
-        echo "- **GHCR Image**: ghcr.io/${{ env.GHCR_REPO }}:${{ steps.final_version.outputs.version }}" >> $GITHUB_STEP_SUMMARY
+        echo "- **ACR Image**: ${{ secrets.ACR_USERNAME }}.azurecr.io/${{ env.ACR_REPO }}:${{ steps.metadata.outputs.commit_short }}" >> $GITHUB_STEP_SUMMARY
+        echo "- **GHCR Image**: ghcr.io/${{ env.GHCR_REPO }}:${{ steps.metadata.outputs.commit_short }}" >> $GITHUB_STEP_SUMMARY
         echo "" >> $GITHUB_STEP_SUMMARY
         echo "### Build Details" >> $GITHUB_STEP_SUMMARY
-        echo "- **Version**: ${{ steps.final_version.outputs.version }}" >> $GITHUB_STEP_SUMMARY
-        echo "- **Version Type**: ${{ steps.version.outputs.version_type }}" >> $GITHUB_STEP_SUMMARY
+        echo "- **Tag**: ${{ steps.metadata.outputs.commit_short }}" >> $GITHUB_STEP_SUMMARY
         echo "- **Trigger**: ${{ github.event_name }}" >> $GITHUB_STEP_SUMMARY
         echo "- **Branch**: ${{ github.ref_name }}" >> $GITHUB_STEP_SUMMARY
         echo "- **Commit**: ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
@@ -167,5 +118,5 @@ jobs:
         echo "These environment variables are available in the Next.js app:" >> $GITHUB_STEP_SUMMARY
         echo "- \`NEXT_PUBLIC_GIT_COMMIT\`: ${{ steps.metadata.outputs.commit_sha }}" >> $GITHUB_STEP_SUMMARY
         echo "- \`NEXT_PUBLIC_GIT_BRANCH\`: ${{ steps.metadata.outputs.branch }}" >> $GITHUB_STEP_SUMMARY
-        echo "- \`NEXT_PUBLIC_BUILD_VERSION\`: ${{ steps.final_version.outputs.version }}" >> $GITHUB_STEP_SUMMARY
+        echo "- \`NEXT_PUBLIC_BUILD_VERSION\`: ${{ steps.metadata.outputs.commit_short }}" >> $GITHUB_STEP_SUMMARY
         echo "- \`NEXT_PUBLIC_BUILD_TIME\`: ${{ steps.metadata.outputs.build_time }}" >> $GITHUB_STEP_SUMMARY
