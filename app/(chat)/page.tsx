@@ -38,7 +38,7 @@ export default async function Page() {
           autoResume={false}
           showEnvVariables={showEnvVariables}
         />
-        <DataStreamHandler id={id} />
+        <DataStreamHandler />
       </>
     );
   }
@@ -56,7 +56,7 @@ export default async function Page() {
         autoResume={false}
         showEnvVariables={showEnvVariables}
       />
-      <DataStreamHandler id={id} />
+      <DataStreamHandler />
     </>
   );
 }

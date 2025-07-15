@@ -5,13 +5,13 @@ import {
 } from 'ai';
 import { xai } from '@ai-sdk/xai';
 import { anthropic } from '@ai-sdk/anthropic';
-import { isTestEnvironment } from '../constants';
 import {
   artifactModel,
   chatModel,
   reasoningModel,
   titleModel,
 } from './models.test';
+import { isTestEnvironment } from '../constants';
 
 export const myProvider = isTestEnvironment
   ? customProvider({
@@ -33,6 +33,6 @@ export const myProvider = isTestEnvironment
         'artifact-model': anthropic('claude-4-sonnet-20250514'),
       },
       imageModels: {
-        'small-model': xai.image('grok-2-image'),
+        'small-model': xai.imageModel('grok-2-image'),
       },
     });
