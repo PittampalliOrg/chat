@@ -22,7 +22,7 @@
     "synth": "cdk8s synth"
   },
   "dependencies": {
-    "@ai-sdk/anthropic": "^1.2.12",
+    "@ai-sdk/anthropic": "2.0.0-beta.6",
     "@ai-sdk/openai": "^1.3.22",
     "@ai-sdk/provider": "2.0.0-beta.1",
     "@ai-sdk/react": "2.0.0-beta.6",
