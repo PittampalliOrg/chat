@@ -6,8 +6,7 @@ import { ZoneContextManager }    from '@opentelemetry/context-zone';
 import { B3Propagator }          from '@opentelemetry/propagator-b3';
 import { registerInstrumentations } from '@opentelemetry/instrumentation';
 import { getWebAutoInstrumentations } from '@opentelemetry/auto-instrumentations-web';
-import { Resource } from '@opentelemetry/resources';
-import { browserDetector } from '@opentelemetry/resources';
+import { defaultResource, resourceFromAttributes } from '@opentelemetry/resources';
 
 // 2️⃣  OTLP exporter (HTTP/proto) – works with your /api/telemetry proxy
 const exporter = new OTLPTraceExporter({
@@ -16,14 +15,10 @@ const exporter = new OTLPTraceExporter({
 
 // 3️⃣  Initialize provider with resource configuration
 async function initializeProvider() {
-  // Detect browser resources
-  const browserResource = await browserDetector.detect();
-  
-  // Merge with custom resource attributes
-  const resource = Resource.default()
-    .merge(browserResource)
+  // Start with default resource and merge with custom attributes
+  const resource = defaultResource()
     .merge(
-      new Resource({
+      resourceFromAttributes({
         'service.name': 'nextjs-browser',
         'service.version': '1.0.0',
         'deployment.environment': 'production',
