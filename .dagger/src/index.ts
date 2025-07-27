@@ -192,6 +192,7 @@ export class Dag {
 
     /**
    * Build the app *and* push it to Azure Container Registry (ACR).
+   * DEPRECATED: We now only push to GHCR
    *
    * @param srcDir  Project directory (same as build()).
    * @param acrName myregistry (without .azurecr.io)
@@ -200,7 +201,7 @@ export class Dag {
    * @param username Registry user (often the ACR name itself, or
    *                 "00000000‑0000‑0000‑0000‑000000000000" for token auth)
    * @param password Registry password or access token (Secret) */
-  @func()
+  // @func()
   async pushToAcr(
     srcDir: Directory,
     acrName: string,
@@ -332,6 +333,7 @@ export class Dag {
 
   /**
    * Build the app once and push it to both ACR and GHCR in parallel.
+   * DEPRECATED: We now only push to GHCR
    *
    * @param srcDir     Project directory
    * @param acrName    ACR registry name (without .azurecr.io)
@@ -342,7 +344,7 @@ export class Dag {
    * @param acrPassword ACR password (Secret)
    * @param ghcrToken  GitHub token for GHCR (Secret)
    */
-  @func()
+  // @func()
   async pushToBothRegistries(
     srcDir: Directory,
     acrName: string,
