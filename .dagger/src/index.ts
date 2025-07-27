@@ -66,7 +66,7 @@ export class Dag {
     tzdbKey:       Secret,
     neonApiKey:    Secret,
     neonProjectId: Secret,
-    nextPublicBasePath = "http://chat.localtest.me",
+    nextPublicBasePath = "https://chat.cnoe.localtest.me",
     // Build metadata parameters
     gitCommitSha = "",
     gitCommitShort = "",
@@ -217,7 +217,7 @@ export class Dag {
     tzdbKey:       Secret,
     neonApiKey:    Secret,
     neonProjectId: Secret,
-    nextPublicBasePath = "http://chat.localtest.me",
+    nextPublicBasePath = "https://chat.cnoe.localtest.me",
     // Build metadata parameters
     gitCommitSha = "",
     gitCommitShort = "",
@@ -287,7 +287,7 @@ export class Dag {
     tzdbKey:       Secret,
     neonApiKey:    Secret,
     neonProjectId: Secret,
-    nextPublicBasePath = "http://chat.localtest.me",
+    nextPublicBasePath = "https://chat.cnoe.localtest.me",
     // Build metadata parameters
     gitCommitSha = "",
     gitCommitShort = "",
@@ -361,7 +361,7 @@ export class Dag {
     tzdbKey:       Secret,
     neonApiKey:    Secret,
     neonProjectId: Secret,
-    nextPublicBasePath = "http://chat.localtest.me",
+    nextPublicBasePath = "https://chat.cnoe.localtest.me",
     // Build metadata parameters
     gitCommitSha = "",
     gitCommitShort = "",
