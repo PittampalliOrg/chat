@@ -185,7 +185,7 @@ export class Dag {
       .withSecretVariable("NEON_PROJECT_ID",       neonProjectId)
       .withUser("nextjs")
       .withExposedPort(APP_PORT)
-      .withEntrypoint(["node", "server.js", "--turbopack"]);
+      .withEntrypoint(["node", "server.js"]);
 
     return runtime;  // ready to export or run
   }
