@@ -40,7 +40,7 @@ export async function middleware(request: NextRequest) {
 
   if (!session?.user) {
     // Use the configured base URL instead of request.url to avoid internal pod hostnames
-    const baseUrl = process.env.NEXTAUTH_URL || process.env.AUTH_URL || 'https://chat.localtest.me';
+    const baseUrl = process.env.NEXTAUTH_URL || process.env.AUTH_URL || 'https://chat.cnoe.localtest.me';
     const redirectUrl = encodeURIComponent(new URL(pathname, baseUrl).toString());
 
     return NextResponse.redirect(
