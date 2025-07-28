@@ -18,8 +18,8 @@ images:
     dockerfile: ./Dockerfile
     buildArgs:
       NEXT_PUBLIC_BASE_PATH: ""
-      NEXT_PUBLIC_BASE_URL: "http://chat.localtest.me"
-      NEXT_PUBLIC_SITE_URL: "http://chat.localtest.me"
+      NEXT_PUBLIC_BASE_URL: "https://chat.cnoe.localtest.me"
+      NEXT_PUBLIC_SITE_URL: "https://chat.cnoe.localtest.me"
       POSTGRES_URL: "postgresql://neondb_owner:npg_NPr0x7XCTbSI@ep-wispy-math-a8k8xapb-pooler.eastus2.azure.neon.tech/neondb?sslmode=require"
       REDIS_URL: "redis://redis-service:6379"
       NODE_ENV: "production"
@@ -97,18 +97,18 @@ dev:
 
     # Open the following URLs once they return an HTTP status code other than 502 or 503
     open:
-      - url: http://chat.localtest.me
+      - url: https://chat.cnoe.localtest.me
 
     # Environment variables for development
     # DevSpace will inherit all env vars from ConfigMaps and Secrets
     # Only override what's absolutely necessary for local development
     env:
       - name: NEXT_PUBLIC_BASE_PATH
-        value: "http://chat.localtest.me"
+        value: "https://chat.cnoe.localtest.me"
       - name: NEXT_PUBLIC_BASE_URL
-        value: "http://chat.localtest.me"
+        value: "https://chat.cnoe.localtest.me"
       - name: NEXT_PUBLIC_SITE_URL
-        value: "http://chat.localtest.me"
+        value: "https://chat.cnoe.localtest.me"
       - name: NODE_ENV
         value: "development"
       - name: HOSTNAME
@@ -119,9 +119,9 @@ dev:
       - name: AUTH_TRUST_HOST
         value: "true"
       - name: AUTH_URL
-        value: "http://chat.localtest.me"
+        value: "https://chat.cnoe.localtest.me"
       - name: NEXTAUTH_URL
-        value: "http://chat.localtest.me"
+        value: "https://chat.cnoe.localtest.me"
       - name: NEXTAUTH_SECRET
         value: "n23o8+iHZsLpp84Zz+9bQJUINHvv7RmCqAAwovgjb6c="
       # Database configuration
